@@ -207,7 +207,7 @@ function NewCourseCreate() {
            <Box sx={{
             display: 'grid',
             gridTemplateColumns: { xs: '1fr', sm: '1fr ', md: '1fr 1fr 1fr ',lg:"1fr 1fr 1fr" },
-            gap: { xs: 2, md: 2},
+            gap: { xs: 2, md: 3},
             justifyContent: 'center',
             pl:{xs:1, sm:1,  md:2, lg:4, xl:4
              },pr:{  xs:1, sm:1, md:2,  lg:4, xl:4

@@ -15,10 +15,10 @@ import {
 } from 'react-hook-form';
 
 interface QuizQuestion {
-  id: string;
-  question: string;
+  questionId: string;
+  question_text: string;
   options: string[];
-  correctAnswer: number;
+  correctAnswer: string;
   explanation?: string;
 }
 
@@ -44,7 +44,7 @@ function MCQSInputField<T extends FieldValues>({
       rules={{ required: isRequired ? 'This field is required' : false }}
       render={({ field, fieldState }) => (
         <FormControl component="fieldset" error={!!fieldState.error}>
-          <FormLabel component="legend">{question.question}</FormLabel>
+          <FormLabel component="legend">{question.question_text}</FormLabel>
           <RadioGroup
             value={field.value ?? ''}
             onChange={(e) => field.onChange(parseInt(e.target.value))}

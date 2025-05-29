@@ -21,7 +21,18 @@ export interface SubmitQuizByStudentType{
 export interface SubmitQuizMCQType{
     lessonId:string|undefined;
     questions:{
-        quizId:string,
+        questionId:string,
+        question_text:string,
+        options:string[],
+        correctAnswer:string,
+        explanation?:string
+
+    }[]
+}
+export interface SubmitQuizMCQReturn{
+    id:string,
+    questions:{
+        questionId:string,
         question_text:string,
         options:string[],
         correctAnswer:string,
@@ -74,10 +85,17 @@ const lessonApi=baseApi.injectEndpoints({
                 method:"POST",
                 body:data
             })
+        }),
+        getMCQsQuizForStudent:builder.query<SubmitQuizMCQReturn,{lessonId:string|undefined}>({
+            query:({lessonId})=>({
+                url:"get-MCQquiz-for-student",
+                method:"GET",
+                params:{lessonId}
+            })
         })
 
     })
 })
 
 
-export const {useGetAssignmentForStudentQuery,useCreateNewLessonWithQuizAndAssignmentMutation,useGetQuizForStudentQuery,useSubmitQuizByStudentMutation,useSubmitAssignmentByStudentMutation,useCreateMCQsQuizMutation}=lessonApi
+export const {useGetAssignmentForStudentQuery,useCreateNewLessonWithQuizAndAssignmentMutation,useGetQuizForStudentQuery,useSubmitQuizByStudentMutation,useSubmitAssignmentByStudentMutation,useCreateMCQsQuizMutation,useGetMCQsQuizForStudentQuery}=lessonApi

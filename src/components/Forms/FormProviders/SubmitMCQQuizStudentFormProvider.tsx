@@ -3,8 +3,10 @@ import { CreateMCQQuizFormDefaultValues, createMCQSchema, CreateQuizMCQFormType 
 import { FormProvider, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import MCQQuizAttemptFrom from '../../../pages/lessons/quizAndAssignment/MCQQuizAttemptFrom'
+import { useParams } from 'react-router-dom'
 
 function SubmitMCQQuizStudentFormProvider() {
+  const {lessonId}=useParams()
     const methods=useForm<CreateQuizMCQFormType>({
              mode:"all",
              defaultValues:CreateMCQQuizFormDefaultValues,
@@ -12,7 +14,7 @@ function SubmitMCQQuizStudentFormProvider() {
         })
   return (
     <FormProvider {...methods}>
-      <MCQQuizAttemptFrom/>
+      <MCQQuizAttemptFrom  lessonId={lessonId}/>
     </FormProvider>
   )
 }

@@ -1,7 +1,7 @@
 import { Box, Button, List, ListItem, Typography, useTheme } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { useFieldArray, useFormContext } from 'react-hook-form'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { CreateQuizMCQFormType } from '../../../types/quiz-mcqs-types'
 import TextInputField from '../../../components/Forms/InputFields/TextInputField'
 import { CheckCircle, Create, Delete, Details, Gavel } from '@mui/icons-material'
@@ -19,10 +19,12 @@ const instructions=[
 
 function MCQQuizCreateForm() {
    const theme=useTheme()
+   const navigate=useNavigate()
    const { control, handleSubmit,reset,getValues,watch } = useFormContext<CreateQuizMCQFormType>()
    type SingleQuestionType = CreateQuizMCQFormType["questions"][number];
    const [submittedQuestions, setSubmittedQuestions] = useState<SingleQuestionType[]>([]);
    const[createMCQQuiz,{isError,isLoading,isSuccess,error}]=useCreateMCQsQuizMutation()
+
    const {fields,append,remove}=useFieldArray({
             control,
             name:"questions"
@@ -32,8 +34,9 @@ function MCQQuizCreateForm() {
         reset();
         setSubmittedQuestions([]);
         toast.success("Quiz created Successfully.")
-        setTimeout(() => { 
-      }, 1000);
+         setTimeout(() => { 
+          navigate('/teacher-dash');
+        }, 1000);
     }
     }, [isSuccess, reset]);
     if(isError&&error&&"data" in error){
@@ -54,18 +57,18 @@ function MCQQuizCreateForm() {
         }
          
 
-        const submitSingleQuestion = (quizId: string) => {
+        const submitSingleQuestion = (questionId: string) => {
            const allQuestions = getValues("questions");
            console.log(allQuestions)
-           console.log(quizId)
-            const question = allQuestions.find(q => q.quizId=== quizId);
+           console.log(questionId)
+            const question = allQuestions.find(q => q.questionId=== questionId);
             console.log("question",question)
             if (
               question?.question_text.trim() !== '' &&
               question?.options.every(opt => opt.trim() !== '') &&
-              question?.correctAnswer.trim() !== ''&&question?.quizId.trim()!=='') {
+              question?.correctAnswer.trim() !== ''&&question?.questionId.trim()!=='') {
               setSubmittedQuestions(prev => {
-              const existingIndex = prev.findIndex(q => q.quizId === quizId);
+              const existingIndex = prev.findIndex(q => q.questionId === questionId);
       if (existingIndex !== -1) {
         const updated = [...prev];
         updated[existingIndex] = question;
@@ -84,7 +87,7 @@ function MCQQuizCreateForm() {
      });
       } else {
         setTimeout(() => {
-            toast.success('Please fill all required fields!');
+            toast.error('Please fill all required fields!');
         }, 1000);
              
          }
@@ -170,7 +173,7 @@ function MCQQuizCreateForm() {
                     <Button
                 variant="contained"
                
-                onClick={() => submitSingleQuestion(field.quizId)} >
+                onClick={() => submitSingleQuestion(field.questionId)} >
                  Submit Question
                 </Button>
                 </Box>
@@ -181,7 +184,7 @@ function MCQQuizCreateForm() {
             <Button
             onClick={() =>
                 append({
-                quizId:Date.now().toString(),
+                questionId:Date.now().toString(),
                 question_text: '',
                 options: ['', '', '', ''],
                 correctAnswer: "1",
@@ -231,11 +234,11 @@ function MCQQuizCreateForm() {
              return;
         }
 
-             const idToDelete = q.quizId;
+             const idToDelete = q.questionId;
 
          // Find the index by comparing to the form values instead
              const allQuestions = getValues("questions");
-             const indexToRemove = allQuestions.findIndex(q => q.quizId === idToDelete);
+             const indexToRemove = allQuestions.findIndex(q => q.questionId === idToDelete);
 
          if (indexToRemove === -1) {
               toast.error("Question not found.");
@@ -243,7 +246,7 @@ function MCQQuizCreateForm() {
             }
 
   remove(indexToRemove); // Safely remove from field array
-  setSubmittedQuestions(prev => prev.filter(q => q.quizId !== idToDelete)); // Remove from local state
+  setSubmittedQuestions(prev => prev.filter(q => q.questionId !== idToDelete)); // Remove from local state
 }}
                 variant="outlined"
                 color="error"

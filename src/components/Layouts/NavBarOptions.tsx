@@ -12,7 +12,12 @@ const navOptions=[
         path:"/",
         icon:<Home/>
     }, 
-    {
+
+   
+
+]
+const navUnregisteredOptions=[
+   {
         name:"Register",
         path:"/register",
         icon:<FaUserAlt/>
@@ -22,15 +27,7 @@ const navOptions=[
         path:"/login",
         icon:<Login/>
     },
-    {
-        name:"LogOut",
-        path:"/logout",
-        icon:<Logout/>
-
-    }
-
 ]
-
 
 type UserRole = 'Teacher' | 'Student' | 'Admin';
 const roleBasedNavOptions:Record<UserRole, { name: string; path: string; icon: JSX.Element }[]> = {
@@ -40,6 +37,13 @@ const roleBasedNavOptions:Record<UserRole, { name: string; path: string; icon: J
       path: "/teacher-dash",
       icon: <Settings />
     },
+     {
+        name:"LogOut",
+        path:"/logout",
+        icon:<Logout/>
+
+    }
+     
     // Add more teacher-specific nav options here
   ],
   Student: [
@@ -48,6 +52,12 @@ const roleBasedNavOptions:Record<UserRole, { name: string; path: string; icon: J
       path: "/student-dash",
       icon: <Settings />
     },
+     {
+        name:"LogOut",
+        path:"/logout",
+        icon:<Logout/>
+
+    }
     // Add more student-specific nav options here
   ],
   Admin: [
@@ -56,6 +66,12 @@ const roleBasedNavOptions:Record<UserRole, { name: string; path: string; icon: J
       path: "/admin-dash",
       icon: <Settings />
     },
+     {
+        name:"LogOut",
+        path:"/logout",
+        icon:<Logout/>
+
+    }
     // Add admin-specific options
   ]
 };
@@ -70,6 +86,8 @@ const NavBarOptions:React.FC<NavOptionsProp> = ({openMenu,setOpenMenu}) => {
     const baseNav = [...navOptions];
   if (userRole && ['Teacher', 'Student', 'Admin'].includes(userRole)) {
   baseNav.push(...roleBasedNavOptions[userRole as UserRole]);
+}else{
+   baseNav.push(...navUnregisteredOptions);
 }
   return (
     <List 

@@ -6,7 +6,7 @@ const optionsSchema=z.array(z.string().min(1,"Option cannot be empty.")).length(
 
 export const createMCQSchema=z.object({
     questions:z.array(z.object({
-        quizId:z.string(),
+        questionId:z.string(),
         question_text:z.string().min(1,"Question's text is required"),
         options:optionsSchema,
         correctAnswer:z.string().min(0).max(3),
@@ -18,7 +18,7 @@ export type CreateQuizMCQFormType=z.infer<typeof createMCQSchema>
 
 export const CreateMCQQuizFormDefaultValues:CreateQuizMCQFormType={
     questions:[{
-        quizId:Date.now().toString(),
+        questionId:Date.now().toString(),
         question_text:"",
         options:["","","",""],
         correctAnswer:"1",
