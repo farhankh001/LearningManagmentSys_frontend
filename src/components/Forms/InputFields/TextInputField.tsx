@@ -22,29 +22,27 @@ function TextInputField<T extends FieldValues>({name,label,hideData,type,isRequi
         name={name}
         render={({field,fieldState:{error}})=>(
             <FormControl  
-            
+            //  sx={{borderRadius:5,border:"1px solid",borderColor:"primary.main"}}
             >
                 <TextField 
                     {...field}
-                    label={label} variant="outlined"
+                    label={label} variant="filled"
                     size="medium"
-                     sx={{
-      '& .MuiOutlinedInput-root': {
-        borderRadius: '12px',
-        backgroundColor: theme.palette.background.paper,
-        transition: '0.3s',
-        '&:hover fieldset': {
-          borderColor: theme.palette.primary.main,
-        },
-        '&.Mui-focused fieldset': {
-          borderColor: theme.palette.secondary.main,
-          boxShadow: `0 0 0 2px ${theme.palette.secondary.light}`,
-        },
-      },
-      '& .MuiInputLabel-root': {
-        fontWeight: '500',
-      },
-    }}
+                  sx={{
+    // Input box
+    '& .MuiOutlinedInput-root': {
+      borderRadius: '12px',
+      backgroundColor: theme.palette.background.paper,
+      borderColor:theme.palette.primary.main,
+    },
+    // Input label
+    
+    '& fieldset': {
+      borderColor: theme.palette.primary.main, // Default border color
+    },
+    // Error state
+   
+  }}
                     slotProps={{
                         input:{
                             endAdornment:hideData?

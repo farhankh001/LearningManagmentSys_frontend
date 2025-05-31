@@ -111,14 +111,32 @@ export const registerDefaultValues:RegisterType={
 }
 
 
+export const createTeacherSchema=(availableCategories:string[])=>z.object({
+  name: usernameSchema,
+  email: emailSchema,
+  password: passwordSchema,
+  profile_picture:avatarSchema.optional(),
+  role:z.enum(["Teacher"]),//always keep this in this formate first letter capital others small.
+  qualifications:z.string().max(255,"Entry not more then 255 is allowed.").min(1,"You must enter your Qualifications."),
+  teacher_expertise:z.array(
+    z.string().refine(val=>availableCategories.includes(val),"Selected expertise must be from availabe categories.")
+  ) .min(1, "Select at least one expertise area")
+  .max(5, "You can select up to 5 areas of expertise")
+
+});
 
 
+export type TeacherRegisterType = z.infer<ReturnType<typeof createTeacherSchema>>;
 
-
-
-
-
-
+export const registerTeacherDefaultValues:TeacherRegisterType={
+  name: "",
+  email: "",
+  password: "",
+  profile_picture:null,
+  role:"Teacher",
+  qualifications:"",
+  teacher_expertise:[]
+}
 
 
 

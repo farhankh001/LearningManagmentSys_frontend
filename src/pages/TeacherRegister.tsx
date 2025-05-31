@@ -1,9 +1,9 @@
-import { RegisterType } from '../types/register.types';
+import { RegisterType, TeacherRegisterType } from '../types/register.types';
 import { SubmitHandler, useFormContext } from 'react-hook-form';
 import { Box, Alert, Typography, useTheme, LinearProgress } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import TextInputField from '../components/Forms/InputFields/TextInputField';
-import { useRegisterUserMutation } from '../app/api/userApi';
+import { useRegisterTeacherMutation, useRegisterUserMutation } from '../app/api/userApi';
 import { useNavigate, Link } from 'react-router-dom';
 import FileInputField from '../components/Forms/InputFields/FileInputField';
 import { useEffect, useState } from 'react';
@@ -15,28 +15,28 @@ import toast from 'react-hot-toast';
 import { uploadToCloudinary } from '../utils/uploadToCloundinary';
 import { StepDefinition, useMultiStepForm } from '../components/MultistepFormSetup/useMultiStepFormhook';
 import { MultiStepFormWrapper } from '../components/MultistepFormSetup/MultiStepFromWrapper';
-import { SvgIconComponent, ArtTrack, Quiz, Insights, SupportAgent } from '@mui/icons-material';
+import { SvgIconComponent, ArtTrack, Quiz, Insights, SupportAgent, LibraryBooks, BarChart, MonetizationOn, PeopleAlt, WorkspacePremium } from '@mui/icons-material';
 
 interface Feature {
   icon: SvgIconComponent;
   text: string;
 }
 
-const registerBenefits: Feature[] = [
-  { icon: ArtTrack, text: 'Full access to all courses' },
-  { icon: Quiz, text: 'Take interactive quizzes and assessments' },
-  { icon: Insights, text: 'Track your progress and achievements' },
-  { icon: SupportAgent, text: 'Get mentor support and consultation' }
+const teacherBenefits: Feature[] = [
+  { icon: LibraryBooks, text: 'Create and manage your own courses' },
+  { icon: PeopleAlt, text: 'Build and engage with your student community' },
+  { icon: BarChart, text: 'Track student performance and course analytics' },
+  { icon: MonetizationOn, text: 'Earn revenue from published courses' },
+  { icon: WorkspacePremium, text: 'Gain recognition as a certified instructor' }
 ];
 
 
-function Register() {
+function TeacherRegister() {
   const [uploadProgress, setUploadProgress] = useState({  image: 0, })
   const navigate = useNavigate();
-  const { handleSubmit, watch, reset } = useFormContext<RegisterType>();
-  const [registerUser, { isLoading, isSuccess, isError, error }] = useRegisterUserMutation();
+  const { handleSubmit, watch, reset } = useFormContext<TeacherRegisterType>();
+  const [registerTeacher, { isLoading, isSuccess, isError, error }] = useRegisterTeacherMutation();
   const categories = useSelector((state: RootState) => state.categories.categories);
-  const currentRole = watch('role');
   useEffect(() => {
     if (isSuccess) {
       reset();
@@ -47,25 +47,37 @@ function Register() {
     }
   }, [isSuccess, navigate, reset]);
 
-  const submitForm: SubmitHandler<RegisterType> = async (data: RegisterType) => {
+  const submitForm: SubmitHandler<TeacherRegisterType> = async (data: TeacherRegisterType) => {
     try {
-      let profile_picture_url=""
-      if (data.profile_picture instanceof File) {
-      const profile_picture=await uploadToCloudinary(data.profile_picture,(percent)=>setUploadProgress({image:percent}))
-      profile_picture_url=profile_picture
-    }
-      const studentData = {
-        name: data.name,
-        email: data.email,
-        password: data.password,
-        role: data.role,
-        profile_picture:profile_picture_url,
-        education_level:data.education_level,
-        interests:data.interests
-      };
+    //   let profile_picture_url=""
+    //   if (data.profile_picture instanceof File) {
+    //   const profile_picture=await uploadToCloudinary(data.profile_picture,(percent)=>setUploadProgress({image:percent}))
+    //   profile_picture_url=profile_picture
+    // }
+    //   const teacherData = {
+    //     name: data.name,
+    //     email: data.email,
+    //     password: data.password,
+    //     role: data.role,
+    //     profile_picture:profile_picture_url,
+    //     teacher_qualifications:data.qualifications,
+    //     teacher_expertise:data.teacher_expertise
       
-    console.log(studentData)
-      // await registerUser(registerationBody).unwrap();
+    //   };
+    const formData=new FormData()
+    formData.append("name",data.name)
+    formData.append("email",data.email)
+    formData.append("password",data.password)
+    formData.append("role",data.role)
+    formData.append("qualifications",data.qualifications)
+    data.teacher_expertise.forEach((item: string) => {
+     formData.append("teacher_expertise[]", item);
+        });
+    if (data.profile_picture instanceof File) {
+        formData.append("profile_picture",data.profile_picture)
+    }
+    console.log(formData)
+      await registerTeacher(formData).unwrap();
       
     } catch (err) {
       console.error('Registration failed:', err);
@@ -80,7 +92,7 @@ if(isError&&error&&"data" in error){
 
 
 
-  const steps: StepDefinition<RegisterType>[] = [
+  const steps: StepDefinition<TeacherRegisterType>[] = [
     {
       id: 'basic-info',
       title: 'Basic Information',
@@ -89,15 +101,15 @@ if(isError&&error&&"data" in error){
     },
     
     {
-      id: 'student-info',
+      id: 'teacher-info',
       title: 'Academic Information',
       description: 'Tell us about your education',
-      fields: ['role','education_level', 'interests']
+      fields: ['role','teacher_expertise', 'qualifications']
     },
 
   ];
 
-  const [multiStepState, multiStepActions] = useMultiStepForm<RegisterType>({
+  const [multiStepState, multiStepActions] = useMultiStepForm<TeacherRegisterType>({
     steps,
     onStepChange: (step, direction) => {
       console.log(`Moved to step ${step + 1} (${direction})`);
@@ -146,29 +158,29 @@ if(isError&&error&&"data" in error){
           </Box>
         );
         
-      case 'student-info':
+      case 'teacher-info':
         return (
 
           <Box sx={{ display: 'flex',flexDirection:"column", gap: 4 }}>
-             <SelectInputField<RegisterType>
+             <SelectInputField<TeacherRegisterType>
               isRequired={true}
               label="Role"
               name="role"
-              options={["Student"]}
+              options={["Teacher"]}
             />
-            <SelectInputField<RegisterType>
+            <SelectInputField<TeacherRegisterType>
               isRequired={true}
-              label="Education Level"
-              name="education_level"
+              label="Qualifications"
+              name="qualifications"
               options={[
                 "PRIMARY_SCHOOL", "MIDDLE_SCHOOL", "HIGH_SCHOOL",
                 "BACHELOR", "MASTERS", "DOCTORATE", "PHD", "OTHER"
               ]}
             />
-            <MultipleSelectInputField<RegisterType>
+            <MultipleSelectInputField<TeacherRegisterType>
               isRequired={true}
-              label="Interests"
-              name="interests"
+              label="Expertise"
+              name="teacher_expertise"
               options={categories || ["Others"]}
             />
           </Box>
@@ -198,22 +210,23 @@ if(isError&&error&&"data" in error){
       md: 'flex',
     },
     flexDirection: 'column',
-    justifyContent: 'center',
+    justifyContent: 'start',
     alignItems: 'flex-start',
     gap: 3,
     px: 4,
     py: 6,
   }}
 >
-  <Typography variant="h6" fontWeight={600} color="primary" gutterBottom>
+  <Typography variant="h6" fontWeight={600} sx={{}}>
     Why Create an Account?
   </Typography>
 
-  {registerBenefits.map((benefit, index) => {
+  {teacherBenefits.map((benefit, index) => {
     const Icon = benefit.icon;
     return (
       <Box key={index} sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-        <Icon color="primary" />
+        <Icon  sx={{color:theme.palette.text.primary
+        }}/>
         <Typography variant="body1" fontWeight={500}>
           {benefit.text}
         </Typography>
@@ -246,7 +259,7 @@ if(isError&&error&&"data" in error){
             textAlign: 'center'
           }}
         >
-          Create Account
+          Register as Teacher
         </Typography>
         <Box sx={{width:"70%"}}>
         <form onSubmit={handleSubmit(submitForm)}>
@@ -266,7 +279,7 @@ if(isError&&error&&"data" in error){
   );
 }
 
-export default Register;
+export default TeacherRegister;
 
 
 

@@ -1,7 +1,7 @@
 import {useDropzone} from "react-dropzone"
 import { useCallback } from "react";
 import { Controller, FieldValues, Path, useFormContext } from "react-hook-form"
-import { Box, FormControl, FormHelperText, IconButton, Stack, Typography } from "@mui/material";
+import { Box, FormControl, FormHelperText, IconButton, Stack, Typography, useTheme } from "@mui/material";
 import { FaCloudUploadAlt, FaFile, FaTrash } from "react-icons/fa";
 
 
@@ -24,6 +24,7 @@ function FileInputField<T extends FieldValues>({
     maxSize,
   }: FileInputProps<T>) {
     const { control } = useFormContext<T>();
+    const theme=useTheme()
     return (
       <Controller
         name={name}
@@ -79,9 +80,9 @@ function FileInputField<T extends FieldValues>({
                     xl:4
                   },
                   border: "1px solid",
-                  borderColor: "divider", // Use theme divider color
+                  borderColor: theme.palette.primary.main, // Use theme divider color
                   cursor: "pointer",
-                  bgcolor: isDragActive ? "action.hover" : "background.default", // Use theme colors
+                  bgcolor: isDragActive ? "action.hover" : "background.paper", // Use theme colors
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",

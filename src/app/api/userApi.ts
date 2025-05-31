@@ -74,8 +74,15 @@ export const userApi = baseApi.injectEndpoints({
         url:"/logout",
         method:"POST"
       })
-    })
+    }),
+    registerTeacher: builder.mutation<any,FormData>({
+      query: (formData) => ({
+        url: '/create-Teacher', // Backend endpoint for registration
+        method: 'POST', // HTTP method
+        body: formData, // Data to send in the request body
+      }),
+    }),
   }),
 });
 
-export const { useRegisterUserMutation,useLoginUserMutation,useLoggedInUserInofQuery,useLogOutUserMutation } = userApi;
+export const { useRegisterUserMutation,useLoginUserMutation,useLoggedInUserInofQuery,useLogOutUserMutation,useRegisterTeacherMutation } = userApi;

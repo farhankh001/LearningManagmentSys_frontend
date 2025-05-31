@@ -30,6 +30,7 @@ import QuizMCQS from './pages/courses/QuizMCQS.tsx'
 import MCQsCreateQuizFormProvider from './components/Forms/FormProviders/MCQsCreateQuizFormProvider.tsx'
 import SubmitMCQQuizStudentFormProvider from './components/Forms/FormProviders/SubmitMCQQuizStudentFormProvider.tsx'
 import MCQResults from './pages/lessons/quizAndAssignment/MCQResults.tsx'
+import TeacherRegisterFormProvider from './components/Forms/FormProviders/TeacherRegiterFormProvider.tsx'
 
 
  // Types
@@ -65,6 +66,7 @@ const router = createBrowserRouter(
       <Route path="/landing" element={<Landing />} />
       <Route path="/single-course-details/:courseId" element={<SingleCourseDetails />} />
       <Route path="/unauthorized" element={<Unauthorized />} />
+      <Route path="/teacher-register" element={<TeacherRegisterFormProvider />} />
       <Route element={<ProtectedRoute />}> {/* No role check here */}
           <Route path="/logout" element={<Logout />} />
       </Route>
