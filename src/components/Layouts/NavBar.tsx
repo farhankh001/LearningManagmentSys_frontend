@@ -1,9 +1,78 @@
-import { AppBar, Box, Drawer, IconButton, Toolbar, Typography } from "@mui/material";
-import { useState } from "react";
-import { FaBars, FaTimes, FaSun, FaMoon } from "react-icons/fa";
+import {
+  AppBar,
+  Box,
+  Button,
+  Drawer,
+  IconButton,
+  Toolbar,
+  Typography,
+} from "@mui/material";
+import { JSX, useState } from "react";
+import { FaBars, FaTimes, FaSun, FaMoon, FaUserAlt } from "react-icons/fa";
 import NavBarOptions from "./NavBarOptions";
-import { School } from "@mui/icons-material";
+import { Home, Login, Logout, School, Settings } from "@mui/icons-material";
+import { useSelector } from "react-redux";
+import { RootState } from "../../app/store";
+import { Link } from "react-router-dom";
+const navOptions:any=[]
+const navUnregisteredOptions=[
+   {
+        name:"Register",
+        path:"/register",
+        
+    },
+    {
+        name:"LogIn",
+        path:"/login",
+    },
+]
 
+type UserRole = 'Teacher' | 'Student' | 'Admin';
+const roleBasedNavOptions:Record<UserRole, { name: string; path: string}[]> = {
+  Teacher: [
+    {
+      name: "Teacher Dash",
+      path: "/teacher-dash",
+     
+    },
+     {
+        name:"LogOut",
+        path:"/logout",
+       
+
+    }
+     
+    // Add more teacher-specific nav options here
+  ],
+  Student: [
+    {
+      name: "Student Dash",
+      path: "/student-dash",
+      
+    },
+     {
+        name:"LogOut",
+        path:"/logout",
+       
+
+    }
+    // Add more student-specific nav options here
+  ],
+  Admin: [
+    {
+      name: "Admin Dash",
+      path: "/admin-dash",
+      
+    },
+     {
+        name:"LogOut",
+        path:"/logout",
+       
+
+    }
+    // Add admin-specific options
+  ]
+};
 interface NavProps {
   darkMode: boolean;
   setDarkMode: (preState: boolean) => void;
@@ -11,53 +80,52 @@ interface NavProps {
 
 const NavBar: React.FC<NavProps> = ({ darkMode, setDarkMode }) => {
   const [openMenu, setOpenMenu] = useState(false);
-
+   const userRole=useSelector((state:RootState)=>state.auth.user?.role)
+      const baseNav = [...navOptions];
+    if (userRole && ['Teacher', 'Student', 'Admin'].includes(userRole)) {
+    baseNav.push(...roleBasedNavOptions[userRole as UserRole]);
+  }else{
+     baseNav.push(...navUnregisteredOptions);
+  }
   return (
-    <>
-      <Box role="presentation">
-        <AppBar position="static" >
-          <Toolbar
-            sx={{
-              backgroundColor: "background.paper",
-              display: "flex",
-              justifyContent: "space-between",
-            }}
-          >
-            {/* Menu Icon */}
-            <IconButton onClick={() => setOpenMenu(!openMenu)}>
-              {openMenu ? <FaTimes /> : <FaBars />}
-            </IconButton>
+    <AppBar
+      position="static"
+      elevation={0}
+      sx={{
+        backgroundColor: "transparent", // Full transparency
+        boxShadow: "none",              // Remove shadow
+      }}
+    >
+      <Toolbar
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        {/* Menu Icon */}
+        <IconButton onClick={() => setOpenMenu(!openMenu)}>
+          {openMenu ? <FaTimes /> : <FaBars />}
+        </IconButton>
 
-            {/* Drawer for Navigation Options */}
-            <Drawer open={openMenu} onClose={() => setOpenMenu(false)}>
-              <NavBarOptions openMenu={openMenu} setOpenMenu={setOpenMenu} />
-            </Drawer>
+        {/* Drawer for Navigation Options */}
+        <Drawer open={openMenu} onClose={() => setOpenMenu(false)}>
+          <NavBarOptions openMenu={openMenu} setOpenMenu={setOpenMenu} />
+          <IconButton onClick={() => setDarkMode(!darkMode)} sx={{width:"50px",height:"50px"}}>
+          {darkMode ? <FaSun /> : <FaMoon />}
+        </IconButton>
+        </Drawer>
 
-            {/* Title with Icon */}
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                gap: 1, // Space between icon and text
-              }}
-            >
-              <School sx={{ color: "text.secondary", fontSize: "1.8rem" }} />
-              <Typography
-                sx={{ color: "text.secondary", fontWeight: "700" }}
-                variant="h6"
-              >
-                LMS
-              </Typography>
-            </Box>
-
-            {/* Dark Mode Toggle */}
-            <IconButton onClick={() => setDarkMode(!darkMode)}>
-              {darkMode ? <FaSun /> : <FaMoon />}
-            </IconButton>
-          </Toolbar>
-        </AppBar>
+      <Box>
+        {baseNav&&baseNav.map((navopt=><Button component={Link} to={navopt.path}>
+          {
+            navopt.name
+          }
+        </Button>))}
       </Box>
-    </>
+        
+      </Toolbar>
+    </AppBar>
   );
 };
 

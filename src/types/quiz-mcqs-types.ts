@@ -26,3 +26,35 @@ export const CreateMCQQuizFormDefaultValues:CreateQuizMCQFormType={
 
     }]
 }
+
+
+
+export const submitMCQByStudent = z.object({
+  lessonId: z.string(),
+  answers: z.array(
+    z.object({
+      questionId: z.string(),
+      selectedAnswerIndex: z.number().min(0, "You must select an answer")
+    })
+  )
+});
+
+
+export type SubmitMCQByStudentType=z.infer<typeof submitMCQByStudent>
+
+export const submitMCQByStudentDefault:SubmitMCQByStudentType={
+    lessonId:"",
+    answers:[
+        {
+            questionId:"",
+            selectedAnswerIndex:0
+        }
+    ]
+}
+
+export type SingleMCQbyStudentType={
+    answer:{
+        questionId:"",
+        slectedAnswerIndex:0
+    }
+}

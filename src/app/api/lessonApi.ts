@@ -1,4 +1,5 @@
 import {  submitCourseType } from "../../types/create_lesson.types";
+import { SubmitMCQByStudentType } from "../../types/quiz-mcqs-types";
 import baseApi from "./baseApi";
 
 interface GetQuizForStudentReturn{
@@ -32,13 +33,31 @@ export interface SubmitQuizMCQType{
 export interface SubmitQuizMCQReturn{
     id:string,
     questions:{
-        questionId:string,
+        id:string,
         question_text:string,
         options:string[],
-        correctAnswer:string,
-        explanation?:string
-
     }[]
+}
+export interface MCQQuizResultResponse {
+  totalQuestions: number;
+  correctAnswers: number;
+  percentageScore: string;
+  results: MCQQuestionResult[];
+}
+
+export interface MCQSubmissionReturnType{
+    message:string,
+    submissionId:string
+}
+
+export interface MCQQuestionResult {
+  questionId: string;
+  question_text: string;
+  options: string[];
+  correctAnswerText: string | null;
+  selectedAnswerText: string | null;
+  explanation: string;
+  isCorrect: boolean;
 }
 
 
@@ -92,10 +111,24 @@ const lessonApi=baseApi.injectEndpoints({
                 method:"GET",
                 params:{lessonId}
             })
+        }),
+        attemptedMCQByStudentSubmit:builder.mutation<MCQSubmissionReturnType,SubmitMCQByStudentType>({
+            query:(data)=>({
+                url:"attempted-mcq-by-student",
+                method:"POST",
+                body:data
+            })
+        }),
+        resultsMcqForStudent:builder.query<any,any>({
+            query:({submissionId})=>({
+                url:"evaluate_mcq_results_by_std",
+                method:"GET",
+                params:{submissionId}
+            })
         })
 
     })
 })
 
 
-export const {useGetAssignmentForStudentQuery,useCreateNewLessonWithQuizAndAssignmentMutation,useGetQuizForStudentQuery,useSubmitQuizByStudentMutation,useSubmitAssignmentByStudentMutation,useCreateMCQsQuizMutation,useGetMCQsQuizForStudentQuery}=lessonApi
+export const {useGetAssignmentForStudentQuery,useCreateNewLessonWithQuizAndAssignmentMutation,useGetQuizForStudentQuery,useSubmitQuizByStudentMutation,useSubmitAssignmentByStudentMutation,useCreateMCQsQuizMutation,useGetMCQsQuizForStudentQuery,useAttemptedMCQByStudentSubmitMutation,useResultsMcqForStudentQuery}=lessonApi

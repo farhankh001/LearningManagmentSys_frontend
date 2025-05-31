@@ -60,17 +60,17 @@ const bioSchema = z.string()
 
 
 export const baseRegisterSchema = z.object({
-  name: usernameSchema,
-  email: emailSchema,
-  password: passwordSchema,
-  profile_picture:avatarSchema.optional(),
-  bio:bioSchema.optional(),
-  role:z.enum(["Instructor","Student","Admin"])
+
 });
 
 
 
-const createStudentSchema=(avaliableCategories:string[])=>z.object({
+export const createStudentSchema=(avaliableCategories:string[])=>z.object({
+  name: usernameSchema,
+  email: emailSchema,
+  password: passwordSchema,
+  profile_picture:avatarSchema.optional(),
+  role:z.enum(["Student"]),//always keep this in this formate first letter capital others small.
   education_level:z.enum([  
     "PRIMARY_SCHOOL",
     "MIDDLE_SCHOOL",
@@ -86,47 +86,60 @@ const createStudentSchema=(avaliableCategories:string[])=>z.object({
 
 });
 
-const createTeacherSchema=(availableCategories:string[])=>z.object
-({
-  qualifications:z.string().max(255,"Entry not more then 255 is allowed.").min(1,"You must enter your Qualifications."),
-  teacher_expertise:z.array(
-    z.string().refine(val=>availableCategories.includes(val),"Selected expertise must be from availabe categories.")
-  ) .min(1, "Select at least one expertise area")
-  .max(5, "You can select up to 5 areas of expertise")
-})
+// const createTeacherSchema=(availableCategories:string[])=>z.object
+// ({
+//   qualifications:z.string().max(255,"Entry not more then 255 is allowed.").min(1,"You must enter your Qualifications."),
+//   teacher_expertise:z.array(
+//     z.string().refine(val=>availableCategories.includes(val),"Selected expertise must be from availabe categories.")
+//   ) .min(1, "Select at least one expertise area")
+//   .max(5, "You can select up to 5 areas of expertise")
+// })
 
-export const createRegisterSchema=(availabeCategories:string[])=>{
-  return z.discriminatedUnion("role",[
-    z.object({
-      ...baseRegisterSchema.shape,
-      role:z.literal("Student"),
-      ...createStudentSchema(availabeCategories).shape
-    }),
-    z.object({
-      ...baseRegisterSchema.shape,
-      role:z.literal("Teacher"),
-      ...createTeacherSchema(availabeCategories).shape
-    }),
-    z.object({
-      ...baseRegisterSchema.shape,
-      role:z.literal("Admin")
-    })
-  ])
-}
 
 
 
 export type BaseDefaultType=z.infer<typeof baseRegisterSchema>
-export type RegisterType = z.infer<ReturnType<typeof createRegisterSchema>>;
+export type RegisterType = z.infer<ReturnType<typeof createStudentSchema>>;
 export const registerDefaultValues:RegisterType={
   name: "",
   email: "",
   password: "",
-  bio:"", // Default rolea
   profile_picture:null,
-  role:"Teacher",
-  qualifications:"",
-  teacher_expertise:[]
+  role:"Student",
+  education_level:"BACHELOR",
+  interests:[]
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// export const createRegisterSchema=(availabeCategories:string[])=>{
+//   return z.discriminatedUnion("role",[
+//     z.object({
+//       ...baseRegisterSchema.shape,
+//       role:z.literal("Student"),
+//       ...createStudentSchema(availabeCategories).shape
+//     }),
+//     z.object({
+//       ...baseRegisterSchema.shape,
+//       role:z.literal("Teacher"),
+//       ...createTeacherSchema(availabeCategories).shape
+//     }),
+//     z.object({
+//       ...baseRegisterSchema.shape,
+//       role:z.literal("Admin")
+//     })
+//   ])
+// }

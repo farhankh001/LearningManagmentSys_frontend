@@ -18,7 +18,7 @@ export const darkTheme: ThemeOptions = createTheme({
   palette: {
     mode: "dark",
     primary: {
-      main: "#0E4F54", //deep teal
+      main: "#4477CE", //deep teal
       light: "#e1774b", //coral orange
       dark: "#1A2327",//bright purple 
       contrastText: "#ffffff"

@@ -1,12 +1,11 @@
 import { Typography, Button, Box, useTheme} from '@mui/material';
 import { useCreateCategoriesMutation } from './app/api/categoriesApi';
 import CourseDetails from './components/Layouts/CourseDetails';
-import HomeHero from './test/hero';
+// import HomeHero from './test/hero';
 import HomeFeature from './test/feature';
 import { useSelector } from 'react-redux';
 import { RootState } from './app/store';
-
-
+import HeroSection from './test/AnimatedHero';
 
 
 function App() {
@@ -24,7 +23,7 @@ function App() {
     <Box sx={{maxWidth:"100%"}}>
       <Box>
       
-          <HomeHero/>
+      <HeroSection/>
       </Box>
       
          <Box sx={{marginTop:10}}>

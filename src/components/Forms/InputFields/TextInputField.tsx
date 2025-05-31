@@ -28,6 +28,7 @@ function TextInputField<T extends FieldValues>({name,label,hideData,type,isRequi
                     {...field}
                     label={label} variant="filled"
                     size="medium"
+
                     slotProps={{
                         input:{
                             endAdornment:hideData?

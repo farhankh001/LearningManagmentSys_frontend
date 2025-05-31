@@ -15,11 +15,9 @@ import {
 } from 'react-hook-form';
 
 interface QuizQuestion {
-  questionId: string;
+  id: string;
   question_text: string;
   options: string[];
-  correctAnswer: string;
-  explanation?: string;
 }
 
 interface MCQSInputFieldProps<T> {
@@ -52,7 +50,7 @@ function MCQSInputField<T extends FieldValues>({
             {question.options.map((option, index) => (
               <FormControlLabel
                 key={index}
-                value={index.toString()}
+                value={index}
                 control={<Radio />}
                 label={option}
               />

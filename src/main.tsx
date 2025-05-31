@@ -29,6 +29,7 @@ import Quiz from './pages/courses/MCQsBasedQuiz.tsx'
 import QuizMCQS from './pages/courses/QuizMCQS.tsx'
 import MCQsCreateQuizFormProvider from './components/Forms/FormProviders/MCQsCreateQuizFormProvider.tsx'
 import SubmitMCQQuizStudentFormProvider from './components/Forms/FormProviders/SubmitMCQQuizStudentFormProvider.tsx'
+import MCQResults from './pages/lessons/quizAndAssignment/MCQResults.tsx'
 
 
  // Types
@@ -84,6 +85,7 @@ const router = createBrowserRouter(
         <Route path="/attempt-assignment/:lessonId" element={<AttemptAssignment/>}/>
         <Route path="/logout" element={<Logout/>} />
          <Route path="/attempt-MCQS-quiz/:lessonId" element={<SubmitMCQQuizStudentFormProvider/>}/>
+         <Route path="/view-mcq-results-std/:submissionId" element={<MCQResults/>}/>
           
       </Route>
     </Route>
