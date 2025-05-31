@@ -5,7 +5,8 @@ import CourseDetails from './components/Layouts/CourseDetails';
 import HomeFeature from './test/feature';
 import { useSelector } from 'react-redux';
 import { RootState } from './app/store';
-import HeroSection from './test/AnimatedHero';
+import HeroSection from './components/HomPage/AnimatedHero';
+import ProductSection from './components/HomPage/ProductSection';
 
 
 function App() {
@@ -27,7 +28,7 @@ function App() {
       </Box>
       
          <Box sx={{marginTop:10}}>
-        <CourseDetails/>
+       <ProductSection/>
       </Box>
       
        <Box sx={{marginTop:15}}>

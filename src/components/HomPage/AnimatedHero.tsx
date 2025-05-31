@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Typography, Button, Container, Stack, Avatar } from "@mui/material";
 import Lottie from "lottie-react";
-import heroAnimation from "../assets/Animation - 1748602807457.json";
+import heroAnimation from "../../assets/Animation - 1748602807457.json";
 import { Link } from "react-router-dom";
 import { LogoCarousel} from "./Cr";
  const avatarUrls = [

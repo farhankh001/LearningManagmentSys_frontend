@@ -43,7 +43,7 @@ export function MultiStepFormWrapper({
   return(
     <Box sx={{width:"100%"}}>
          {showProgress && (
-        <Box sx={{ mb: 3 }}>
+        <Box sx={{ mb: 2 }}>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
             <Typography variant="body2" color="text.secondary">
               Step {state.currentStep + 1} of {state.totalSteps}
@@ -63,7 +63,7 @@ export function MultiStepFormWrapper({
       {showStepper && (
         <Stepper 
           activeStep={state.currentStep} 
-          sx={{ mb: 4 }}
+          sx={{ mb: 2}}
           orientation="horizontal"
         >
           {Array.from({ length: state.totalSteps }, (_, index) => (
@@ -88,17 +88,14 @@ export function MultiStepFormWrapper({
       )}
 
 
-       <Box sx={{ mb: 3 }}>
-        <Typography variant="h5" gutterBottom sx={{ fontWeight: 600 }}>
-          {state.currentStepInfo.title}
-        </Typography>
+       <Box sx={{ mb: 2 }}>
         {state.currentStepInfo.description && (
-          <Typography variant="body2" color="text.secondary">
+          <Typography variant="body1" color="text.secondary">
             {state.currentStepInfo.description}
           </Typography>
         )}
       </Box>
-       <Box sx={{ mb: 4 }}>
+       <Box sx={{ mb: 2 }}>
         {children}
       </Box>
       

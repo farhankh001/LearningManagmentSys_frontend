@@ -1,13 +1,15 @@
 import React, { FC } from 'react'
 import Box from '@mui/material/Box'
-import { styled } from '@mui/material/styles'
+import { styled, useTheme } from '@mui/material/styles'
 import Container from '@mui/material/Container'
 import Typography from '@mui/material/Typography'
 import CircularProgress from '@mui/material/CircularProgress'
 import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress'
 import { data } from './feature.data'
 import { CardMedia } from '@mui/material'
-
+import Lottie from 'lottie-react'
+import heroAnimation from "../assets/reveal-loading.json";
+import { Security } from '@mui/icons-material'
 interface LinearProgressProps {
   order: number
 }
@@ -23,7 +25,7 @@ const BorderLinearProgress = styled(LinearProgress, {
   [`& .${linearProgressClasses.bar}`]: {
     borderRadius: 5,
     ...(order === 1 && {
-      backgroundColor: '#f303ff',
+      backgroundColor: 'primary.main',
     }),
     ...(order === 2 && {
       backgroundColor: '#26e8bd',
@@ -35,8 +37,9 @@ const BorderLinearProgress = styled(LinearProgress, {
 }))
 
 const HomeFeature: FC = () => {
+  const theme=useTheme()
   return (
-    <Box id="feature" sx={{ py: { xs: 10, md: 14 }, backgroundColor: 'background.paper' }}>
+    <Box id="feature" sx={{ py: { xs: 10, md: 14 }, backgroundColor: 'background.default' }}>
       <Container>
         <Box
           sx={{
@@ -47,7 +50,16 @@ const HomeFeature: FC = () => {
         >
           {/* Left Section - Image and Overlay */}
           <Box sx={{ position: 'relative' }}>
-            <CardMedia component="img" image="/images/home_feature.svg" alt="Feature img" />
+             <Lottie
+        animationData={heroAnimation}
+        loop
+        autoplay
+        style={{
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+        }}
+      />
 
             {/* Top Right Overlay */}
             <Box
@@ -60,18 +72,18 @@ const HomeFeature: FC = () => {
                 px: 2.2,
                 py: 1.4,
                 zIndex: 1,
-                backgroundColor: 'background.paper',
+                backgroundColor: 'background.default',
                 width: 190,
               }}
             >
               <Typography variant="h5" sx={{ mb: 1 }}>
-                Lorem ipsum dolor
+                <Security sx={{fontSize:30,opacity:0.5}}/>
               </Typography>
 
               {[
-                { label: 'UI/UI Design', value: 65, order: 1 },
-                { label: 'Mobile Development', value: 40, order: 2 },
-                { label: 'Web Development', value: 50, order: 3 },
+                { label: 'Pen Testing', value: 90, order: 1 },
+                { label: 'Cryptography', value: 95, order: 2 },
+                { label: 'Cloud Security', value: 80, order: 3 },
               ].map(({ label, value, order }) => (
                 <Box key={label} sx={{ mb: 2 }}>
                   <Typography variant="subtitle1" color="text.secondary">
@@ -93,7 +105,7 @@ const HomeFeature: FC = () => {
                 px: 2.2,
                 py: 2,
                 zIndex: 1,
-                backgroundColor: 'background.paper',
+                backgroundColor: 'background.default',
                 textAlign: 'center',
               }}
             >
@@ -106,9 +118,9 @@ const HomeFeature: FC = () => {
                   flexDirection: 'column',
                 }}
               >
-                <Typography sx={{ fontWeight: 600, lineHeight: 1 }}>Lorem ipsum</Typography>
+                <Typography sx={{ fontWeight: 600, lineHeight: 1 }}>Cyber Security</Typography>
                 <Typography variant="subtitle1" sx={{ mb: 1, color: 'text.disabled' }}>
-                  Lorem ipsum
+                  Learning Progress
                 </Typography>
                 <Box
                   sx={{
@@ -121,20 +133,20 @@ const HomeFeature: FC = () => {
                   }}
                 >
                   <Typography variant="h4" sx={{ color: '#32dc88' }}>
-                    75%
+                    99%
                   </Typography>
                   <CircularProgress
                     sx={{ position: 'absolute', color: 'divider' }}
                     thickness={2}
                     variant="determinate"
-                    value={85}
-                    size={85}
+                    value={90}
+                    size={99}
                   />
                   <CircularProgress
                     disableShrink
                     thickness={2}
                     variant="determinate"
-                    value={75}
+                    value={90}
                     size={85}
                     sx={{ transform: 'rotate(96deg) !important', color: '#32dc88', position: 'absolute' }}
                   />
@@ -169,17 +181,7 @@ const HomeFeature: FC = () => {
                 }}
               >
                 Learning <br />
-                <Box
-                  sx={{
-                    position: 'absolute',
-                    top: { xs: 20, md: 28 },
-                    transform: 'rotate(3deg)',
-                    left: 2,
-                    '& img': { width: { xs: 140, md: 175 }, height: 'auto' },
-                  }}
-                >
-                  <img src="/images/headline-curve.svg" alt="Headline curve" />
-                </Box>
+                
               </Typography>
               Enjoyable
             </Typography>
@@ -191,28 +193,36 @@ const HomeFeature: FC = () => {
 
             <Box
               sx={{
+               
                 display: 'grid',
                 gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' },
                 gap: 2,
                 ml: { xs: 0, md: 2 },
+      
               }}
             >
               {data.map(({ title, description, icon }, index) => (
                 <Box
                   key={String(index)}
-                  sx={{
-                    px: 2,
-                    py: 1.5,
-                    boxShadow: 1,
-                    borderRadius: 4,
-                    display: 'flex',
-                    alignItems: 'center',
+                  sx={{ 
+                boxShadow:`-3px 3px 3px ${theme.palette.secondary.main}`,
+                px: 2,
+                py: 1.5,
+                display: 'flex',
+                alignItems: 'center',
+                backgroundColor:theme.palette.background.paper,borderRadius:4,padding:2,textAlign:"center",
+                transition: "all 0.3s ease",
+                cursor: "pointer",
+                "&:hover": {
+                transform: "translateY(-4px) scale(1.02)",
+                boxShadow: `-3px 3px 3px ${theme.palette.primary.main}`,
+    },
                   }}
                 >
                   <Box
                     sx={{
                       mr: 1,
-                      backgroundColor: 'primary.main',
+                      backgroundColor: theme.palette.primary.main,
                       borderRadius: '50%',
                       height: 36,
                       width: 36,
@@ -228,10 +238,10 @@ const HomeFeature: FC = () => {
                     {icon}
                   </Box>
                   <Box sx={{ display: 'flex', flex: 1, flexDirection: 'column' }}>
-                    <Typography variant="h6" sx={{ fontSize: '1rem', mb: 1, color: 'secondary.main' }}>
+                    <Typography variant="h5" sx={{ fontSize: '1rem', mb: 1, color: 'primary.main' }} fontWeight={900}>
                       {title}
                     </Typography>
-                    <Typography sx={{ lineHeight: 1.3, color: 'text.secondary' }} variant="subtitle1">
+                    <Typography sx={{ lineHeight: 1.3, color: 'text.secondary',fontSize:"0.9rem" }} variant="caption">
                       {description}
                     </Typography>
                   </Box>
