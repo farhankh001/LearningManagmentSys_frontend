@@ -26,9 +26,25 @@ function TextInputField<T extends FieldValues>({name,label,hideData,type,isRequi
             >
                 <TextField 
                     {...field}
-                    label={label} variant="filled"
+                    label={label} variant="outlined"
                     size="medium"
-
+                     sx={{
+      '& .MuiOutlinedInput-root': {
+        borderRadius: '12px',
+        backgroundColor: theme.palette.background.paper,
+        transition: '0.3s',
+        '&:hover fieldset': {
+          borderColor: theme.palette.primary.main,
+        },
+        '&.Mui-focused fieldset': {
+          borderColor: theme.palette.secondary.main,
+          boxShadow: `0 0 0 2px ${theme.palette.secondary.light}`,
+        },
+      },
+      '& .MuiInputLabel-root': {
+        fontWeight: '500',
+      },
+    }}
                     slotProps={{
                         input:{
                             endAdornment:hideData?

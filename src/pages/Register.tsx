@@ -1,6 +1,6 @@
 import { RegisterType } from '../types/register.types';
 import { SubmitHandler, useFormContext } from 'react-hook-form';
-import { Box, Alert, Typography, useTheme } from '@mui/material';
+import { Box, Alert, Typography, useTheme, LinearProgress } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import TextInputField from '../components/Forms/InputFields/TextInputField';
 import { useRegisterUserMutation } from '../app/api/userApi';
@@ -175,30 +175,66 @@ if(isError&&error&&"data" in error){
         minHeight: '90vh',
         display: 'flex',
         backgroundColor: 'background.default',
-        flexDirection:"column",
-        alignItems:"center",
-        justifyContent:"center"
-      }}
+        flexDirection:{ xs:"column",md:"row", }}}
     >  
-
+    <Box sx={{
+       backgroundColor:theme.palette.primary.main ,
+        minheight:{  xs:"40%",  md:"100%" },
+        minWidth:"40%",
+        display:"flex",
+        flexDirection:"column",
+        alignItems:{
+          xs:"left", sm:"center",md:"left",lg:"center"},
+        justifyContent:{
+          xs:"left",sm:"center",},
+        pl:{  xs:5,sm:0,md:5,lg:0,xl:0 }
+        }}>
+      <Typography variant='h2' fontWeight={1000} sx={{
+        color:"white",
+        fontStyle:"italic"
+       
+      }}>
+        Start your 
+      </Typography>
+      <Typography variant='h2' fontWeight={1000} sx={{
+        
+        color:theme.palette.primary.light,
+        fontStyle:"italic"
+      }}>
+        learning journey
+      </Typography>
+      <Typography variant='h5' sx={{ 
+        color:"white",
+        fontStyle:"italic"}}>
+        The best learning content avaliable.
+      </Typography>
+    </Box>
       
     <Box
         sx={{
-          width:  '70%' ,
+          width:  '100%' ,
+          // backgroundColor: "blue",
+          minWidth:"60%",
           boxShadow: 1,
-          padding:2,
+          padding: { xs: 3, sm: 4 },
           display:"flex",
           alignItems:"center",
           justifyContent:"center",
-          flexDirection:"column",
-          backgroundColor:theme.palette.background.paper,
-          margin:1,
-          borderRadius:4
+          flexDirection:"column"
+
         }}
       >
       
-        <Typography variant='h6'>
-          Create Your Account
+        <Typography
+          variant="h5"
+          sx={{
+            fontWeight: 600,
+            color:theme.palette.text.primary,
+            mb: 1,
+            textAlign: 'center'
+          }}
+        >
+          Create Account
         </Typography>
         <Box sx={{width:"70%"}}>
         <form onSubmit={handleSubmit(submitForm)}>
