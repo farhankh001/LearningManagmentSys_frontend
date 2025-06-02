@@ -4,8 +4,7 @@ import { RootState } from '../../app/store'
 import { Avatar, Box, Card, CardMedia, Chip, Typography, useTheme } from '@mui/material'
 import { Link } from 'react-router-dom'
 
-
-const FILEURLPRE="http://localhost:5000"
+import { FILEURLPRE } from '../other/Defaulturl'
 
 const limitWords = (str: string, limit: number) => {
   const words = str.split(' ');
