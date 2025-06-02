@@ -8,6 +8,69 @@ import ReusableTable from "../../components/Table/CourseTable";
 import { MRT_ColumnDef } from "material-react-table";
 import toast from "react-hot-toast";
 
+const FILEURLPRE="http://localhost:5000"
+
+
+const enrolledStdTeacherDashColumnsPending: MRT_ColumnDef<EnrolledStudent>[] = [
+
+  {
+    header: 'Std Name',
+    accessorKey: 'name',
+  },
+  {
+    header: 'Approval Status',
+    accessorKey: 'enrollmentStatus',
+   Cell: ({ cell }) => (
+    <Chip
+      label={cell.getValue<string>()}
+      color={
+        cell.getValue<string>() === 'INPROGRESS'
+          ? 'success'
+          : cell.getValue<string>() === 'FAILED'
+          ? 'warning'
+          : 'default'
+      }
+      variant="outlined"
+      size="small"
+    />
+  ),
+  },
+  {
+    header: 'Std Email',
+    accessorKey: 'email',
+  },
+  {
+    header: 'Course Rating',
+    accessorKey: 'courseRating',
+    Cell: ({ cell }) => {
+      return <Rating
+      readOnly
+      value={cell.getValue<number>()}
+      precision={0.5}
+      />
+
+     
+    },
+  },
+   {
+  header: 'Handle Request',
+  accessorKey: 'enrollmentId', // This will *not* work if course is nested like course: { id: string }
+  Cell: ({ cell }) => {
+    const enrollmentId = cell.getValue(); // Access nested course ID safely
+    return (
+      <Button
+        component={Link}
+        to={`/handle-enrollment-approval/${enrollmentId}`}
+        variant="contained"
+      >
+        View Profile
+      </Button>
+    );
+  },
+}
+ 
+];
+
 const enrolledStdTeacherDashColumns: MRT_ColumnDef<EnrolledStudent>[] = [
 
   {
@@ -88,6 +151,7 @@ function CourseSettings() {
 ]
 
     const {data:courseDataForTeacher,error,isError,isSuccess}=useGetSingleCourseByTeacherQuery({courseId})
+    console.log(courseDataForTeacher)
     if(isError &&error && 'data' in error){
       console.log(error)
       toast.error(`${JSON.stringify((error.data as any).error)}`)
@@ -98,6 +162,7 @@ function CourseSettings() {
     if(!courseId){
       toast.error("NO course Id was provided")
     }
+    console.log(courseDataForTeacher)
   return (
   <Box sx={{padding:1,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}}>
      <Typography variant="h4" fontWeight={600} sx={{fontStyle:"italic",mt:1}}>Course Settings</Typography>
@@ -125,7 +190,7 @@ function CourseSettings() {
          <Box sx={{display:"flex", flexDirection:"column", alignItems:"center",justifyContent:"center",gap:1,background:theme.palette.background.paper,width:{xs:"95%",sm:"95%",md:"80%",lg:"80% "},boxShadow:`-1.5px 4px 2px  rgba(0, 0, 0, 0.39)`,borderRadius:4,pb:3}}>
            <CardMedia
            component={"img"}
-           src={courseDataForTeacher?.courseDetails.course_thumbnail}
+           src={`${FILEURLPRE}/${courseDataForTeacher?.courseDetails.course_thumbnail}`}
            sx={{height:150,borderRadius:4}}
            />
                <Typography variant="h4" fontWeight={600}>
@@ -153,7 +218,10 @@ function CourseSettings() {
      </Box>
      <Typography variant="h4" fontWeight={600} sx={{fontStyle:"italic",mt:3}}>Enrolled Studens In this Course</Typography>
      <Box sx={{mt:1,mb:10}}>
-      <ReusableTable<EnrolledStudent> columns={enrolledStdTeacherDashColumns} data={courseDataForTeacher?.courseDetails.enrolledStudents??[]} title="Enrolled Students" />
+      <ReusableTable<EnrolledStudent> columns={enrolledStdTeacherDashColumnsPending} data={courseDataForTeacher?.courseDetails.pendingStudents??[]} title="Pending Enrollments" />
+     <Box sx={{marginTop:5}}>
+       <ReusableTable<EnrolledStudent> columns={enrolledStdTeacherDashColumns} data={courseDataForTeacher?.courseDetails.approvedStudents??[]} title="Approved Enrollments" />
+     </Box>
      </Box>
    </Box>
 

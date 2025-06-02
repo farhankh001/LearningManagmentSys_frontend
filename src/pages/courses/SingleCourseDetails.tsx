@@ -6,6 +6,10 @@ import { FaStopwatch, } from 'react-icons/fa';
 import DOMPurify from 'dompurify';
 import { useEnrollStudentMutation } from '../../app/api/enrollmentApi';
 import toast from 'react-hot-toast';
+
+const FILEURLPRE="http://localhost:5000"
+
+
 function SingleCourseDetails() {
     const { courseId } = useParams<{ courseId: string }>();
     const theme = useTheme();
@@ -66,12 +70,13 @@ function SingleCourseDetails() {
         "Expert-Curated Content","Self-Paced Learning","Hands-On Practice","Certificate of Completion","Mobile & Desktop Access"
     ]
     const cleanWhatYouWillLearn = DOMPurify.sanitize(courseData.course?courseData.course.whatYouWillLearn:"");
+    
     return (
         <Container>
             <Box>
                 <CardMedia
                 component="img"
-                src={courseData?.course.course_thumbnail_url}
+                src={`${FILEURLPRE}/${courseData?.course.course_thumbnail_url}`}
                 sx={{ backgroundColor: theme.palette.background.paper, marginTop: 1, borderRadius: 4,boxShadow:`-1.5px 4px 2px ${theme.palette.secondary.light}`,maxHeight:"85vh"}}
 
                 />

@@ -6,7 +6,7 @@ import { JSX } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
-
+const FILEURLPRE="http://localhost:5000"
 interface DisplayLessonAndAssignmentprops{
     lessons:Lesson[]|undefined
 }
@@ -105,7 +105,7 @@ function DisplayLessonAndAssignment({lessons}:DisplayLessonAndAssignmentprops) {
        <Box sx={{padding:3}}>
          {lesson.url_video&&<Box
           component="video"
-          src={lesson.url_video}
+          src={`${FILEURLPRE}/${lesson.url_video}`}
           controls
           sx={{
             width: '100%',
@@ -131,7 +131,7 @@ function DisplayLessonAndAssignment({lessons}:DisplayLessonAndAssignmentprops) {
         Additional Resources:
       </Typography>
      {lesson.url_docs ? (
-     <FilePreviewer fileUrl={lesson.url_docs} />) : null}
+     <FilePreviewer fileUrl={`${FILEURLPRE}/${lesson.url_docs}`} />) : null}
 
    </Box>
     </Box>

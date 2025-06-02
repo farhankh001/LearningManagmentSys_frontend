@@ -12,7 +12,7 @@ import SelectInputField from '../components/Forms/InputFields/SelectInputField';
 import { useSelector } from 'react-redux';
 import { RootState } from '../app/store';
 import toast from 'react-hot-toast';
-import { uploadToCloudinary } from '../utils/uploadToCloundinary';
+// import { uploadToCloudinary } from '../utils/uploadToCloundinary';
 import { StepDefinition, useMultiStepForm } from '../components/MultistepFormSetup/useMultiStepFormhook';
 import { MultiStepFormWrapper } from '../components/MultistepFormSetup/MultiStepFromWrapper';
 import { SvgIconComponent, ArtTrack, Quiz, Insights, SupportAgent } from '@mui/icons-material';
@@ -31,7 +31,7 @@ const registerBenefits: Feature[] = [
 
 
 function Register() {
-  const [uploadProgress, setUploadProgress] = useState({  image: 0, })
+  // const [uploadProgress, setUploadProgress] = useState({  image: 0, })
   const navigate = useNavigate();
   const { handleSubmit, watch, reset } = useFormContext<RegisterType>();
   const [registerUser, { isLoading, isSuccess, isError, error }] = useRegisterUserMutation();
@@ -40,8 +40,8 @@ function Register() {
   useEffect(() => {
     if (isSuccess) {
       reset();
-      toast.success("Registered Successfully.")
       setTimeout(() => { 
+        toast.success("Registered Successfully.")
         navigate('/login');
       }, 1000);
     }
@@ -49,23 +49,35 @@ function Register() {
 
   const submitForm: SubmitHandler<RegisterType> = async (data: RegisterType) => {
     try {
-      let profile_picture_url=""
-      if (data.profile_picture instanceof File) {
-      const profile_picture=await uploadToCloudinary(data.profile_picture,(percent)=>setUploadProgress({image:percent}))
-      profile_picture_url=profile_picture
+    //   let profile_picture_url=""
+    //   if (data.profile_picture instanceof File) {
+    //   const profile_picture=await uploadToCloudinary(data.profile_picture,(percent)=>setUploadProgress({image:percent}))
+    //   profile_picture_url=profile_picture
+    // }
+    //   const studentData = {
+    //     name: data.name,
+    //     email: data.email,
+    //     password: data.password,
+    //     role: data.role,
+    //     profile_picture:profile_picture_url,
+    //     education_level:data.education_level,
+    //     interests:data.interests
+    //   };
+    const formData=new FormData;
+    formData.append("name",data.name);
+    formData.append("email",data.email)
+    formData.append("password",data.password)
+    formData.append("role",data.role)
+    formData.append("education_level",data.education_level)
+    data.interests.forEach((item: string) => {
+     formData.append("interests[]", item);
+        });
+    if (data.profile_picture instanceof File) {
+        formData.append("profile_picture",data.profile_picture)
     }
-      const studentData = {
-        name: data.name,
-        email: data.email,
-        password: data.password,
-        role: data.role,
-        profile_picture:profile_picture_url,
-        education_level:data.education_level,
-        interests:data.interests
-      };
-      
-    console.log(studentData)
-      // await registerUser(registerationBody).unwrap();
+
+    // console.log()
+      await registerUser(formData).unwrap();
       
     } catch (err) {
       console.error('Registration failed:', err);

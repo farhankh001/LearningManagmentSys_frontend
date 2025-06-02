@@ -27,7 +27,7 @@ function CreateLesson() {
   const {courseId}=useParams()
  const navigate=useNavigate()
   const {handleSubmit,reset}=useFormContext<CreateLessonType>()
-  const [createCourseWithQAA,{error:lessonCreationError,isError:lessonCreationIsError,isSuccess:LessonCreationIsSuccess,isLoading:lessonCreationIsLoading}]=useCreateNewLessonWithQuizAndAssignmentMutation()
+  const [createLessonWithQAA,{error:lessonCreationError,isError:lessonCreationIsError,isSuccess:LessonCreationIsSuccess,isLoading:lessonCreationIsLoading}]=useCreateNewLessonWithQuizAndAssignmentMutation()
   const theme=useTheme()
    useEffect(() => {
       if (LessonCreationIsSuccess) {
@@ -39,51 +39,80 @@ function CreateLesson() {
       }
     }, [LessonCreationIsSuccess, navigate, reset]);
   
-const uploadFile = async (file: File, onProgress?: (p: number) => void) => {
-  const ext = file.name.split('.').pop()?.toLowerCase() || ''
-  const docTypes = ['pdf', 'doc', 'docx', 'ppt', 'pptx']
+// const uploadFile = async (file: File, onProgress?: (p: number) => void) => {
+//   const ext = file.name.split('.').pop()?.toLowerCase() || ''
+//   const docTypes = ['pdf', 'doc', 'docx', 'ppt', 'pptx']
 
-  if (docTypes.includes(ext)) {
-    return uploadToCloudinaryRaw(file, onProgress)
-  } else {
-    return uploadToCloudinary(file, onProgress)
-  }
-}
+//   if (docTypes.includes(ext)) {
+//     return uploadToCloudinaryRaw(file, onProgress)
+//   } else {
+//     return uploadToCloudinary(file, onProgress)
+//   }
+// }
 
-const [uploadProgress, setUploadProgress] = useState({ video: 0,document: 0, image: 0,  })
+// const [uploadProgress, setUploadProgress] = useState({ video: 0,document: 0, image: 0,  })
  
 const handleLessonCreation:SubmitHandler<CreateLessonType>=async(data:CreateLessonType)=>{
     try {
-      const refinedData:submitCourseType={
-        quiz:data.quiz,
-        assignment:data.assignment,
-        lesson_document:"",
-        lesson_image:"",
-        lesson_text:data.lesson_text,
-        lesson_title:data.lesson_title,
-        lesson_video:""
-      }
-    if(data.lesson_video instanceof File){
-      const videoUrl = await uploadFile(data.lesson_video, (percent) =>
-      setUploadProgress((prev) => ({ ...prev, video: percent }))
-    )
-     refinedData.lesson_video=videoUrl
+    //   const refinedData:submitCourseType={
+    //     quiz:data.quiz,
+    //     assignment:data.assignment,
+    //     lesson_document:"",
+    //     lesson_document2:"",
+    //     lesson_text:data.lesson_text,
+    //     lesson_title:data.lesson_title,
+    //     lesson_video:""
+    //   }
+    // if(data.lesson_video instanceof File){
+    //   const videoUrl = await uploadFile(data.lesson_video, (percent) =>
+    //   setUploadProgress((prev) => ({ ...prev, video: percent }))
+    // )
+    //  refinedData.lesson_video=videoUrl
+    // }
+
+    // if(data.lesson_document instanceof File){
+    //   const documentUrl =  await uploadFile(data.lesson_document, (percent) =>
+    //   setUploadProgress((prev) => ({ ...prev, document: percent })))
+    //   refinedData.lesson_document=documentUrl
+    // }
+   
+    // if(data.lesson_image instanceof File){
+    //    const imageUrl = await uploadFile(data.lesson_image, (percent) =>
+    //   setUploadProgress((prev) => ({ ...prev, image: percent })))
+    //    refinedData.lesson_image=imageUrl
+    // }
+    // refinedData.courseId=courseId
+    
+    // await createCourseWithQAA(refinedData)
+  const formData = new FormData();
+if(courseId){
+  formData.append("courseId",courseId)
+}
+formData.append("lesson_title", data.lesson_title);
+formData.append("lesson_text", data.lesson_text);
+
+
+  if (data.lesson_video) {
+  formData.append("lesson_video", data.lesson_video);
+  }
+
+  if (data.lesson_document) {
+  formData.append("lesson_document", data.lesson_document);
+  }
+
+  if (data.lesson_document2) {
+  formData.append("lesson_document2", data.lesson_document2);
+  }
+
+  if (data.quiz) {
+  formData.append("quiz", JSON.stringify(data.quiz));
     }
 
-    if(data.lesson_document instanceof File){
-      const documentUrl =  await uploadFile(data.lesson_document, (percent) =>
-      setUploadProgress((prev) => ({ ...prev, document: percent })))
-      refinedData.lesson_document=documentUrl
+    if (data.assignment) {
+        formData.append("assignment", JSON.stringify(data.assignment));
     }
-   
-    if(data.lesson_image instanceof File){
-       const imageUrl = await uploadFile(data.lesson_image, (percent) =>
-      setUploadProgress((prev) => ({ ...prev, image: percent })))
-       refinedData.lesson_image=imageUrl
-    }
-    refinedData.courseId=courseId
-    
-    await createCourseWithQAA(refinedData)
+
+    createLessonWithQAA(formData)
     } catch (error) {
       console.log(error)
     }
@@ -222,19 +251,19 @@ const handleLessonCreation:SubmitHandler<CreateLessonType>=async(data:CreateLess
             <Typography variant='caption'>
               Lesson video
             </Typography>
-             <FileInputField<CreateLessonType>  fileType={["video/mp4","video/webm","video/ogg",]} isRequired={true} label='Lesson video' maxFiles={1} maxSize={50 * 1024 * 1024} name='lesson_video'/>
+             <FileInputField<CreateLessonType>  fileType={["video/mp4","video/webm","video/ogg",]} isRequired={false} label='Lesson video' maxFiles={1} maxSize={50 * 1024 * 1024} name='lesson_video'/>
            </FormControl>
           <FormControl>
             <Typography variant='caption'>
               Lesson document
             </Typography>
-              <FileInputField<CreateLessonType>  fileType={[ "application/pdf","application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document","application/vnd.ms-powerpoint", "application/vnd.openxmlformats-officedocument.presentationml.presentation",]} isRequired={true} label='Lesson document' maxFiles={1} maxSize={5 * 1024 * 1024} name='lesson_document'/>
+              <FileInputField<CreateLessonType>  fileType={[ "application/pdf","application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document","application/vnd.ms-powerpoint", "application/vnd.openxmlformats-officedocument.presentationml.presentation",]} isRequired={false} label='Lesson document' maxFiles={1} maxSize={10 * 1024 * 1024} name='lesson_document'/>
           </FormControl>
             <FormControl>
               <Typography variant='caption'> 
              Lesson image
               </Typography>
-              <FileInputField<CreateLessonType>  fileType={[ "image/jpeg","image/png","image/webp","image/gif"]} isRequired={true} label='Lesson image' maxFiles={1} maxSize={2* 1024 * 1024} name='lesson_image'/>
+              <FileInputField<CreateLessonType>  fileType={[ "application/pdf","application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document","application/vnd.ms-powerpoint", "application/vnd.openxmlformats-officedocument.presentationml.presentation",]} isRequired={false} label='Lesson document 2' maxFiles={1} maxSize={10* 1024 * 1024} name='lesson_document2'/>
             </FormControl>
              <TextInputField<CreateLessonType> isRequired={true} label='Lesson Title'  name='lesson_title' type='text' hideData={false}/>
             </Box>
@@ -343,7 +372,7 @@ const handleLessonCreation:SubmitHandler<CreateLessonType>=async(data:CreateLess
        </Box>
         </form>
 
-  {uploadProgress.video > 0 && (
+  {/* {uploadProgress.video > 0 && (
   <Box mb={2}>
     <Typography variant="body2">Uploading Video: {uploadProgress.video}%</Typography>
     <LinearProgress variant="determinate" value={uploadProgress.video} />
@@ -362,7 +391,7 @@ const handleLessonCreation:SubmitHandler<CreateLessonType>=async(data:CreateLess
     <Typography variant="body2">Uploading Image: {uploadProgress.image}%</Typography>
     <LinearProgress variant="determinate" value={uploadProgress.image} />
   </Box>
-)}
+)} */}
     </Box>
       </Box>
     </Box>

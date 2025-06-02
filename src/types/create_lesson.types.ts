@@ -84,61 +84,85 @@ const MAX_DOC_SIZE = 10 * 1024 * 1024;   // 10MB
 const MAX_IMAGE_SIZE = 5 * 1024 * 1024;  // 5MB
 
 export const createLessonSchema = z.object({
-  lesson_video: z.custom<File|undefined>((file)=>{
-    if(!file) return false;
-    return file instanceof File;
-  },{
-    message:"Lesson video is required!"
-  }).refine((file)=>{
-    if(!file) return false
-    return file.size<=MAX_VIDEO_SIZE
-  },{message:"Videos more then 50MBs are not allowed."}).refine((file)=>{
-    if(!file){
-        return false;
-    } 
-    return videoMimeTypes.includes(file.type)
-  },{message:"video/mp4, video/webm, video/ogg are supported."}),
-    
+  lesson_video: z
+    .custom<File | undefined>((file) => {
+      if (!file) return true; // Skip validation if not present
+      return file instanceof File;
+    }, {
+      message: "Invalid video file."
+    })
+    .refine((file) => {
+      if (!file) return true;
+      return file.size <= MAX_VIDEO_SIZE;
+    }, {
+      message: "Videos more than 50MBs are not allowed."
+    })
+    .refine((file) => {
+      if (!file) return true;
+      return videoMimeTypes.includes(file.type);
+    }, {
+      message: "Only mp4, webm, and ogg formats are supported for video."
+    })
+    .optional(),
 
-  lesson_document: z.custom<File|undefined>((file)=>{
-    if(!file) return false;
-    return file instanceof File;
-  },{
-    message:"Lesson document is required!"
-  }).refine((file)=>{
-    if(!file) return false
-    return file.size<=MAX_DOC_SIZE
-  },{message:"Documents more then 10MBs are not allowed."}).refine((file)=>{
-    if(!file){
-        return false;
-    } 
-    return documentMimeTypes.includes(file.type)
-  },{message:"pdf, ms-word and ms-powerpoint is supported."}),
+  lesson_document: z
+    .custom<File | undefined>((file) => {
+      if (!file) return true;
+      return file instanceof File;
+    }, {
+      message: "Invalid lesson document."
+    })
+    .refine((file) => {
+      if (!file) return true;
+      return file.size <= MAX_DOC_SIZE;
+    }, {
+      message: "Documents more than 10MBs are not allowed."
+    })
+    .refine((file) => {
+      if (!file) return true;
+      return documentMimeTypes.includes(file.type);
+    }, {
+      message: "Only PDF, MS Word, and PowerPoint formats are supported."
+    })
+    .optional(),
 
+  lesson_document2: z
+    .custom<File | undefined>((file) => {
+      if (!file) return true;
+      return file instanceof File;
+    }, {
+      message: "Invalid lesson document 2."
+    })
+    .refine((file) => {
+      if (!file) return true;
+      return file.size <= MAX_DOC_SIZE;
+    }, {
+      message: "Documents more than 10MBs are not allowed."
+    })
+    .refine((file) => {
+      if (!file) return true;
+      return documentMimeTypes.includes(file.type);
+    }, {
+      message: "Only PDF, MS Word, and PowerPoint formats are supported."
+    })
+    .optional(),
 
-  lesson_image: z.custom<File|undefined>((file)=>{
-    if(!file) return false;
-    return file instanceof File;
-  },{
-    message:"Lesson thumbnail is required",
+  lesson_title: z
+    .string()
+    .min(10, "Title must have at least 10 characters")
+    .max(150, "Title must be concise and less than 150 characters."),
 
-  }).refine((file)=>{
-    if(!file) return false
-    return file.size<=MAX_IMAGE_SIZE
-  },{message:"Images more then 5MBs are not allowed."}).refine((file)=>{
-    if(!file){
-        return false;
-    } 
-    return imageMimeTypes.includes(file.type)
-  },{message:"Only .jpg, .jpeg, .png and .webp formats are supported."}),
-  lesson_title:z.string().min(10,"Title must have atleast 10 characters").max(150,"Title must be precise and brief. Must be less then 100 chars."),
-  lesson_text:z.string().min(1,"Lesson details are requried"),
-  quiz:QuizAndAssignmentSchema.optional(),
-  assignment:QuizAndAssignmentSchema.optional()
+  lesson_text: z
+    .string()
+    .min(1, "Lesson details are required"),
+
+  quiz: QuizAndAssignmentSchema.optional(),
+  assignment: QuizAndAssignmentSchema.optional()
 });
 
+
 const submitCourseSchema=z.object({
-  lesson_image:z.string(),
+  lesson_document2:z.string(),
   lesson_video:z.string(),
   lesson_document:z.string(),
   lesson_title:z.string(),
@@ -155,6 +179,6 @@ export const createLessonDefaultValues:CreateLessonType={
     lesson_text:"",
     lesson_title:"",
     lesson_document:undefined,
-    lesson_image:undefined,
+    lesson_document2:undefined,
     lesson_video:undefined
 }

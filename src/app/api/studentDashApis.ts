@@ -1,5 +1,5 @@
 import baseApi from "./baseApi";
-import { GetSingleCourseByTeacherResponse, Lesson } from "./createCourseApi";
+import { Lesson } from "./createCourseApi";
 export interface Teacher {
   id: string;
   name: string;
@@ -10,13 +10,6 @@ export interface CourseInfo {
   title: string;
 }
 
-export interface EnrolledCourse {
-  enrollmentId: string;
-  enrollmentDate: string;
-  enrollmentStatus: string;
-  course: CourseInfo;
-  teacher: Teacher | null;
-}
 
 export interface DashboardSummary {
   totalEnrolled: number;
@@ -42,9 +35,49 @@ export interface StudentEnrolledCourseSuccessType{
         lessons:Lesson[],
         courseTeacherInfo:CourseTeacher[]
 }
+
+
+
+export type EnrolledCourse = {
+  enrollmentId: string;
+  enrollmentDate: string; // or Date if not serialized
+  enrollmentStatus: string;
+  approvalStatus: string;
+  course: {
+    id: string;
+    title: string;
+  };
+  teacher: {
+    id: string;
+    name: string;
+    email: string;
+  } | null;
+};
+
+export type EnrolledCoursesGrouped = {
+  pending: EnrolledCourse[];
+  approved: EnrolledCourse[];
+  rejected: EnrolledCourse[];
+};
+
+export type EnrollmentSummary = {
+  totalEnrolled: number;
+  inProgress: number;
+  completed: number;
+  totalPending:number;
+  totalApproved:number
+};
+
+export type GetAllEnrolledCoursesResponse = {
+  success: boolean;
+  summary: EnrollmentSummary;
+  enrollments: EnrolledCoursesGrouped;
+};
+``
+
 const studentDashApis=baseApi.injectEndpoints({
     endpoints:(builder)=>({
-        fetchAllEnrolledCoursesByStudent:builder.query<StudentDashboardSuccessResponse,null>({
+        fetchAllEnrolledCoursesByStudent:builder.query<GetAllEnrolledCoursesResponse,null>({
             query:()=>({
                 url:"fetch-all-enrolled-courses-by-student",
                 method:"GET"

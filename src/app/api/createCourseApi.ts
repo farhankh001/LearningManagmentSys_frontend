@@ -45,7 +45,7 @@ export interface Lesson {
   id: string;
   title: string;
   url_video?: string | null;
-  url_image?: string | null;
+  url_doc2?: string | null;
   lesson_text: string;
   url_docs?: string | null;
   createdAt: Date;
@@ -58,6 +58,7 @@ export interface Lesson {
 }
 
 export interface EnrolledStudent {
+  enrollmentId: string;
   studentId: string;
   name: string;
   email: string;
@@ -76,9 +77,47 @@ export interface CourseDetails {
 }
 
 // Main response type
-export interface GetSingleCourseByTeacherResponse {
-  courseDetails: CourseDetails;
-}
+// export interface GetSingleCourseByTeacherResponse {
+//   courseDetails: CourseDetails;
+// }
+
+
+
+
+
+type GetSingleCourseByTeacherResponse = {
+  courseDetails: {
+    id: string;
+    title: string;
+    course_thumbnail: string;
+    avgRating: number;
+    activationStatus: string;
+    lessons: Lesson[];
+    approvedStudents: {
+      enrollmentId: string;
+      studentId: string;
+      name: string;
+      email: string;
+      enrollmentStatus: string;
+      courseRating:  number  | null;
+    }[];
+    pendingStudents: {
+      enrollmentId: string;
+      studentId: string;
+      name: string;
+      email: string;
+      enrollmentStatus:string;
+      courseRating: number | null;
+    }[];
+  };
+};
+
+
+
+
+
+
+
 enum Education_Levels{
   "PRIMARY_SCHOOL",
   "MIDDLE_SCHOOL",
@@ -114,7 +153,7 @@ export interface CreateCourseSbumitType{
 
 const courseApi=baseApi.injectEndpoints({
     endpoints:(builder)=>({
-        createNewCourse:builder.mutation<any,CreateCourseSbumitType>({
+        createNewCourse:builder.mutation<any,FormData>({
             query:(data)=>({
                 url:"/create-new-course",
                 method:"POST",

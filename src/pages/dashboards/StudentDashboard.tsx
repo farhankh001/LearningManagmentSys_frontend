@@ -1,7 +1,7 @@
 import  { useState } from "react";
 import { useSelector } from "react-redux";
 import {Box, Typography,Avatar,Chip, useTheme,ListItem,ListItemButton,Divider,ListItemIcon,ListItemText,Button,} from "@mui/material";
-import { CheckCircle, Cancel, AccountCircle, Create, UpdateSharp, StarRate, Group, MenuBook, AttachMoney } from '@mui/icons-material';
+import { CheckCircle, Cancel, AccountCircle, Create, UpdateSharp, StarRate, Group, MenuBook, AttachMoney, School, Error, PunchClock } from '@mui/icons-material';
 import { RootState } from "../../app/store";
 import { Link } from "react-router-dom";
 import CourseTable from "../../components/Table/CourseTable";
@@ -15,6 +15,42 @@ import { EnrolledCourse, useFetchAllEnrolledCoursesByStudentQuery } from "../../
 //   course: CourseInfo;
 //   teacher: Teacher | null;
 // }
+const courseTeacherDashColumnsPending: MRT_ColumnDef<EnrolledCourse>[] = [
+
+  {
+    header: 'Course Title',
+    accessorKey: 'course.title',
+  },
+  {
+    header: 'Applied At',
+    accessorKey: 'enrollmentDate',
+    Cell: ({ cell }) => new Date(cell.getValue<string>()).toLocaleDateString(),
+  },
+  {
+    header: 'Instructor Name',
+    accessorKey: 'teacher.name',
+  },
+   {
+    header: 'Instructor Email',
+    accessorKey: 'teacher.email',
+  },
+  {
+  header: 'Enrollment Approval',
+  accessorKey: 'approvalStatus', // This will *not* work if course is nested like course: { id: string }
+  Cell: ({ cell }) => { // Access nested course ID safely
+    return (
+      <Chip
+      label={cell.getValue<string>()}
+      color="warning"
+      variant="outlined"
+      size="small"
+    />
+    );
+  },
+},
+
+ 
+];
 
 
 const courseTeacherDashColumns: MRT_ColumnDef<EnrolledCourse>[] = [
@@ -22,6 +58,11 @@ const courseTeacherDashColumns: MRT_ColumnDef<EnrolledCourse>[] = [
   {
     header: 'Course Title',
     accessorKey: 'course.title',
+  },
+  {
+    header: 'Applied At',
+    accessorKey: 'enrollmentDate',
+    Cell: ({ cell }) => new Date(cell.getValue<string>()).toLocaleDateString(),
   },
   {
     header: 'Enrollment Status',
@@ -45,6 +86,7 @@ const courseTeacherDashColumns: MRT_ColumnDef<EnrolledCourse>[] = [
     header: 'Instructor Name',
     accessorKey: 'teacher.name',
   },
+  
   {
   header: 'Manage Course',
   accessorKey: 'course.id', // This will *not* work if course is nested like course: { id: string }
@@ -105,31 +147,31 @@ function StudentDashboard() {
     title: "Enrolled Courses",
     icon: <StarRate />,
     desc:"Was enrolled in total coures",
-    value: stdDashData?.EnrollmentData.totalEnrolled,
+    value: stdDashData?.summary.totalEnrolled,
   },
   {
     title: "Completed Courses",
     icon: <Group />,
     desc:"Total completed courses",
-    value:stdDashData?.EnrollmentData.completed,
+    value:stdDashData?.summary.completed,
   },
   {
     title: "In Progress Courses",
     icon: <MenuBook />,
     desc:"Number of courses currently enrolled in.",
-    value: stdDashData?.EnrollmentData.inProgress,
+    value: stdDashData?.summary.inProgress
   },
   {
-    title: "Total Credits",
-    icon: <AttachMoney />,
-    desc:"Credits in accound.",
-    value: 100,
+    title: "Total Approved Enrollmets",
+    icon: <School/>,
+    desc:"Total approved enrollments accross all courses.",
+    value: stdDashData?.summary.totalApproved,
   },
    {
-    title: "Total Credits",
-    icon: <AttachMoney />,
-    desc:"Credits in accound.",
-    value: 100,
+    title: "Total Pending",
+    icon: <PunchClock/>,
+    desc:"Total pending enrollments.",
+    value: stdDashData?.summary.totalPending,
   },
   
 ];
@@ -223,7 +265,10 @@ function StudentDashboard() {
            }
            </Box>
         </Box>
-      <CourseTable<EnrolledCourse> columns={courseTeacherDashColumns} data={stdDashData?.enrolledCourses ?? []} title={"Your Courses"}/>
+     <Box sx={{display:"flex",flexDirection:"column",gap:5}}>
+       <CourseTable<EnrolledCourse> columns={courseTeacherDashColumns} data={stdDashData?.enrollments.approved ?? []} title={"Approved Enrollments"}/>
+      <CourseTable<EnrolledCourse> columns={courseTeacherDashColumnsPending} data={stdDashData?.enrollments.pending ?? []} title={"Pending Enrollments"}/>
+     </Box>
     </Box>
       </Box>
   );

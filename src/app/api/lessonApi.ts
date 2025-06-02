@@ -63,7 +63,7 @@ export interface MCQQuestionResult {
 
 const lessonApi=baseApi.injectEndpoints({
     endpoints:(builder)=>({
-        createNewLessonWithQuizAndAssignment:builder.mutation<any,submitCourseType>({
+        createNewLessonWithQuizAndAssignment:builder.mutation<any,FormData>({
             query:(data)=>({
                 url:"create-lesson-with-assignment-quiz",
                 body:data,

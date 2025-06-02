@@ -31,6 +31,8 @@ import MCQsCreateQuizFormProvider from './components/Forms/FormProviders/MCQsCre
 import SubmitMCQQuizStudentFormProvider from './components/Forms/FormProviders/SubmitMCQQuizStudentFormProvider.tsx'
 import MCQResults from './pages/lessons/quizAndAssignment/MCQResults.tsx'
 import TeacherRegisterFormProvider from './components/Forms/FormProviders/TeacherRegiterFormProvider.tsx'
+import SinglePendingTeacher from './pages/Teacher/SinglePendingTeacher.tsx'
+import SingleStudentProfile from './pages/student/SingleStudentProfile.tsx'
 
 
  // Types
@@ -78,6 +80,7 @@ const router = createBrowserRouter(
         <Route path="/course-settings/:courseId" element={<CourseSettings />} />
         <Route path="/edit-course/:courseId" element={<EditExistingCourseProvider/>} />
        <Route path="/create-MCQS-quiz/:lessonId" element={<MCQsCreateQuizFormProvider/>}/>
+       <Route path="/handle-enrollment-approval/:enrollmentId" element={<SingleStudentProfile/>}/>
       </Route>
       <Route element={<ProtectedRoute allowedRoles={["Student"]}/>}>
         <Route path="/student-dash" element={<StudentDashboard />} />
@@ -90,6 +93,10 @@ const router = createBrowserRouter(
          <Route path="/view-mcq-results-std/:submissionId" element={<MCQResults/>}/>
           
       </Route>
+         <Route element={<ProtectedRoute allowedRoles={["Admin"]}/>}>
+         <Route path="/admin-dash" element={<AdminDashboard />} />
+          <Route path="/single-pending-teacher/:teacherId" element={<SinglePendingTeacher/>}/>
+         </Route>
     </Route>
   )
 );

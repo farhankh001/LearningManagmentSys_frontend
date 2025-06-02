@@ -6,6 +6,9 @@ import DisplayLessonAndAssignment from '../lessons/DisplayLessonAndAssignment';
 import { useGetSingleCourseByEnrolledStudentQuery } from "../../app/api/studentDashApis";
 import TableAtCourseInfoEnrolled from "../../components/Table/TableAtCourseInfoEnrolled";
 
+const FILEURLPRE="http://localhost:5000"
+
+
 function EnrolledCourseInfo() {
     const {courseId}=useParams()
     const {data:enrolledCourse,error,isError,isSuccess,isLoading}=useGetSingleCourseByEnrolledStudentQuery({courseId})
@@ -47,7 +50,7 @@ function EnrolledCourseInfo() {
              <Box sx={{background:theme.palette.background.paper,width:"80%",boxShadow:`-1.5px 4px 2px  rgba(0, 0, 0, 0.39)`, borderRadius:2,display:"flex",flexDirection:{xs:"column",sm:"column",md:"row"},alignItems:"center",justifyContent:"center",p:{xs:2,sm:2,md:1},gap:{
               xs:1,sm:1,md:5
              }}}>
-           <Avatar src={enrolledCourse?.course_thumbnail} sx={{
+           <Avatar src={`${FILEURLPRE}/${enrolledCourse?.course_thumbnail}`} sx={{
               width:50,
               height: 50,
             }}/>

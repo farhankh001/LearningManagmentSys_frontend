@@ -46,7 +46,7 @@ interface LogInReturntype{
 export const userApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     // Registration Mutation
-    registerUser: builder.mutation<any,RegistrationRequest>({
+    registerUser: builder.mutation<any,FormData>({
       query: (formData) => ({
         url: '/create-user', // Backend endpoint for registration
         method: 'POST', // HTTP method

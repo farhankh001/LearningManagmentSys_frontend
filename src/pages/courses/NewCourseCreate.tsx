@@ -32,7 +32,7 @@ function NewCourseCreate() {
     const navigate=useNavigate()
     const theme=useTheme()
     const {reset}=useFormContext<CreateCourseFormType>()
-    const [uploadProgress, setUploadProgress] = useState({  image: 0, })
+    // const [uploadProgress, setUploadProgress] = useState({  image: 0, })
     const categories = useSelector((state: RootState) => 
       state.categories.categories || ["OTHERS"])
     useEffect(() => {
@@ -43,39 +43,65 @@ function NewCourseCreate() {
           }, 1000);
         }
       }, [isSuccess, navigate, reset]);
+      console.log(error)
     const createCourseSumit:SubmitHandler<CreateCourseFormType>=async(data:CreateCourseFormType)=>{
         try {
             const validatedData=createCourseSchema(categories).parse(data)
-            console.log("non clean"+data.whatYouWillLearn)
             const cleanWhatYouWillLearn = DOMPurify.sanitize(validatedData.whatYouWillLearn);
-            console.log("clean what you will learn"+ cleanWhatYouWillLearn)
-            let courseThumbnail=''
             
             // Convert numbers to strings for FormData
          
             // Handle file
-            if (validatedData.course_thumbnail instanceof File) {
-               const course_thumbnail=await uploadToCloudinary(validatedData.course_thumbnail,(percent)=>setUploadProgress({image:percent}))
-               courseThumbnail=course_thumbnail
-            }
-            const createCourseSubmitData:CreateCourseSbumitType={
-              title:validatedData.title,
-              subtitle:validatedData.subtitle,
-              activationStatus:validatedData.activationStatus,
-              course_category:validatedData.course_category,
-              course_thumbnail:courseThumbnail,
-              description:validatedData.description,
-              duration:validatedData.duration,
-              language:validatedData.language,
-              level:validatedData.level,
-              preRequisites:validatedData.preRequisites,
-              price:validatedData.price,
-              sales_category:validatedData.sales_category,
-              whatYouWillLearn:cleanWhatYouWillLearn
+            // if (validatedData.course_thumbnail instanceof File) {
+            //    const course_thumbnail=await uploadToCloudinary(validatedData.course_thumbnail,(percent)=>setUploadProgress({image:percent}))
+            //    courseThumbnail=course_thumbnail
+            // }
+            // const createCourseSubmitData:CreateCourseSbumitType={
+            //   title:validatedData.title,
+            //   subtitle:validatedData.subtitle,
+            //   activationStatus:validatedData.activationStatus,
+            //   course_category:validatedData.course_category,
+            //   course_thumbnail:courseThumbnail,
+            //   description:validatedData.description,
+            //   duration:validatedData.duration,
+            //   language:validatedData.language,
+            //   level:validatedData.level,
+            //   preRequisites:validatedData.preRequisites,
+            //   price:validatedData.price,
+            //   sales_category:validatedData.sales_category,
+            //   whatYouWillLearn:cleanWhatYouWillLearn
 
-            }
+            // }
             // Call the mutation
-            await createCourse(createCourseSubmitData).unwrap();
+
+              const formData = new FormData();
+
+  // Append basic fields
+              formData.append('title', data.title);
+              formData.append('subtitle', data.subtitle);
+              formData.append('description', data.description);
+              formData.append('level', data.level);
+              formData.append('language', data.language);
+              formData.append('activationStatus', data.activationStatus);
+              formData.append('sales_category', data.sales_category);
+              formData.append('preRequisites', data.preRequisites);
+              formData.append('price', data.price.toString());
+              formData.append('duration', data.duration.toString());
+
+  // Sanitize rich text input
+              const cleanLearningText = DOMPurify.sanitize(data.whatYouWillLearn);
+              formData.append('whatYouWillLearn', cleanLearningText);
+
+  // Handle thumbnail
+               if (data.course_thumbnail instanceof File) {
+                  formData.append('course_thumbnail', data.course_thumbnail);
+              }
+
+               // Course categories (as comma-separated values or multiple entries)
+           data.course_category.forEach((cat) => {
+                formData.append('course_category', cat); });
+
+        createCourse(formData).unwrap();
         } catch (error) {
             console.error('Submission error:', error);
         }
@@ -246,12 +272,12 @@ function NewCourseCreate() {
         {isLoading ? 'Creating Course...' : 'Create Course'}
          </LoadingButton>
       </Box>
-           {uploadProgress.image > 0 && (
+           {/* {uploadProgress.image > 0 && (
                   <Box sx={{margin:3,display:"flex",flexDirection:'column',gap:3}}>
                     <Typography variant="body2">Uploading Image: {uploadProgress.image}%</Typography>
                     <LinearProgress variant="determinate" value={uploadProgress.image} sx={{color:theme.palette.success.main}} />
                   </Box>
-                )}
+                )} */}
          </Box>
         </form>
 

@@ -5,9 +5,10 @@ import { CheckCircle, Cancel, AccountCircle, Create, UpdateSharp, EighteenUpRati
 import { RootState } from "../../app/store";
 import { Link } from "react-router-dom";
 import CourseTable from "../../components/Table/CourseTable";
-import { useFetchAllCreatedCoursesByTeacherQuery } from "../../app/api/teacherDashApis";
+import { useCheckTeacherApprovalStatusQuery, useFetchAllCreatedCoursesByTeacherQuery } from "../../app/api/teacherDashApis";
 import { FaUserGraduate } from "react-icons/fa";
 import { MRT_ColumnDef } from "material-react-table";
+import LoadingScreen from "../../components/other/Loading";
 
 export interface CourseTeacherDashType {
     id:string;
@@ -86,7 +87,41 @@ const settingsOptions=[
 function TeacherDashboard() {
   const user = useSelector((state: RootState) => state.auth.user);
   const theme=useTheme()
-  const {data:teacherDashData,isError,isFetching,isSuccess,error}=useFetchAllCreatedCoursesByTeacherQuery(null)
+  const {data:teacherDashData,isError:isErrorAllCoursesFetch,isLoading:isFetchingAllCoursesFetch,isSuccess:isSuccessAllCoursesFetch,error:errorAllCoursesFetch}=useFetchAllCreatedCoursesByTeacherQuery(null)
+  const{data:teacherApprovalStatus,isError:approvalIsError,isLoading:approvalLoading,isSuccess:approvalSuccess,error:approvalError}=useCheckTeacherApprovalStatusQuery()
+   if(isFetchingAllCoursesFetch||approvalLoading){
+      return <LoadingScreen/>
+    }
+  const isAnyError =
+  isErrorAllCoursesFetch ||
+  approvalIsError
+
+  const errorMessage =
+  (errorAllCoursesFetch && "data" in errorAllCoursesFetch && (errorAllCoursesFetch.data as any).error) ||
+  (approvalError && "data" in approvalError && (approvalError.data as any).error)
+  if(teacherApprovalStatus?.status==="PENDING"){
+    return <Box sx={{width:"100%",height:"70vh",display:"flex",flexDirection:"column",gap:3,justifyContent:"center",alignItems:"center"}}>
+    <Box sx={{width:"50%",display:"flex",flexDirection:"column",textAlign:"center",gap:3}}>
+        <Typography variant="h5">
+        You are not approved teacher yet. Your request is pending
+      </Typography>
+      <Chip color="warning" label="Pending" variant="outlined" size="medium"
+      />
+    </Box>
+    </Box>
+  }
+   if (isAnyError) {
+    return (
+      <Box sx={{ p: 4, textAlign: 'center' }}>
+        <Typography variant="h5" color="error">
+          Something went wrong while loading the dashboard.
+        </Typography>
+        <Typography variant="body1" sx={{ mt: 2 }}>
+          {typeof errorMessage === 'string' ? errorMessage : 'Unknown error occurred.'}
+        </Typography>
+      </Box>
+    );
+  }
   if (!user) {
     return (
       <Box sx={{ p: 3, textAlign: 'center' }}>
@@ -94,8 +129,28 @@ function TeacherDashboard() {
       </Box>
     );
   }
+  if(teacherApprovalStatus?.status==="PENDING"){
+    return <Box sx={{width:"100%",height:"70vh",display:"flex",flexDirection:"column",gap:3,justifyContent:"center",alignItems:"center"}}>
+    <Box sx={{width:"50%",display:"flex",flexDirection:"column",textAlign:"center",gap:3}}>
+        <Typography variant="h5">
+        You are not approved teacher yet. Your request is pending
+      </Typography>
+      <Chip color="warning" label="Pending" variant="outlined" size="medium"
+      />
+    </Box>
+    </Box>
+  }
+   if(teacherApprovalStatus?.status==="REJECTED"){
+      return  <Box sx={{width:"100%",height:"70vh",display:"flex",flexDirection:"column",gap:3}}>
+      <Typography variant="h2">
+        Your Request was rejected. Stay around admin may change his mind in futur.
+      </Typography>
+      <Chip color="error" label="Rejected" variant="outlined" size="medium"
+      />
+    </Box>
+  }
 
-  if(user.role!=="Teacher"){
+  if(user.role!=="Teacher"||teacherApprovalStatus?.status!=="APPROVED"){
     return (
       <Box sx={{ p: 3, textAlign: 'center' }}>
         <Typography variant="h5" color="error">You are not authorized to access this page.</Typography>
@@ -103,7 +158,7 @@ function TeacherDashboard() {
     );
   }
    
-  const { name, email, bio, profile_picture, email_verified,role } = user;
+  const { name,profile_picture, email_verified,role } = user;
   const analytics = [
   {
     title: "Average Rating",
@@ -112,10 +167,10 @@ function TeacherDashboard() {
     value: teacherDashData?.averageRating,
   },
   {
-    title: "Total Enrollments",
+    title: "Total Approved Enrollments",
     icon: <Group />,
-    desc:"Total Enrollment across all courses.",
-    value: teacherDashData?.totalEnrollment,
+    desc:"Total Approved Enrollment across all courses.",
+    value: teacherDashData?.totalApprovedEnrollments,
   },
   {
     title: "Total Courses",
@@ -124,10 +179,10 @@ function TeacherDashboard() {
     value: teacherDashData?.totalCourses,
   },
   {
-    title: "Total Credits",
+    title: "Total Rejeccted Enrollments",
     icon: <AttachMoney />,
-    desc:"Credits in accound.",
-    value: 100,
+    desc:"Total rejected enrollments across all courses by instructor.",
+    value: teacherDashData?.totalRejectedEnrollments,
   },
   {
     title: "5 Star Ratings",

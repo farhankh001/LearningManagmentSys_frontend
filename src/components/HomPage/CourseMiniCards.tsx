@@ -3,6 +3,10 @@ import { useSelector } from 'react-redux'
 import { RootState } from '../../app/store'
 import { Avatar, Box, Card, CardMedia, Chip, Typography, useTheme } from '@mui/material'
 import { Link } from 'react-router-dom'
+
+
+const FILEURLPRE="http://localhost:5000"
+
 const limitWords = (str: string, limit: number) => {
   const words = str.split(' ');
   if (words.length > limit) {
@@ -37,7 +41,7 @@ function CourseMiniCards() {
     //   transform: "translateY(-4px) scale(1.02)",
     //     boxShadow: `-3px 3px 3px ${theme.palette.primary.main}`,}
 }}>
-       <CardMedia component={"img"} src={course.course_thumbnail_url} sx={{
+       <CardMedia component={"img"} src={`${FILEURLPRE}/${course.course_thumbnail_url}`} sx={{
             height: 150,
             objectFit: 'cover',}}/>
          <Box sx={{ pl:2,pr:2,pt:1,pb:1, flex: 1, display: 'flex', flexDirection: 'column' }}>
