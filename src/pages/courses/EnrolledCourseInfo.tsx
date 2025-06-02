@@ -6,7 +6,7 @@ import DisplayLessonAndAssignment from '../lessons/DisplayLessonAndAssignment';
 import { useGetSingleCourseByEnrolledStudentQuery } from "../../app/api/studentDashApis";
 import TableAtCourseInfoEnrolled from "../../components/Table/TableAtCourseInfoEnrolled";
 
-const FILEURLPRE="http://localhost:5000"
+import { FILEURLPRE } from "../../components/other/Defaulturl";
 
 
 function EnrolledCourseInfo() {

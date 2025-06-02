@@ -6,7 +6,11 @@ import { JSX } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
-const FILEURLPRE="http://localhost:5000"
+
+
+import { FILEURLPRE } from '../../components/other/Defaulturl';
+
+
 interface DisplayLessonAndAssignmentprops{
     lessons:Lesson[]|undefined
 }

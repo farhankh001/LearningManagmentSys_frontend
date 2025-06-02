@@ -6,8 +6,7 @@ import { FaStopwatch, } from 'react-icons/fa';
 import DOMPurify from 'dompurify';
 import { useEnrollStudentMutation } from '../../app/api/enrollmentApi';
 import toast from 'react-hot-toast';
-
-const FILEURLPRE="http://localhost:5000"
+import { FILEURLPRE } from '../../components/other/Defaulturl';
 
 
 function SingleCourseDetails() {

@@ -8,7 +8,7 @@ import ReusableTable from "../../components/Table/CourseTable";
 import { MRT_ColumnDef } from "material-react-table";
 import toast from "react-hot-toast";
 
-const FILEURLPRE="http://localhost:5000"
+import { FILEURLPRE } from "../../components/other/Defaulturl";
 
 
 const enrolledStdTeacherDashColumnsPending: MRT_ColumnDef<EnrolledStudent>[] = [
