@@ -76,11 +76,7 @@ const settingsOptions=[
         path:"/create-new-course",
         icon:<Create />
     }, 
-    {
-        name:"Register",
-        path:"/register",
-        icon:<UpdateSharp />
-    },
+   
    
 
 ]
@@ -167,9 +163,9 @@ function TeacherDashboard() {
     value: teacherDashData?.averageRating,
   },
   {
-    title: "Total Approved Enrollments",
+    title: "Approved Student",
     icon: <Group />,
-    desc:"Total Approved Enrollment across all courses.",
+    desc:"Enrollment across all courses.",
     value: teacherDashData?.totalApprovedEnrollments,
   },
   {
@@ -179,9 +175,9 @@ function TeacherDashboard() {
     value: teacherDashData?.totalCourses,
   },
   {
-    title: "Total Rejeccted Enrollments",
+    title: "Rejected Student",
     icon: <AttachMoney />,
-    desc:"Total rejected enrollments across all courses by instructor.",
+    desc:"Total rejected enrollments across all courses.",
     value: teacherDashData?.totalRejectedEnrollments,
   },
   {

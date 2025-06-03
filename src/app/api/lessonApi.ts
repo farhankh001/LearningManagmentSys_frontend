@@ -60,6 +60,19 @@ export interface MCQQuestionResult {
   isCorrect: boolean;
 }
 
+type MCQEvaluationResult = {
+  totalQuestions: number;
+  correctAnswers: number;
+  incorrectAnswers: number;
+  percentage: number;
+  detailedResults: {
+    questionText: string;
+    selectedAnswer: string | null;
+    correctAnswer: string;
+    isCorrect: boolean;
+    explanation: string | null;
+  }[];
+};
 
 const lessonApi=baseApi.injectEndpoints({
     endpoints:(builder)=>({
@@ -119,7 +132,7 @@ const lessonApi=baseApi.injectEndpoints({
                 body:data
             })
         }),
-        resultsMcqForStudent:builder.query<any,any>({
+        resultsMcqForStudent:builder.query<MCQEvaluationResult,any>({
             query:({submissionId})=>({
                 url:"evaluate_mcq_results_by_std",
                 method:"GET",

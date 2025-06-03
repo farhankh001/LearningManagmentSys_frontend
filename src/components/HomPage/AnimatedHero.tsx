@@ -10,7 +10,9 @@ import { LogoCarousel} from "./Cr";
     "/images/avatars/3.jpg",
   ];
 const HeroSection = () => (
-  <Box sx={{ position: "relative", height: "70vh", overflow: "hidden", bgcolor: "background.default" }}>
+  <Box sx={{ position: "relative", height: {
+    xs:"100vh",md:"90vh",lg:"73vh"
+  }, overflow: "hidden", bgcolor: "background.default",display:"flex",flexDirection:"column" }}>
     
     {/* Background animation */}
     <Box
@@ -49,7 +51,7 @@ const HeroSection = () => (
       }}
     >
       {/* Title */}
-      <Typography variant="h2" fontWeight={700} sx={{ mb: 1 ,mt:4}}>
+      <Typography variant="h2" fontWeight={700} sx={{mb: 2 ,mt:4,   fontSize: { xs: '2.7rem',lg:"3.5rem"}, }}>
         Boost your Learning <br />
         <Box component="span" sx={{ color: "primary.main"}}>
           Start your Journey <Box component="span" sx={{
@@ -63,10 +65,10 @@ const HeroSection = () => (
       </Typography>
 
       {/* Subtext */}
-      <Typography variant="h6" sx={{ maxWidth: 600, mb: 4 }}>
+      <Typography variant="h6" sx={{ maxWidth: 600, mb: 3}}>
         Take an online course to improve your skills in a different way. You can set your own study time according to your learning speed. Get ahead at your own pace.
       </Typography>
-       <Stack direction="row" alignItems="center" spacing={1}>
+       <Stack direction="row" alignItems="center" spacing={1} sx={{mb:2}}>
       <Box sx={{ display: "flex" }}>
         {avatarUrls.map((src, index) => (
           <Avatar
@@ -86,23 +88,23 @@ const HeroSection = () => (
       <Typography fontWeight={600}>160+ Happy Learners</Typography>
     </Stack>
       {/* Action Buttons */}
-      <Box sx={{pt:3,pb:3}}>
+      <Box sx={{pt:4,pb:4}}>
         <LogoCarousel/>
       </Box>
       <Stack direction="row" spacing={2} sx={{margin:2}}>
         <Button
           variant="outlined"
-          size="small"
+          size="large"
           component={Link}
-          to="/get-started"
+          to="/register"
         >
           Get Started
         </Button>
         <Button
           variant="outlined"
-          size="small"
+          size="large"
           component={Link}
-          to="/watch-demo"
+          to="/"
         >
           Watch Demo
         </Button>

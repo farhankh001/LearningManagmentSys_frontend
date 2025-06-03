@@ -4,7 +4,9 @@ import {
   RadioGroup,
   FormControlLabel,
   Radio,
-  FormHelperText
+  FormHelperText,
+  useTheme,
+  Typography
 } from '@mui/material';
 
 import {
@@ -34,19 +36,20 @@ function MCQSInputField<T extends FieldValues>({
   isRequired
 }: MCQSInputFieldProps<T>) {
   const { control,watch } = useFormContext<T>();
-
+  const theme=useTheme()
   return (
     <Controller
       name={name}
       control={control}
       rules={{ required: isRequired ? 'This field is required' : false }}
       render={({ field, fieldState }) => (
-        <FormControl component="fieldset" error={!!fieldState.error}>
-          <FormLabel component="legend">{question.question_text}</FormLabel>
+        <FormControl component="fieldset" error={!!fieldState.error} >
+          <Typography variant='h6' fontWeight={700}>{question.question_text}</Typography>
           <RadioGroup
             value={field.value ?? ''}
             onChange={(e) => field.onChange(parseInt(e.target.value))}
           >
+            
             {question.options.map((option, index) => (
               <FormControlLabel
                 key={index}

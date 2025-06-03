@@ -109,16 +109,11 @@ const courseTeacherDashColumns: MRT_ColumnDef<EnrolledCourse>[] = [
 
 const settingsOptions=[
     {
-        name:"Create New Course",
+        name:"Create Course authtest",
         path:"/create-new-course",
         icon:<Create />
     }, 
-    {
-        name:"Register",
-        path:"/register",
-        icon:<UpdateSharp />
-    },
-   
+
 
 ]
 function StudentDashboard() {
@@ -162,9 +157,9 @@ function StudentDashboard() {
     value: stdDashData?.summary.inProgress
   },
   {
-    title: "Total Approved Enrollmets",
+    title: "Approved Enrollmets",
     icon: <School/>,
-    desc:"Total approved enrollments accross all courses.",
+    desc:"Total enrollments accross all courses.",
     value: stdDashData?.summary.totalApproved,
   },
    {

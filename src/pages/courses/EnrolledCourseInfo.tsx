@@ -44,8 +44,8 @@ function EnrolledCourseInfo() {
   return (
    <Box sx={{display:'flex',alignItems:"center",justifyContent:"center",flexDirection:"column",width:"100%",gap:1}}>
         {/* avatar with username etc */}
-         {/* <Typography variant="h5" fontWeight={600} sx={{fontStyle:"italic",mt:3}}>Course and Instructor Info</Typography> */}
-        <Box sx={{display:"flex", flexDirection:{xs:"column",sm:"column",md:"column",lg:"row"}, alignItems:"center",justifyContent:"center",padding:1,gap:1,width:"100%"}}>
+         <Typography variant="h4" fontWeight={600} sx={{fontStyle:"italic",mt:3}}>Course and Instructor Info</Typography>
+        <Box sx={{display:"flex", flexDirection:"column", alignItems:"center",justifyContent:"center",padding:1,gap:1,width:"100%"}}>
         
              <Box sx={{background:theme.palette.background.paper,width:"80%",boxShadow:`-1.5px 4px 2px  rgba(0, 0, 0, 0.39)`, borderRadius:2,display:"flex",flexDirection:{xs:"column",sm:"column",md:"row"},alignItems:"center",justifyContent:"center",p:{xs:2,sm:2,md:1},gap:{
               xs:1,sm:1,md:5
