@@ -84,27 +84,7 @@ const MAX_DOC_SIZE = 10 * 1024 * 1024;   // 10MB
 const MAX_IMAGE_SIZE = 5 * 1024 * 1024;  // 5MB
 
 export const createLessonSchema = z.object({
-  lesson_video: z
-    .custom<File | undefined>((file) => {
-      if (!file) return true; // Skip validation if not present
-      return file instanceof File;
-    }, {
-      message: "Invalid video file."
-    })
-    .refine((file) => {
-      if (!file) return true;
-      return file.size <= MAX_VIDEO_SIZE;
-    }, {
-      message: "Videos more than 50MBs are not allowed."
-    })
-    .refine((file) => {
-      if (!file) return true;
-      return videoMimeTypes.includes(file.type);
-    }, {
-      message: "Only mp4, webm, and ogg formats are supported for video."
-    })
-    .optional(),
-
+  lesson_video: z.string().optional(),
   lesson_document: z
     .custom<File | undefined>((file) => {
       if (!file) return true;

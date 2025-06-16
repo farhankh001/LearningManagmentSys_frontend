@@ -91,10 +91,13 @@ if(courseId){
 formData.append("lesson_title", data.lesson_title);
 formData.append("lesson_text", data.lesson_text);
 
-
-  if (data.lesson_video) {
-  formData.append("lesson_video", data.lesson_video);
+  if(data.lesson_video){
+    formData.append("lesson_video", data.lesson_video);
   }
+
+  // if (data.lesson_video) {
+  // formData.append("lesson_video", data.lesson_video);
+  // }
 
   if (data.lesson_document) {
   formData.append("lesson_document", data.lesson_document);
@@ -249,9 +252,9 @@ formData.append("lesson_text", data.lesson_text);
             
            <FormControl>
             <Typography variant='caption'>
-              Lesson video
+              Lesson video Link
             </Typography>
-             <FileInputField<CreateLessonType>  fileType={["video/mp4","video/webm","video/ogg",]} isRequired={false} label='Lesson video' maxFiles={1} maxSize={50 * 1024 * 1024} name='lesson_video'/>
+             <TextInputField<CreateLessonType> isRequired={false}  label='Lesson Video Link' name='lesson_video' type='text' hideData={false} />
            </FormControl>
           <FormControl>
             <Typography variant='caption'>

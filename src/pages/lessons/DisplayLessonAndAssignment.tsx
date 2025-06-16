@@ -6,7 +6,7 @@ import { JSX, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
-
+import ReactPlayer from 'react-player';
 
 import { FILEURLPRE } from '../../components/other/Defaulturl';
 import VideoComponent from './VideoComponent';
@@ -111,7 +111,8 @@ function DisplayLessonAndAssignment({lessons}:DisplayLessonAndAssignmentprops) {
       </AccordionSummary>
       <AccordionDetails>
        <Box sx={{padding:3}}>
-         {lesson.url_video&&<VideoComponent title='Lesson Video' url={lesson.url_video}  />}
+         {lesson.url_video&&<Box sx={{width:"100%",height:"70vh"}}><ReactPlayer url={lesson.url_video}   width="100%"
+        height="100%" controls /></Box>}
      <Box sx={{mt:3}}>
       <Typography variant='h6' fontWeight={600} sx={{backgroundColor:theme.palette.grey[100],padding:1.5}}>
         Description:
