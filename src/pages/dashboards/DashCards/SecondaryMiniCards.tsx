@@ -34,7 +34,7 @@ function SecondaryMiniCards({courses}:ApprovedCourseCardProps) {
     {courses&&courses.map(course=><Card component={Link} to={`/single-course-details/${course.course.id}`} sx={{
         width: 270,
         minHeight: 315,
-        maxHeight:330,
+        maxHeight:335,
         display: 'flex',
         flexDirection: 'column',
         borderRadius: 4,
@@ -56,7 +56,7 @@ function SecondaryMiniCards({courses}:ApprovedCourseCardProps) {
             objectFit: 'cover',}}/>
        
          <Box sx={{ display: 'flex', flexDirection: 'column',m:2}}>
-                <AutoStories/>
+                <AutoStories sx={{fontSize:18}}/>
                 <Typography
                   variant="h6"
                   sx={{
@@ -78,12 +78,12 @@ function SecondaryMiniCards({courses}:ApprovedCourseCardProps) {
                     
                   }}
                 >
-                    {limitWords(course.course.subtitle, 7)}
+                    {limitWords(course.course.subtitle, 6)}
                 </Typography>
                 </Box>
                    <Box sx={{display:"flex",gap:2,mb:0.5,mt:1.5,ml:1,mr:1}}>
-          <Chip label={course.course.activationStatus} size='small' sx={{fontSize:10}}/>
-          <Chip label={course.course.language} size='small' sx={{fontSize:10}}/>
+          <Chip label={course.course.activationStatus} variant='outlined' color="info" size='small' sx={{fontSize:10}}/>
+          <Chip label={course.course.language}  variant='outlined' color="warning" size='small' sx={{fontSize:10}}/>
         </Box>
        </Box>
         <Box sx={{display:"flex",alignItems:'center',justifyContent:"space-between",padding:1.5}}>
