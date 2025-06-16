@@ -33,8 +33,8 @@ function SecondaryMiniCards({courses}:ApprovedCourseCardProps) {
         
     {courses&&courses.map(course=><Card component={Link} to={`/single-course-details/${course.course.id}`} sx={{
         width: 270,
-        minHeight: 320,
-        maxHeight:350,
+        minHeight: 315,
+        maxHeight:330,
         display: 'flex',
         flexDirection: 'column',
         borderRadius: 4,
@@ -44,8 +44,9 @@ function SecondaryMiniCards({courses}:ApprovedCourseCardProps) {
         textDecoration: 'none',
         backgroundColor:theme.palette.grey[100],
         border:"0.5px solid",
-        borderColor:theme.palette.divider
-
+        borderColor:theme.palette.divider,
+        justifyContent:"space-between"
+        
 
 }}>
        <Box sx={{padding:1, backgroundColor:theme.palette.background.paper,border:"1px solid",borderColor:theme.palette.divider,borderRadius:4}}>
@@ -66,7 +67,7 @@ function SecondaryMiniCards({courses}:ApprovedCourseCardProps) {
 
                   }}
                 >
-                   {limitWords(course.course.title, 7)}
+                   {limitWords(course.course.title, 6)}
                 </Typography>
                 <Typography
                   variant="body2"
@@ -77,7 +78,7 @@ function SecondaryMiniCards({courses}:ApprovedCourseCardProps) {
                     
                   }}
                 >
-                    {limitWords(course.course.subtitle, 9)}
+                    {limitWords(course.course.subtitle, 7)}
                 </Typography>
                 </Box>
                    <Box sx={{display:"flex",gap:2,mb:0.5,mt:1.5,ml:1,mr:1}}>

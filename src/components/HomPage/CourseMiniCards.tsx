@@ -46,7 +46,7 @@ function CourseMiniCards() {
         backgroundColor:theme.palette.grey[100],
         border:"0.5px solid",
         borderColor:theme.palette.divider,
-     
+        justifyContent:"space-between"
     //      "&:hover": {
     //   transform: "translateY(-4px) scale(1.02)",
     //    boxShadow: '0 0 5px 2px  rgb(255, 155, 40)',
@@ -61,7 +61,7 @@ function CourseMiniCards() {
             objectFit: 'cover',}}/>
        
          <Box sx={{ display: 'flex', flexDirection: 'column',m:2}}>
-                <AutoStories/>
+                <AutoStories sx={{fontSize:18}}/>
                 <Typography
                   variant="h6"
                   sx={{
@@ -72,7 +72,7 @@ function CourseMiniCards() {
 
                   }}
                 >
-                   {limitWords(course.title, 7)}
+                   {limitWords(course.title, 6)}
                 </Typography>
                 <Typography
                   variant="body2"
@@ -83,7 +83,7 @@ function CourseMiniCards() {
                     
                   }}
                 >
-                    {limitWords(course.subtitle, 9)}
+                    {limitWords(course.subtitle, 4)}
                 </Typography>
                 </Box>
                    <Box sx={{display:"flex",gap:2,mb:0.5,mt:1.5,ml:1,mr:1}}>

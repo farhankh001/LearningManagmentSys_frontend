@@ -48,7 +48,7 @@ function ApprovedCoursesCards({courses}:ApprovedCourseCardProps) {
    <Box sx={{ml:3,display:"flex",alignItems:"center",gap:0.5,padding:0.5}}>
     <EmojiEvents sx={{color:theme.palette.primary.main,fontSize:16,backgroundColor:theme.palette.text.primary,borderRadius:1,border:"1px solid",borderColor:theme.palette.primary.main}}/>
     <Typography variant="caption" sx={{fontSize:"13px"}}>
-        {limitWords(course.course.subtitle,12)}
+        {limitWords(course.course.subtitle,6)}
     </Typography>
     <Button size="small" component={Link} to={`/get-single-course-by-enrolled-student/${course.course.id}`} sx={{fontSize:"11px"}}>Continue Learning <Forward sx={{fontSize:15}}/></Button>
    </Box>
