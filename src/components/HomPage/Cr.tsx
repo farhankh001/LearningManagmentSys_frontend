@@ -1,6 +1,6 @@
 import { Build, Code, MilitaryTech, NetworkCell, Security, SecurityOutlined, SecurityTwoTone, SecurityUpdateGoodOutlined, SettingsApplications } from "@mui/icons-material";
 import { Box, Typography } from "@mui/material";
-import { FaHackerNews, FaRobot } from "react-icons/fa";
+import { FaRobot } from "react-icons/fa";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 
@@ -26,7 +26,7 @@ export const LogoCarousel = () => {
  },
  {
  text:  "Network Security",
-  logo:<FaHackerNews/>
+  logo:<Security/>
  },
  {
  text:  "Application Security",

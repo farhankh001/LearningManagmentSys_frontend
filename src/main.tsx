@@ -33,6 +33,7 @@ import MCQResults from './pages/lessons/quizAndAssignment/MCQResults.tsx'
 import TeacherRegisterFormProvider from './components/Forms/FormProviders/TeacherRegiterFormProvider.tsx'
 import SinglePendingTeacher from './pages/Teacher/SinglePendingTeacher.tsx'
 import SingleStudentProfile from './pages/student/SingleStudentProfile.tsx'
+import EnrolledCourseMoreInfo from './pages/courses/EnrolledCourseMoreInfo.tsx'
 
 
  // Types
@@ -91,6 +92,7 @@ const router = createBrowserRouter(
         <Route path="/logout" element={<Logout/>} />
          <Route path="/attempt-MCQS-quiz/:lessonId" element={<SubmitMCQQuizStudentFormProvider/>}/>
          <Route path="/view-mcq-results-std/:submissionId" element={<MCQResults/>}/>
+          <Route path="/enrolled-course-more-info/:courseId" element={<EnrolledCourseMoreInfo/>}/>
           
       </Route>
          <Route element={<ProtectedRoute allowedRoles={["Admin"]}/>}>

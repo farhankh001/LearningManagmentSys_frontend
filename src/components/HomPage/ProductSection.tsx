@@ -8,8 +8,10 @@ function ProductSection() {
     <Box sx={{width:"100%",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:3}}>
         <Box sx={{textAlign:"center"}}>
             <Typography variant='h3' fontWeight={800} sx={{  color:"text.primary"}}>
-                We Offer Wide Range of <Box component="span" sx={{
-                 color:"primary.main",
+                We Offer A Wide Range of <Box component="span" sx={{
+                 background: "linear-gradient(to right,rgb(234, 196, 44),rgb(255, 55, 0))",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
                        display: "inline-block",
                           }}>High Quality Courses</Box>
             </Typography>

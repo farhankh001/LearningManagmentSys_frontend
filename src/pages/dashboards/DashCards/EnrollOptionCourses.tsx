@@ -1,10 +1,10 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { RootState } from '../../app/store'
+import { RootState } from '../../../app/store'
 import { Avatar, Box, Button, Card, CardMedia, Chip, CircularProgress, Typography, useTheme } from '@mui/material'
 import { Link } from 'react-router-dom'
 
-import { FILEURLPRE } from '../other/Defaulturl'
+import { FILEURLPRE } from '../../../components/other/Defaulturl'
 import { AutoStories, Forward } from '@mui/icons-material'
 
 const limitWords = (str: string, limit: number) => {
@@ -14,14 +14,12 @@ const limitWords = (str: string, limit: number) => {
   }
   return str;
 };
-function CourseMiniCards() {
-    const courses=useSelector((state:RootState)=>state.courses.allCourses)
+function EnrollOptionCourses() {
+    const courses=useSelector((state:RootState)=>state.courses.allCourses.slice(0.4))
     const theme=useTheme()
  return (
-   <Box sx={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",mt:10}}>
-    <Typography variant='h3' fontWeight={600} sx={{mb:2}}>
-      Explore Our Courses
-    </Typography>
+   <Box sx={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",mt:1}}>
+   
     <Box  sx={{
             display: 'grid',
             gridTemplateColumns: { xs: '1fr', sm: '1fr ', md: '1fr 1fr 1fr ',lg:"1fr 1fr 1fr" },
@@ -104,4 +102,4 @@ function CourseMiniCards() {
   )
 }
 
-export default CourseMiniCards
+export default EnrollOptionCourses

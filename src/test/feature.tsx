@@ -8,13 +8,13 @@ import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgr
 import { data } from './feature.data'
 import { CardMedia } from '@mui/material'
 import Lottie from 'lottie-react'
-import heroAnimation from "../assets/reveal-loading.json";
+import heroAnimation from "../assets/eiffel-celebration.json";
 import { Security } from '@mui/icons-material'
 interface LinearProgressProps {
   order: number
 }
 
-const BorderLinearProgress = styled(LinearProgress, {
+export const BorderLinearProgress = styled(LinearProgress, {
   shouldForwardProp: (prop) => prop !== 'color',
 })<LinearProgressProps>(({ theme, order }) => ({
   height: 6,
@@ -28,11 +28,18 @@ const BorderLinearProgress = styled(LinearProgress, {
       backgroundColor: 'primary.main',
     }),
     ...(order === 2 && {
-      backgroundColor: '#26e8bd',
+      backgroundColor: '#c33ade',
     }),
     ...(order === 3 && {
       backgroundColor: '#0063ff',
     }),
+     ...(order === 4 && {
+      backgroundColor: '#ded63a',
+    }),
+     ...(order === 5 && {
+      backgroundColor: '#34ad77',
+    }),
+   
   },
 }))
 
@@ -169,7 +176,7 @@ const HomeFeature: FC = () => {
                 fontWeight: 'bold',
               }}
             >
-              Make your{' '}
+              Celebrate your{' '}
               <Typography
                 component="mark"
                 sx={{
@@ -180,10 +187,10 @@ const HomeFeature: FC = () => {
                   backgroundColor: 'unset',
                 }}
               >
-                Learning <br />
+                Achievements<br />
                 
               </Typography>
-              Enjoyable
+              Grow With Us
             </Typography>
 
             <Typography sx={{ color: 'text.secondary', mb: 2, ml: { xs: 0, md: 4 } }}>

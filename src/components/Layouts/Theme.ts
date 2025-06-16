@@ -29,6 +29,9 @@ export const darkTheme: ThemeOptions = createTheme({
       dark: "#262626",
       contrastText: "#FAFAFA"
     },
+    grey:{
+      "100":"#0c1217"
+    },
     error: {
       main: "#FF3D57",
       light: "#FF667A",

@@ -44,8 +44,9 @@ function MCQSInputField<T extends FieldValues>({
       rules={{ required: isRequired ? 'This field is required' : false }}
       render={({ field, fieldState }) => (
         <FormControl component="fieldset" error={!!fieldState.error} >
-          <Typography variant='h6' fontWeight={700}>{question.question_text}</Typography>
+          <Typography variant='h6' fontWeight={700} sx={{m:1}}>{question.question_text}</Typography>
           <RadioGroup
+          sx={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr 1fr",gap:2}}
             value={field.value ?? ''}
             onChange={(e) => field.onChange(parseInt(e.target.value))}
           >
@@ -56,6 +57,7 @@ function MCQSInputField<T extends FieldValues>({
                 value={index}
                 control={<Radio />}
                 label={option}
+                sx={{border:"1px solid",borderColor:theme.palette.background.paper,margin:1,padding:1,width:"100%"}}
               />
             ))}
           </RadioGroup>

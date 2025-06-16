@@ -9,7 +9,7 @@ import toast from 'react-hot-toast';
 import { FILEURLPRE } from '../../components/other/Defaulturl';
 
 
-function SingleCourseDetails() {
+function EnrolledCourseMoreInfo() {
     const { courseId } = useParams<{ courseId: string }>();
     const theme = useTheme();
     const isXs = useMediaQuery(theme.breakpoints.down('sm'));
@@ -17,7 +17,6 @@ function SingleCourseDetails() {
     const isMd = useMediaQuery(theme.breakpoints.between('md', 'lg'));
     const isLgUp = useMediaQuery(theme.breakpoints.up('lg'));
     const { data: courseData, isFetching, isError, error } = useGetSingleCourseQuery({courseId});
-    const [enrollStudent,{error:enrollmentError,isError:isEnrollmentError,isSuccess:enrollmentSuccess,isLoading:enrollmentLoading}]=useEnrollStudentMutation()
     
     if (!courseId) {
         return (
@@ -27,9 +26,7 @@ function SingleCourseDetails() {
         );
     }
 
-     if(isEnrollmentError && enrollmentError && 'data' in enrollmentError){
-            toast.error(`${JSON.stringify((enrollmentError.data as any).error)}`)
-          }  
+    
 
     if (isFetching) {
         return (
@@ -38,11 +35,7 @@ function SingleCourseDetails() {
             </Box>
         );
     }
-    const enrollStudentHandle=()=>{
-         if(courseData?.course.id){
-            enrollStudent({courseId:courseData?.course.id})
-         }
-    }
+  
     let titleVariant: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "body1" = 'h6';
     if (isXs) {
         titleVariant = 'h6';
@@ -71,7 +64,7 @@ function SingleCourseDetails() {
     const cleanWhatYouWillLearn = DOMPurify.sanitize(courseData?.course?courseData?.course.whatYouWillLearn:"");
     
     return (
-        <Container>
+        <Container sx={{marginBottom:3}}>
             <Box>
                 <CardMedia
                 component="img"
@@ -81,17 +74,6 @@ function SingleCourseDetails() {
                 />
             </Box>
             <Box  sx={{ backgroundColor: theme.palette.background.paper, marginTop: 3, borderRadius: 4,boxShadow:`-1.5px 4px 2px ${theme.palette.secondary.light}`}}>
-                 {enrollmentSuccess&& (
-                          <Alert severity="success" sx={{ mb: 2 }}>
-                            Enrolled Successfully...
-                          </Alert>
-                        )}
-                
-                      {isEnrollmentError && enrollmentError && 'data' in enrollmentError &&
-                              <Alert severity="error" sx={{ mb: 2 }}>
-                                    {JSON.stringify((enrollmentError.data as any).error)}  
-                               </Alert>
-                                }
             <Box sx={{padding:5,display:'flex',flexDirection:{
                 xs:"column",
                 sm:"column",
@@ -138,9 +120,6 @@ function SingleCourseDetails() {
                     Advance your Career
                 </Typography>
                 
-                <Button variant="contained"  onClick={enrollStudentHandle}>
-                    Enroll Now
-                </Button>
                 <Box>
                     <Typography>
                         This course is {courseData?.course.sales_category.toLowerCase()} level.
@@ -245,16 +224,9 @@ function SingleCourseDetails() {
     />
 
         </Box>
-        <Box sx={{ backgroundColor: theme.palette.background.paper,mb:5, marginTop: 2,boxShadow:`-1.5px 4px 2px ${theme.palette.secondary.light}`,padding:3,display:'flex',alignItems:"center",justifyContent:"center",flexDirection:"column",gap:2}}>
-            <Typography variant='h4' fontWeight={600} sx={{fontStyle:"italic",color:theme.palette.primary.light}}>
-                Get full access to all avaliable content:
-            </Typography>
-            <Button variant='contained' size='large' onClick={enrollStudentHandle}>
-                Enroll Now
-            </Button>
-        </Box>
+       
         </Container>
     )
 }
 
-export default SingleCourseDetails
+export default EnrolledCourseMoreInfo

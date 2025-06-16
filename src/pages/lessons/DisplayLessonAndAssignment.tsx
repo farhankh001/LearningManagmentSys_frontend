@@ -1,14 +1,15 @@
-import { ExpandMore } from '@mui/icons-material'
-import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Card, Typography } from '@mui/material'
+import { Article, AutoStories, Book, ExpandMore, MenuBook, ViewAgenda } from '@mui/icons-material'
+import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Card, Divider, Typography, useTheme } from '@mui/material'
 import { Lesson, Quiz, useGetSingleCourseByTeacherQuery } from '../../app/api/createCourseApi'
 import  DocViewer,{ DocViewerRenderers, IDocument } from "@cyntler/react-doc-viewer";
-import { JSX } from 'react';
+import { JSX, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
 
 
 import { FILEURLPRE } from '../../components/other/Defaulturl';
+import VideoComponent from './VideoComponent';
 
 
 interface DisplayLessonAndAssignmentprops{
@@ -96,31 +97,23 @@ function FilePreviewer({ fileUrl }: FilePreviewerProps): JSX.Element | null {
 
 function DisplayLessonAndAssignment({lessons}:DisplayLessonAndAssignmentprops) {
   const authUser=useSelector((state:RootState)=>state.auth.user)
+  const [expanded,setExpanded]=useState<number|null>(null)
     console.log(lessons)
+    const theme=useTheme()
   return (
-    lessons&&lessons.map((lesson)=>{
-        return <Accordion>
-      <AccordionSummary expandIcon={<ExpandMore/>}>
-        <Typography variant='body1' fontWeight={600} sx={{p:1}}>
-            {lesson.title.toLocaleUpperCase()} 
-        </Typography>
+    lessons&&lessons.map((lesson,index)=>{
+        return <Accordion sx={{}} onChange={(e, isExpanded) => setExpanded(index)}>
+      <AccordionSummary expandIcon={<ExpandMore/> } sx={{}}>
+       <Box sx={{display:"flex",alignItems:"center",gap:3,width:"100%",pl:2,pr:3}}>
+        <Typography variant='h6' sx={{display:"flex",alignItems:"center",justifyContent:"center",gap:3}}><span>Lesson - 0{index+1}</span> <AutoStories sx={{fontSize:18}}/> </Typography>
+        <Typography variant='h6' fontWeight={600}>{lesson.title}</Typography>
+       </Box>
       </AccordionSummary>
       <AccordionDetails>
        <Box sx={{padding:3}}>
-         {lesson.url_video&&<Box
-          component="video"
-          src={`${FILEURLPRE}/${lesson.url_video}`}
-          controls
-          sx={{
-            width: '100%',
-            height: 'auto',
-            maxHeight:"70vh",
-            borderRadius: 1,
-            boxShadow: 1,
-          }}
-        />}
+         {lesson.url_video&&<VideoComponent title='Lesson Video' url={lesson.url_video}  />}
      <Box sx={{mt:3}}>
-      <Typography variant='h5' fontWeight={600}>
+      <Typography variant='h6' fontWeight={600} sx={{backgroundColor:theme.palette.grey[100],padding:1.5}}>
         Description:
       </Typography>
       <Box
@@ -131,12 +124,16 @@ function DisplayLessonAndAssignment({lessons}:DisplayLessonAndAssignmentprops) {
     />
      </Box>
    <Box sx={{mt:5}}>
-     <Typography variant='h5' fontWeight={600}>
+     <Typography variant='h6' fontWeight={600} sx={{backgroundColor:theme.palette.grey[100],padding:1.5}}>
         Additional Resources:
       </Typography>
-     {lesson.url_docs ? (
+     {expanded==index&&lesson.url_docs ? (
      <FilePreviewer fileUrl={`${FILEURLPRE}/${lesson.url_docs}`} />) : null}
-
+      <Typography variant='h6' fontWeight={600} sx={{backgroundColor:theme.palette.grey[100],padding:1.5,mt:2}}>
+         Second Document:
+      </Typography>
+     {expanded==index&&lesson.url_doc2 ? (
+     <FilePreviewer fileUrl={`${FILEURLPRE}/${lesson.url_doc2}`} />) : null}
    </Box>
     </Box>
       { authUser?.role==="Student"&&<Box sx={{display:"flex",alignItems:"center",justifyContent:"center",gap:3}}>

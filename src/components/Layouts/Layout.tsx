@@ -12,6 +12,9 @@ import { useGetAllCoursesQuery } from "../../app/api/createCourseApi";
 import { useGetAllCategoriesQuery } from "../../app/api/categoriesApi";
 import { setCategories } from "../../app/slices/categorySlice";
 import { setAllCourses } from "../../app/slices/courseSlice";
+import { IdleTimerProvider, useIdleTimerContext } from 'react-idle-timer';
+
+
 const Layout = () => {
   const[darkMode,setDarkMode]=useState(true)
   const {data:currentUserInfo,isError,isLoading,error,isFetching,isSuccess}=useLoggedInUserInofQuery();
@@ -50,7 +53,13 @@ const Layout = () => {
       <CssBaseline/>
         <NavBar darkMode={darkMode} setDarkMode={setDarkMode}/>
          <Toaster position="top-right" reverseOrder={false} />
-        <Outlet/>
+         <IdleTimerProvider
+          timeout={1000 * 60 * 10} // 10 minutes, irrelevant for now
+          crossTab
+         >
+           <Outlet/>
+         </IdleTimerProvider>
+       
       </ThemeProvider>
     </>
   )

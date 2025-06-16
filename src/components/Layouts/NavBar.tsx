@@ -93,14 +93,16 @@ const NavBar: React.FC<NavProps> = ({ darkMode, setDarkMode }) => {
       elevation={0}
       sx={{
         backgroundColor: "transparent", // Full transparency
-        boxShadow: "none",              // Remove shadow
+        boxShadow: "none",  
+                   // Remove shadow
       }}
     >
       <Toolbar
         sx={{
           display: "flex",
           justifyContent: "space-between",
-          alignItems: "center",
+          alignItems: "center"
+          
         }}
       >
         {/* Menu Icon */}
@@ -115,7 +117,9 @@ const NavBar: React.FC<NavProps> = ({ darkMode, setDarkMode }) => {
           {darkMode ? <FaSun /> : <FaMoon />}
         </IconButton>
         </Drawer>
-
+        {/* <Box>
+          <Typography variant="h6" fontWeight={600} sx={{textAlign:"center"}}>Cyber Range Learning Managment System </Typography>
+        </Box> */}
       <Box>
         {baseNav&&baseNav.map((navopt=><Button component={Link} to={navopt.path}>
           {

@@ -74,6 +74,65 @@ type MCQEvaluationResult = {
   }[];
 };
 
+
+
+
+
+interface BaseMCQAttemptResponse {
+  lessonTitle: string;
+}
+
+// MCQ Question interface (for quiz questions)
+interface MCQQuestion {
+  id: string;
+  question_text: string;
+  options: string[];
+}
+
+// MCQ Quiz interface (for unattempted quiz)
+interface MCQQuiz {
+  id: string;
+  questions: MCQQuestion[];
+}
+
+// Detailed result for each question (for attempted quiz)
+interface QuestionResult {
+  questionText: string;
+  selectedAnswer: string | null;
+  correctAnswer: string;
+  isCorrect: boolean;
+  explanation: string;
+}
+
+// Quiz results interface (for attempted quiz)
+interface QuizResults {
+  totalQuestions: number;
+  correctAnswers: number;
+  incorrectAnswers: number;
+  percentage: number;
+  detailedResults: QuestionResult[];
+}
+
+// Response when quiz has been attempted
+interface MCQAttemptedResponse extends BaseMCQAttemptResponse {
+  hasAttempted: true;
+  results: QuizResults;
+}
+
+// Response when quiz has not been attempted
+interface MCQNotAttemptedResponse extends BaseMCQAttemptResponse {
+  hasAttempted: false;
+  quiz: MCQQuiz;
+}
+
+// Union type for the complete response
+export type MCQAttemptStatusResponse = MCQAttemptedResponse | MCQNotAttemptedResponse;
+
+
+
+
+
+
 const lessonApi=baseApi.injectEndpoints({
     endpoints:(builder)=>({
         createNewLessonWithQuizAndAssignment:builder.mutation<any,FormData>({
@@ -130,7 +189,7 @@ const lessonApi=baseApi.injectEndpoints({
                 url:"attempted-mcq-by-student",
                 method:"POST",
                 body:data
-            })
+            }),invalidatesTags:["Enrollment"]
         }),
         resultsMcqForStudent:builder.query<MCQEvaluationResult,any>({
             query:({submissionId})=>({
@@ -138,10 +197,17 @@ const lessonApi=baseApi.injectEndpoints({
                 method:"GET",
                 params:{submissionId}
             })
+        }),
+        mcqAttemptStatusCheck:builder.query<MCQAttemptStatusResponse,any>({
+            query:({lessonId})=>({
+                url:"mcq-attempt-status-check",
+                method:"GET",
+                params:{lessonId}
+            })
         })
 
     })
 })
 
 
-export const {useGetAssignmentForStudentQuery,useCreateNewLessonWithQuizAndAssignmentMutation,useGetQuizForStudentQuery,useSubmitQuizByStudentMutation,useSubmitAssignmentByStudentMutation,useCreateMCQsQuizMutation,useGetMCQsQuizForStudentQuery,useAttemptedMCQByStudentSubmitMutation,useResultsMcqForStudentQuery}=lessonApi
+export const {useGetAssignmentForStudentQuery,useCreateNewLessonWithQuizAndAssignmentMutation,useGetQuizForStudentQuery,useSubmitQuizByStudentMutation,useSubmitAssignmentByStudentMutation,useCreateMCQsQuizMutation,useGetMCQsQuizForStudentQuery,useAttemptedMCQByStudentSubmitMutation,useResultsMcqForStudentQuery,useMcqAttemptStatusCheckQuery}=lessonApi

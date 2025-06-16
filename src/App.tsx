@@ -1,4 +1,4 @@
-import { Typography, Button, Box, useTheme} from '@mui/material';
+import { Typography, Button, Box, useTheme, List, ListItem} from '@mui/material';
 import { useCreateCategoriesMutation } from './app/api/categoriesApi';
 import CourseDetails from './components/Layouts/CourseDetails';
 // import HomeHero from './test/hero';
@@ -7,6 +7,8 @@ import { useSelector } from 'react-redux';
 import { RootState } from './app/store';
 import HeroSection from './components/HomPage/AnimatedHero';
 import ProductSection from './components/HomPage/ProductSection';
+import FeaturesBoxes from './components/HomPage/FeaturesBoxes';
+import { Footer } from './components/HomPage/footer';
 
 
 function App() {
@@ -26,7 +28,9 @@ function App() {
       
       <HeroSection/>
       </Box>
-      
+
+       
+        
          <Box sx={{marginTop:10}}>
        <ProductSection/>
       </Box>
@@ -41,17 +45,14 @@ function App() {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          height: '60px',
+         
           backgroundColor: isDarkMode ? '#1E1E1E' : '#f5f5f5',
           mt: 10,
         }}
       >
-        <Typography variant="body2" color="textSecondary">
-          © 2025 LMS. All rights reserved.
-        </Typography>
-        <Button onClick={createCategory}>
-create_category
-        </Button>
+       
+
+       <Footer/>
       </Box>
       
     </Box>
