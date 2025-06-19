@@ -13,6 +13,7 @@ import { useGetAllCategoriesQuery } from "../../app/api/categoriesApi";
 import { setCategories } from "../../app/slices/categorySlice";
 import { setAllCourses } from "../../app/slices/courseSlice";
 import { IdleTimerProvider, useIdleTimerContext } from 'react-idle-timer';
+import { StudyTimeTracker } from "../../pages/dashboards/TimeTracker/StudyTimeTracker";
 
 
 const Layout = () => {
@@ -40,24 +41,25 @@ const Layout = () => {
 
   useEffect(()=>{
     if(isSuccess&&currentUserInfo){
-        console.log(currentUserInfo)
         dispatch(setUser(currentUserInfo))
     }else if(!isLoading&&isError){
-        console.log(error)
+       
         dispatch(clearUser())
          }
        },[isSuccess, isError, currentUserInfo, error,isLoading,isFetching, dispatch])
+      
   return (
     <>
       <ThemeProvider theme={darkMode?darkTheme:lightTheme}>
       <CssBaseline/>
         <NavBar darkMode={darkMode} setDarkMode={setDarkMode}/>
          <Toaster position="top-right" reverseOrder={false} />
+
          <IdleTimerProvider
           timeout={1000 * 60 * 10} // 10 minutes, irrelevant for now
           crossTab
          >
-           <Outlet/>
+             <Outlet/>
          </IdleTimerProvider>
        
       </ThemeProvider>

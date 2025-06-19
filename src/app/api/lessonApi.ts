@@ -12,6 +12,18 @@ interface GetQuizForStudentReturn{
     totalScore:number
 
 }
+export interface MCQQuizResults {
+  totalQuestions: number;
+  correctAnswers: number;
+  incorrectAnswers: number;
+  percentage: number;
+  detailedResults: QuestionResult[];
+}
+
+export type MCQEvaluationResult = {
+    results:MCQQuizResults;
+    title:string;
+};
 
 export interface SubmitQuizByStudentType{
     solution_text:string,
@@ -32,6 +44,7 @@ export interface SubmitQuizMCQType{
 }
 export interface SubmitQuizMCQReturn{
     id:string,
+    title:string,
     questions:{
         id:string,
         question_text:string,
@@ -60,19 +73,7 @@ export interface MCQQuestionResult {
   isCorrect: boolean;
 }
 
-type MCQEvaluationResult = {
-  totalQuestions: number;
-  correctAnswers: number;
-  incorrectAnswers: number;
-  percentage: number;
-  detailedResults: {
-    questionText: string;
-    selectedAnswer: string | null;
-    correctAnswer: string;
-    isCorrect: boolean;
-    explanation: string | null;
-  }[];
-};
+
 
 
 
@@ -105,18 +106,12 @@ interface QuestionResult {
 }
 
 // Quiz results interface (for attempted quiz)
-interface QuizResults {
-  totalQuestions: number;
-  correctAnswers: number;
-  incorrectAnswers: number;
-  percentage: number;
-  detailedResults: QuestionResult[];
-}
+
 
 // Response when quiz has been attempted
 interface MCQAttemptedResponse extends BaseMCQAttemptResponse {
   hasAttempted: true;
-  results: QuizResults;
+  results: MCQQuizResults;
 }
 
 // Response when quiz has not been attempted

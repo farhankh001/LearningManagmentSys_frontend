@@ -25,10 +25,10 @@
   enablePagination={enablePagination}
   enableColumnResizing
   muiTableBodyCellProps={{
-    sx: { backgroundColor: theme.palette.background.default },
+    sx: { backgroundColor: theme.palette.primary.dark },
   }}
   muiTableHeadCellProps={{
-    sx: { backgroundColor: theme.palette.primary.main, color: 'white' },
+    sx: { backgroundColor: theme.palette.background.paper, color: 'white' },
   }}
   displayColumnDefOptions={{
     // Optionally hide column actions too
@@ -37,7 +37,7 @@
   // renderTopToolbarCustomActions={null} // disables custom top toolbar actions
       // disables bottom toolbar
  renderTopToolbar={({ table }) => (
-  <Box sx={{ overflowX: 'auto', p: 2 }}>
+  <Box sx={{ overflowX: 'auto', p: 1.5,backgroundColor:theme.palette.primary.main }}>
     <Box
       display="flex"
       flexDirection="row"

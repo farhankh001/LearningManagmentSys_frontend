@@ -1,5 +1,5 @@
-import { Article, AutoStories, Book, ExpandMore, MenuBook, ViewAgenda } from '@mui/icons-material'
-import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Card, Divider, Typography, useTheme } from '@mui/material'
+import { Article, AutoStories, Book, ExpandMore, Insights, LibraryBooks, MenuBook, OndemandVideo, ViewAgenda } from '@mui/icons-material'
+import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Card, Chip, Divider, LinearProgress, Typography, useTheme } from '@mui/material'
 import { Lesson, Quiz, useGetSingleCourseByTeacherQuery } from '../../app/api/createCourseApi'
 import  DocViewer,{ DocViewerRenderers, IDocument } from "@cyntler/react-doc-viewer";
 import { JSX, useState } from 'react';
@@ -10,10 +10,12 @@ import ReactPlayer from 'react-player';
 
 import { FILEURLPRE } from '../../components/other/Defaulturl';
 import VideoComponent from './VideoComponent';
-
+import { limitWords } from '../dashboards/DashCards/ApprovedCoursesCards';
+import { EnhancedLesson } from '../../app/api/studentDashApis';
+import { BorderLinearProgress } from '../../test/feature';
 
 interface DisplayLessonAndAssignmentprops{
-    lessons:Lesson[]|undefined
+    lessons:EnhancedLesson[]|undefined
 }
 type FilePreviewerProps = {
   fileUrl: string | null | undefined;
@@ -50,7 +52,7 @@ function FilePreviewer({ fileUrl }: FilePreviewerProps): JSX.Element | null {
       {/* Ensure the viewer container doesn't clip or get overlapped */}
     <Box
   sx={{
-    maxHeight: {xs:"50vh",sm:"50vh",md:"80vh",lg:"90vh"},
+    maxHeight: {xs:"50vh",sm:"50vh",md:"80vh",lg:"50vh"},
     border: '1px solid #ddd',
     borderRadius: 2,
     overflowY: 'auto', 
@@ -65,6 +67,7 @@ function FilePreviewer({ fileUrl }: FilePreviewerProps): JSX.Element | null {
       header: {
         disableFileName: false,
         disableHeader: false,
+      
         
       },
       pdfVerticalScrollByDefault:true,
@@ -79,21 +82,6 @@ function FilePreviewer({ fileUrl }: FilePreviewerProps): JSX.Element | null {
     </Card>
   );
 }
-// export interface Lesson {
-//   id: string;
-//   title: string;
-//   url_video?: string | null;
-//   url_image?: string | null;
-//   lesson_text: string;
-//   url_docs?: string | null;
-//   createdAt: Date;
-//   updatedAt: Date;
-//   course_id: string;
-//   quiz_id?: string | null;
-//   assignment_id?: string | null;
-//   quiz?: Quiz | null;
-//   assignment?: Assignment | null;
-// }
 
 function DisplayLessonAndAssignment({lessons}:DisplayLessonAndAssignmentprops) {
   const authUser=useSelector((state:RootState)=>state.auth.user)
@@ -102,68 +90,130 @@ function DisplayLessonAndAssignment({lessons}:DisplayLessonAndAssignmentprops) {
     const theme=useTheme()
   return (
     lessons&&lessons.map((lesson,index)=>{
-        return <Accordion sx={{}} onChange={(e, isExpanded) => setExpanded(index)}>
-      <AccordionSummary expandIcon={<ExpandMore/> } sx={{}}>
-       <Box sx={{display:"flex",alignItems:"center",gap:3,width:"100%",pl:2,pr:3}}>
-        <Typography variant='h6' sx={{display:"flex",alignItems:"center",justifyContent:"center",gap:3}}><span>Lesson - 0{index+1}</span> <AutoStories sx={{fontSize:18}}/> </Typography>
-        <Typography variant='h6' fontWeight={600}>{lesson.title}</Typography>
+        return  <Accordion  
+          key={lesson.id}
+          expanded={expanded === index}
+          sx={{
+            backgroundColor:theme.palette.primary.dark,
+            borderRadius: '16px !important', // Use !important to override default
+            border: "1px solid",
+            borderColor: theme.palette.divider,
+            
+            '&:before': {
+              display: 'none', // Remove default MUI border
+            },
+            '&.Mui-expanded': {
+              margin: '0 0 16px 0', // Override expanded margin
+            },
+            // Target the root element when expanded
+            '&.MuiAccordion-root': {
+              borderRadius: '16px !important',
+            },
+            // Override summary styling
+            '& .MuiAccordionSummary-root': {
+              borderRadius: '16px',
+              borderBottomLeftRadius: expanded === index ? 0 : '16px',
+              borderBottomRightRadius: expanded === index ? 0 : '16px',
+              minHeight: 48,
+              '&.Mui-expanded': {
+                minHeight: 48,
+                borderBottomLeftRadius: 0,
+                borderBottomRightRadius: 0,
+              },
+            },
+            // Override details styling
+            '& .MuiAccordionDetails-root': {
+              borderTop: `1px solid ${theme.palette.divider}`,
+              borderBottomLeftRadius: '16px',
+              borderBottomRightRadius: '16px',
+              padding: 0, // Remove default padding since we add our own
+            },
+          }}
+          onChange={(e, isExpanded) => setExpanded(isExpanded ? index : null)}
+        >
+      <AccordionSummary 
+        expandIcon={<ExpandMore/>} 
+        sx={{
+          // Additional summary styling if needed
+          '&:hover': {
+            backgroundColor: theme.palette.action.hover,
+          },
+        }}
+      >
+       <Box sx={{display:"flex",gap:0,width:"100%",pl:2,pr:3,flexDirection:"column"}}>
+       <Box sx={{display:"flex",gap:1,flexDirection:"column"}}> 
+        <Typography variant='h6' sx={{display:"flex",gap:3}}><span>{lesson.title}</span> </Typography>
+         <Box>
+           <Chip 
+            label={lesson.completionStatus} 
+            variant='outlined' 
+            color={lesson.completionStatus === 'COMPLETED' ? 'success' : lesson.completionStatus === 'IN_PROGRESS' ? 'warning' : 'default'} 
+            size='small' 
+            sx={{fontSize:10,pl:2,pr:2}}
+          />
+         </Box>
+        </Box>
+      {lesson.completionStatus==="COMPLETED"&&<Box sx={{width:"50%",display:"flex",flexDirection:"column",gap:0.5,mb:0.5}}>
+           <Typography variant="caption" color="text.secondary" fontSize={14} sx={{mt:1}}>
+                              {lesson.mcqPercentage??0}% Quiz Score
+                                </Typography>
+           <LinearProgress variant="determinate" value={lesson.mcqPercentage??0} color='success' />
+        </Box>}
        </Box>
       </AccordionSummary>
       <AccordionDetails>
        <Box sx={{padding:3}}>
+        <Typography sx={{display:'flex',alignItems:"center",gap:2,mb:1, background: "linear-gradient(to right,rgb(234, 196, 44),rgb(255, 55, 0))",WebkitBackgroundClip: "text",WebkitTextFillColor: "transparent",}} variant="h6" fontWeight={600}><span>Lesson Video</span> <OndemandVideo  sx={{color:theme.palette.warning.light}} /></Typography>
          {lesson.url_video&&<Box sx={{width:"100%",height:"70vh"}}><ReactPlayer url={lesson.url_video}   width="100%"
         height="100%" controls /></Box>}
      <Box sx={{mt:3}}>
-      <Typography variant='h6' fontWeight={600} sx={{backgroundColor:theme.palette.grey[100],padding:1.5}}>
-        Description:
-      </Typography>
+      <Typography sx={{display:'flex',alignItems:"center",gap:2,mb:1, background: "linear-gradient(to right,rgb(234, 196, 44),rgb(255, 55, 0))",WebkitBackgroundClip: "text",WebkitTextFillColor: "transparent",}} variant="h6" fontWeight={600}><span>Description</span> <Insights  sx={{color:theme.palette.warning.light}} /></Typography>
       <Box
       dangerouslySetInnerHTML={{ __html: lesson.lesson_text }}
       sx={{
-        
+        mt:1
       }}
     />
      </Box>
    <Box sx={{mt:5}}>
-     <Typography variant='h6' fontWeight={600} sx={{backgroundColor:theme.palette.grey[100],padding:1.5}}>
-        Additional Resources:
-      </Typography>
+     <Typography sx={{display:'flex',alignItems:"center",gap:2,mb:1,background: "linear-gradient(to right,rgb(234, 196, 44),rgb(255, 55, 0))",WebkitBackgroundClip: "text",WebkitTextFillColor: "transparent",}} variant="h6" fontWeight={600}><span>Additional Resources</span> <LibraryBooks  sx={{color:theme.palette.warning.light}} /></Typography>
      {expanded==index&&lesson.url_docs ? (
      <FilePreviewer fileUrl={`${FILEURLPRE}/${lesson.url_docs}`} />) : null}
-      <Typography variant='h6' fontWeight={600} sx={{backgroundColor:theme.palette.grey[100],padding:1.5,mt:2}}>
-         Second Document:
-      </Typography>
+     {
+      lesson.url_doc2&& <Typography sx={{display:'flex',alignItems:"center",gap:2,mb:1,mt:2, background: "linear-gradient(to right,rgb(234, 196, 44),rgb(255, 55, 0))",WebkitBackgroundClip: "text",WebkitTextFillColor: "transparent",}} variant="h6" fontWeight={600}><span> Second Document</span> <LibraryBooks  sx={{color:theme.palette.warning.light}} /></Typography>
+     }
      {expanded==index&&lesson.url_doc2 ? (
      <FilePreviewer fileUrl={`${FILEURLPRE}/${lesson.url_doc2}`} />) : null}
    </Box>
     </Box>
-      { authUser?.role==="Student"&&<Box sx={{display:"flex",alignItems:"center",justifyContent:"center",gap:3}}>
-        <Button component={Link} to={`/attempt-quiz/${lesson.id}`} variant="contained">
+      { authUser?.role==="Student"&&<Box sx={{display:"flex",alignItems:"center",justifyContent:"center",gap:3,p:2,borderTop:`1px solid ${theme.palette.divider}`}}>
+        <Button component={Link} to={`/attempt-quiz/${lesson.id}`} variant="contained" size="small">
           Attempt Quiz
         </Button>
-        <Button component={Link} to={`/attempt-assignment/${lesson.id}`} variant="contained">
+        <Button component={Link} to={`/attempt-assignment/${lesson.id}`} variant="contained" size="small">
           Attempt Assignment
         </Button>
-        <Button component={Link} to={`/attempt-MCQS-quiz/${lesson.id}`} variant="contained">
+        <Button component={Link} to={`/attempt-MCQS-quiz/${lesson.id}`} variant="contained" size="small">
           Evaluate Progress with MCQs Quiz
         </Button>
        </Box>}
-        { authUser?.role==="Teacher"&&<Box sx={{display:'flex', alignItems:"center",justifyContent:"center",gap:3}}>
-        <Button component={Link} to={`/attempt-quiz/${lesson.id}`} variant="contained">
+        { authUser?.role==="Teacher"&&<Box sx={{display:'flex', alignItems:"center",justifyContent:"center",gap:3,p:2,borderTop:`1px solid ${theme.palette.divider}`}}>
+        <Button component={Link} to={`/attempt-quiz/${lesson.id}`} variant="contained" size="small">
           Edit Lesson
         </Button>
-        <Button component={Link} to={`/attempt-assignment/${lesson.id}`} variant="contained">
+        <Button component={Link} to={`/attempt-assignment/${lesson.id}`} variant="contained" size="small">
           Edit Assignment
         </Button>
-        <Button component={Link} to={`/attempt-assignment/${lesson.id}`} variant="contained">
+        <Button component={Link} to={`/attempt-assignment/${lesson.id}`} variant="contained" size="small">
           Edit Quiz
         </Button>
-         <Button component={Link} to={`/create-MCQS-quiz/${lesson.id}`} variant="contained">
+         <Button component={Link} to={`/create-MCQS-quiz/${lesson.id}`} variant="contained" size="small">
           Create Quiz MCQs based 
         </Button>
        </Box>}
       </AccordionDetails>
     </Accordion>
+        
     })
   )
 }

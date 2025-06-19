@@ -24,15 +24,14 @@ function SecondaryMiniCards({courses}:ApprovedCourseCardProps) {
   return (
    <Box  sx={{
             display: 'grid',
-            gridTemplateColumns: { xs: '1fr', sm: '1fr ', md: '1fr 1fr 1fr ',lg:"1fr 1fr 1fr 1fr" },
+            gridTemplateColumns: { xs: '1fr', sm: '1fr ', md: '1fr 1fr 1fr ',lg:" 1fr 1fr 1fr" },
             gap: { xs: 2, md: 3},
             justifyContent: 'center',
-            pl:{xs:1, sm:1,  md:2, lg:4, xl:4
-             },pr:{  xs:1, sm:1, md:2,  lg:4, xl:4
-      } }} >
+            
+            }} >
         
     {courses&&courses.map(course=><Card component={Link} to={`/single-course-details/${course.course.id}`} sx={{
-        width: 270,
+        width: 256,
         minHeight: 315,
         maxHeight:335,
         display: 'flex',
@@ -40,7 +39,7 @@ function SecondaryMiniCards({courses}:ApprovedCourseCardProps) {
         borderRadius: 4,
         overflow: 'hidden',
         boxShadow:`-1.5px 4px 2px ${theme.palette.secondary.light}`,
-        margin:2,
+       
         textDecoration: 'none',
         backgroundColor:theme.palette.grey[100],
         border:"0.5px solid",
@@ -49,7 +48,7 @@ function SecondaryMiniCards({courses}:ApprovedCourseCardProps) {
         
 
 }}>
-       <Box sx={{padding:1, backgroundColor:theme.palette.background.paper,border:"1px solid",borderColor:theme.palette.divider,borderRadius:4}}>
+       <Box sx={{padding:1, backgroundColor:theme.palette.primary.dark,border:"1px solid",borderColor:theme.palette.divider,borderRadius:4}}>
         <CardMedia component={"img"} src={`${FILEURLPRE}/${course.course.thumbnail}`} sx={{
             height: 100,
             borderRadius:4,
@@ -67,7 +66,7 @@ function SecondaryMiniCards({courses}:ApprovedCourseCardProps) {
 
                   }}
                 >
-                   {limitWords(course.course.title, 6)}
+                   {limitWords(course.course.title, 5)}
                 </Typography>
                 <Typography
                   variant="body2"
@@ -78,12 +77,12 @@ function SecondaryMiniCards({courses}:ApprovedCourseCardProps) {
                     
                   }}
                 >
-                    {limitWords(course.course.subtitle, 6)}
+                    {limitWords(course.course.subtitle, 4)}
                 </Typography>
                 </Box>
                    <Box sx={{display:"flex",gap:2,mb:0.5,mt:1.5,ml:1,mr:1}}>
-          <Chip label={course.course.activationStatus} variant='outlined' color="info" size='small' sx={{fontSize:10}}/>
-          <Chip label={course.course.language}  variant='outlined' color="warning" size='small' sx={{fontSize:10}}/>
+          <Chip label={course.course.category} variant='outlined' color="info" size='small' sx={{fontSize:11,pl:2,pr:2}}/>
+          <Chip label={course.course.language}  variant='outlined' color="warning" size='small' sx={{fontSize:11,pl:2,pr:2}}/>
         </Box>
        </Box>
         <Box sx={{display:"flex",alignItems:'center',justifyContent:"space-between",padding:1.5}}>

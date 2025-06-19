@@ -20,7 +20,7 @@ export const darkTheme: ThemeOptions = createTheme({
     primary: {
       main: "#4477CE", //deep teal
       light: "#e1774b", //coral orange
-      dark: "#1A2327",//bright purple 
+      dark: "#04182e",//bright purple 
       contrastText: "#ffffff"
     },  
     secondary: {
@@ -50,7 +50,7 @@ export const darkTheme: ThemeOptions = createTheme({
       disabled: "rgba(255, 255, 255, 0.5)"
     },
     background: {
-      default: "#151B24", //very dark gray
+      default: "#02051f", //very dark gray
       paper: "#222A32", //slightly lighter gary
     
     }

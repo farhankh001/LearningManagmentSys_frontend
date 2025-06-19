@@ -42,7 +42,7 @@ function SubmitMCQQuizStudentFormProvider() {
   }
   return (
     <FormProvider {...methods}>
-      <MCQQuizAttemptFrom  questions={mcqData?.questions}/>
+      <MCQQuizAttemptFrom  questions={mcqData?.questions} title={mcqData?.title??"Quiz Title"}/>
     </FormProvider>
   )
 }

@@ -60,7 +60,7 @@ export const userApi = baseApi.injectEndpoints({
             body:loginData,
             credentials:'include'
         }),
-        invalidatesTags:["User"]
+        invalidatesTags:["User","Enrollment","StdActiveTime"]
     }),
     loggedInUserInof:builder.query<LoggedInUserType,void>({
       query:()=>({
@@ -73,7 +73,8 @@ export const userApi = baseApi.injectEndpoints({
       query:()=>({
         url:"/logout",
         method:"POST"
-      })
+      }),
+      invalidatesTags:["Enrollment","StdActiveTime","Courses","User"]
     }),
     registerTeacher: builder.mutation<any,FormData>({
       query: (formData) => ({

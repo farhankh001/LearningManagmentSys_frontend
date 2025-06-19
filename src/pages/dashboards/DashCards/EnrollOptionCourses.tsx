@@ -59,7 +59,7 @@ function EnrollOptionCourses() {
             objectFit: 'cover',}}/>
        
          <Box sx={{ display: 'flex', flexDirection: 'column',m:2}}>
-                <AutoStories/>
+               <AutoStories sx={{fontSize:18}}/>
                 <Typography
                   variant="h6"
                   sx={{
@@ -70,7 +70,7 @@ function EnrollOptionCourses() {
 
                   }}
                 >
-                   {limitWords(course.title, 7)}
+                   {limitWords(course.title, 6)}
                 </Typography>
                 <Typography
                   variant="body2"
@@ -81,7 +81,7 @@ function EnrollOptionCourses() {
                     
                   }}
                 >
-                    {limitWords(course.subtitle, 9)}
+                    {limitWords(course.subtitle, 6)}
                 </Typography>
                 </Box>
                    <Box sx={{display:"flex",gap:2,mb:0.5,mt:1.5,ml:1,mr:1}}>

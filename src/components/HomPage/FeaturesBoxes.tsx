@@ -59,7 +59,7 @@ function FeaturesBoxes() {
             xs:1,
             sm:1,
             md:2
-          },alignItems:"center",margin:1,backgroundColor:theme.palette.background.paper,borderRadius:4,padding:2,textAlign:"center",
+          },alignItems:"center",margin:1,backgroundColor:theme.palette.primary.dark,borderRadius:4,padding:2,textAlign:"center",
            transition: "all 0.3s ease",
     cursor: "pointer",
     width:"300px",

@@ -1,4 +1,4 @@
-import { Box, Paper, Typography } from '@mui/material';
+import { Box, Paper, Typography, useTheme } from '@mui/material';
 import { ResponsiveContainer, CartesianGrid, XAxis, YAxis, Tooltip, Line, Legend,LineChart } from 'recharts'
 
 
@@ -12,8 +12,9 @@ function QuizPerformanceLineChart({scores,title}:QuizPerformanceLineChartProps) 
   index: index + 1,
   score,
 }));
+const theme=useTheme()
   return (
-     <Paper elevation={3} sx={{width:"100%", height:"100%",padding:2,overflow:"hidden"}}>
+     <Paper elevation={3} sx={{ width: '100%', height: '100%', p: 2,border:"1px solid", borderRadius:4,borderColor:theme.palette.divider,background:theme.palette.primary.dark,display:"flex",flexDirection:"column",alignItems:"center"}}>
          <Typography variant='body2' fontWeight={600}>{title}</Typography>
     <ResponsiveContainer width="90%" height="85%">
   <LineChart data={quizScores}>

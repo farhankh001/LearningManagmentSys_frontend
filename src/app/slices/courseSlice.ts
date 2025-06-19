@@ -1,5 +1,6 @@
 import { Category } from "@mui/icons-material";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { EnrolledCourse, EnrolledCoursesApproved, EnrollmentSummary } from "../api/studentDashApis";
 
 export interface Category {
     id: string;
@@ -48,20 +49,59 @@ export interface TeacherCourseResponse {
 export interface SingleCourseResponse {
     course: Course;
   }
+interface CourseStats{
+  totalCourses:number;
+  approvedCourses:number;
+
+}
+
 interface CourseState {
     teacherCourses: Course[];
     allCourses: Course[];
     favoriteCourses: Course[];
-    topCourses: Course[];
-    enrolledCourses: Course[];
+    pendingCourses: {
+      courses: EnrolledCourse[],
+      enrollmentSummary:EnrollmentSummary
+  }
+      ;
+    enrolledCourses: {
+      enrollmentSummary:EnrollmentSummary;
+      courses:EnrolledCoursesApproved[];
+    }
   }
 
 const initialState: CourseState = {
   teacherCourses: [],
   allCourses: [],
   favoriteCourses: [],
-  topCourses: [],
-  enrolledCourses: []
+  pendingCourses: {
+    courses:[],
+    enrollmentSummary:{
+      completed:0,
+      inProgress:0,
+      overallProgressPercentage:0,
+      totalApproved:0,
+      totalCompletedLessonsWithMcq:0,
+      totalEnrolled:0,
+      totalLessonsWithMcq:0,
+      totalPending:0
+
+    }
+  },
+  enrolledCourses:{
+    courses:[],
+    enrollmentSummary:{
+      completed:0,
+      inProgress:0,
+      overallProgressPercentage:0,
+      totalApproved:0,
+      totalCompletedLessonsWithMcq:0,
+      totalEnrolled:0,
+      totalLessonsWithMcq:0,
+      totalPending:0
+
+    }
+  },
   };
 const courseSlice=createSlice({
     initialState,
@@ -76,10 +116,16 @@ const courseSlice=createSlice({
         setFavoriteCourses: (state, action: PayloadAction<Course[]>) => {
             state.favoriteCourses = action.payload;
           },
-        setTopCourses: (state, action: PayloadAction<Course[]>) => {
-            state.topCourses = action.payload;
+        setPendingCourses: (state, action: PayloadAction<{
+      courses: EnrolledCourse[],
+      enrollmentSummary:EnrollmentSummary
+  }>) => {
+            state.pendingCourses = action.payload;
           },
-        setEnrolledCourses: (state, action: PayloadAction<Course[]>) => {
+        setEnrolledCourses: (state, action: PayloadAction<{
+      courses: EnrolledCoursesApproved[],
+      enrollmentSummary:EnrollmentSummary
+  }>) => {
             state.enrolledCourses = action.payload;
           }
     }
@@ -87,4 +133,4 @@ const courseSlice=createSlice({
 
 
 export default courseSlice.reducer
-export const {setAllCourses,setEnrolledCourses,setFavoriteCourses,setTeacherCourses,setTopCourses}=courseSlice.actions
+export const {setAllCourses,setEnrolledCourses,setFavoriteCourses,setTeacherCourses,setPendingCourses}=courseSlice.actions

@@ -34,6 +34,9 @@ import TeacherRegisterFormProvider from './components/Forms/FormProviders/Teache
 import SinglePendingTeacher from './pages/Teacher/SinglePendingTeacher.tsx'
 import SingleStudentProfile from './pages/student/SingleStudentProfile.tsx'
 import EnrolledCourseMoreInfo from './pages/courses/EnrolledCourseMoreInfo.tsx'
+import StudentAllEnrolledCourses from './pages/dashboards/DashSettingsPages/StudentAllEnrolledCourses.tsx'
+import StudentPendingEnrollments from './pages/dashboards/DashSettingsPages/StudentPendingEnrollments.tsx'
+import StudentEnrollCourse from './pages/dashboards/DashSettingsPages/StudentEnrollCourse.tsx'
 
 
  // Types
@@ -90,10 +93,12 @@ const router = createBrowserRouter(
         <Route path="/attempt-quiz/:lessonId" element={<AttemptQuiz/>}/>
         <Route path="/attempt-assignment/:lessonId" element={<AttemptAssignment/>}/>
         <Route path="/logout" element={<Logout/>} />
-         <Route path="/attempt-MCQS-quiz/:lessonId" element={<SubmitMCQQuizStudentFormProvider/>}/>
-         <Route path="/view-mcq-results-std/:submissionId" element={<MCQResults/>}/>
-          <Route path="/enrolled-course-more-info/:courseId" element={<EnrolledCourseMoreInfo/>}/>
-          
+        <Route path="/attempt-MCQS-quiz/:lessonId" element={<SubmitMCQQuizStudentFormProvider/>}/>
+        <Route path="/view-mcq-results-std/:submissionId" element={<MCQResults/>}/>
+        <Route path="/enrolled-course-more-info/:courseId" element={<EnrolledCourseMoreInfo/>}/>
+         <Route path="/all-enrolled-courses-settings" element={<StudentAllEnrolledCourses/>}/>
+          <Route path="/all-pending-courses-settings" element={<StudentPendingEnrollments/>}/>
+           <Route path="/enroll-in-a-course" element={<StudentEnrollCourse/>}/>
       </Route>
          <Route element={<ProtectedRoute allowedRoles={["Admin"]}/>}>
          <Route path="/admin-dash" element={<AdminDashboard />} />

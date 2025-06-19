@@ -6,7 +6,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts';
-import { Paper, Typography, Box } from '@mui/material';
+import { Paper, Typography, Box, useTheme } from '@mui/material';
 
 interface PieChartDataItem {
   name: string;
@@ -28,8 +28,9 @@ export const PieChartDashComparison: React.FC<PieChartDashProps> = ({
   height = "90%",
   showLegend = true,
 }) => {
+  const theme=useTheme()
   return (
-    <Paper elevation={3} sx={{ p: 2, height: '100%' }}>
+    <Paper elevation={3} sx={{ width: '100%', height: '100%', p: 2,border:"1px solid", borderRadius:4,borderColor:theme.palette.divider,background:theme.palette.primary.dark,display:"flex",flexDirection:"column",alignItems:"center"}}>
       <Typography variant="body2" fontWeight={600} sx={{ mb: 2 }}>
         {title}
       </Typography>

@@ -7,7 +7,7 @@ import {
   Tooltip,
   Legend,
 } from 'recharts';
-import { Box, Typography, Paper } from '@mui/material';
+import { Box, Typography, Paper, useTheme } from '@mui/material';
 // BarChartDashDataProps
 
 interface PieChartDashProps {
@@ -36,9 +36,9 @@ const PieChartDash: React.FC<PieChartDashProps> = ({
     { name: label2, value: completed },
     { name: label3, value: inprogress },
   ];
-
+   const theme=useTheme()
   return (
-    <Paper elevation={3} sx={{width:"100%", height:"100%",padding:2,overflow:"hidden"}}>
+    <Paper elevation={3} sx={{ width: '100%', height: '100%', p: 2,border:"1px solid", borderRadius:4,borderColor:theme.palette.divider,background:theme.palette.primary.dark,display:"flex",flexDirection:"column",alignItems:"center"}}>
     <Typography variant='body2' fontWeight={600} sx={{margin:1}}>{title}</Typography>
   <ResponsiveContainer width="90%" height="90%">
   <PieChart>

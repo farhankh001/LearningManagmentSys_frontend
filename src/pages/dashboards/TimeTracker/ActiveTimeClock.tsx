@@ -1,4 +1,4 @@
-import { Box, Typography, Paper } from '@mui/material';
+import { Box, Typography, Paper, useTheme } from '@mui/material';
 import { useGetActiveStudyTimeQuery } from '../../../app/api/studentDashApis';
 
 
@@ -12,7 +12,7 @@ export default function ActiveTimeClock() {
     const s = (secs % 60).toString().padStart(2, '0');
     return `${h}:${m}:${s}`;
   };
-
+  const theme=useTheme()
   return (
     <Paper
       elevation={3}
@@ -34,7 +34,8 @@ export default function ActiveTimeClock() {
           fontFamily: 'monospace',
           fontWeight: 'bold',
           letterSpacing: '0.1rem',
-          textAlign:"center"
+          textAlign:"center",
+          color:theme.palette.warning.light
         }}
       >
         {formatTime(activeStudyTime?.studyTime?activeStudyTime.studyTime:0)}

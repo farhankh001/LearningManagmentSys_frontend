@@ -1,5 +1,5 @@
 import {Box, Typography,Avatar,Chip, useTheme,ListItem,ListItemButton,Divider,ListItemIcon,ListItemText,Rating,LinearProgress, Alert, CircularProgress, Button, Card, CardMedia,} from "@mui/material";
-import { CheckCircle, Cancel, Create, UpdateSharp, Info, Email, School, Forward, Book, Forward10 } from '@mui/icons-material';
+import { CheckCircle, Cancel, Create, UpdateSharp, Info, Email, School, Forward, Book, Forward10, EmojiEvents, Celebration, Thunderstorm, Insights, Explore } from '@mui/icons-material';
 import { Link } from "react-router-dom";
 import { useParams } from 'react-router-dom'
 import DisplayLessonAndAssignment from '../lessons/DisplayLessonAndAssignment';
@@ -12,7 +12,8 @@ import { limitWords } from "../dashboards/DashCards/ApprovedCoursesCards";
 import QuizPerformanceLineChart from "../dashboards/Charts/QuizPerformanceLineChart";
 import PieChartDash from "../dashboards/Charts/PieChartDash";
 import RadialChartDash from "../dashboards/Charts/RadialChartDash";
-
+import { BorderLinearProgress } from "../../test/feature";
+import { StudyTimeTracker } from "../dashboards/TimeTracker/StudyTimeTracker";
 
 function EnrolledCourseInfo() {
     const {courseId}=useParams()
@@ -47,126 +48,116 @@ function EnrolledCourseInfo() {
          );
      }
      console.log(enrolledCourse?.stats.quizScores)
+//quiz over all percentage numbers:
+const total = enrolledCourse?.stats.quizScores?.reduce((sum, val) => sum + val, 0) ?? 0;
+const count = enrolledCourse?.stats.quizScores?.length ?? 1;
+const overallPercentage = total / count;
   return (
-   <Box sx={{display:'flex',flexDirection:"row",width:"100%",gap:1}}>
-      {/*left box*/}
-      <Box sx={{maxWidth:"18%",width:"18%",backgroundColor:theme.palette.background.paper,padding:2,display:"flex",flexDirection:"column",gap:2}}>
-
-             <Typography variant="body1" fontWeight={650} sx={{display:"flex",alignItems:"center",gap:1}}>Teacher Information <Forward/></Typography> 
-
-           <Box sx={{backgroundColor:theme.palette.grey[100],padding:2,display:"flex",flexDirection:"column",gap:2,borderRadius:4}}>
-          
-                 <Box sx={{display:"flex",alignItems:"center",justifyContent:"start",gap:2}}>
-                 <Avatar  src={`${FILEURLPRE}/${enrolledCourse?.courseTeacherInfo[0].profile_url}`}/>
-                  {/* <Security sx={{ background: "linear-gradient(to right,rgb(234, 196, 44),rgb(255, 55, 0))",fontSize:20}}/> */}
-                 
-                <Box sx={{display:"flex",flexDirection:"column",gap:1}}>
-                   <Typography variant="body2" sx={{display:"flex",gap:1,alignItems:"center"}} fontWeight={650}>
-                  <FaUniversity size={15}/>
-                  {enrolledCourse?.courseTeacherInfo[0].name}
-                 </Typography>
-                 <Typography variant="body2" sx={{display:"flex",gap:1,alignItems:"center"}} fontWeight={650}>
-                  <Email sx={{fontSize:16}}/>
-                  {enrolledCourse?.courseTeacherInfo[0].email}
-                 </Typography>
-                </Box>
-                 </Box>
-          
-                 <Box sx={{display:"flex",gap:2}}>
-                  <Chip label="Teacher" variant="outlined" size="small" sx={{padding:1}} color="success"/>
-                  <Chip label="Verified" variant="outlined" size="small" sx={{padding:1}} color="warning" />
-                 </Box>
-          
-            </Box>
-               <Typography variant="body1" fontWeight={650} sx={{display:"flex",alignItems:"center",gap:1}}>Course Information <Forward/></Typography>
-             <Card  sx={{
-        width: 240,
-        minHeight: 280,
-        maxHeight:300,
-        display: 'flex',
-        flexDirection: 'column',
-        borderRadius: 4,
-        overflow: 'hidden',
-        boxShadow:`-1.5px 4px 2px ${theme.palette.secondary.light}`,
-        textDecoration: 'none',
-        backgroundColor:theme.palette.grey[100],
-        border:"0.5px solid",
-        borderColor:theme.palette.divider
-
-}}>
-       <Box sx={{backgroundColor:theme.palette.background.paper,border:"1px solid",borderColor:theme.palette.background.default,borderRadius:4}}>
-        <CardMedia component={"img"} src={`${FILEURLPRE}/${enrolledCourse?.course_thumbnail}`} sx={{
-            height: "100px",
-            borderRadius:4,
-            objectFit: 'cover',}}/>
-       
-         <Box sx={{ display: 'flex', flexDirection: 'column',m:1.5}}>
-          
-           <Typography variant="caption" sx={{display:"flex",gap:1, alignItems:"center",color:"grey"}}>
-                  <Book sx={{color:theme.palette.text.primary,fontSize:16}}/> 
-                          Course 
-            </Typography>
-            <Typography
-                  variant="h6"
-                  sx={{
-                    fontSize: '1rem',
-                    fontWeight: 700,
-                    color: theme.palette.text.primary,
-                 
-
-                  }}
-                >
-                   {limitWords(enrolledCourse?.title??"", 4)}
-              </Typography>
-              <Typography
-                  variant="body2"
-                  sx={{
-                    color:theme.palette.text.primary,
-                    opacity: 0.75,
-                    display: '-webkit-box',
-                    
-                  }}
-                >
-                    {limitWords(enrolledCourse?.subtitle??"", 5)}
-                </Typography>
-                </Box>
-                   <Box sx={{display:"flex",gap:2,mb:1,mt:1.5,ml:1,mr:1}}>
-          <Chip label={enrolledCourse?.activationStatus} size='small' sx={{fontSize:10}}/>
-          <Chip label={enrolledCourse?.language} size='small' sx={{fontSize:10}}/>
-        </Box>
-       </Box>
-       <Box sx={{textAlign:"center"}}>
-        <Button sx={{fontSize:10,margin:0.2}} component={Link} to={`/enrolled-course-more-info/${enrolledCourse?.id}`}>
-           View More Information about course <Forward sx={{fontSize:15}}/>
-        </Button>
-       </Box>
-          
-    </Card>
-          
-           
-      </Box>
+   <Box sx={{width:"100%",display:"flex",gap:0,flexDirection:{xs:"column-reverse",md:"row"},maxWidth:"100%"}}>
+      <StudyTimeTracker/>
+      
        
 
   {/*right section*/}
-    <Box sx={{width:"100%"}} >
-      <Box sx={{width:"95%",pl:2,pr:2,mb:3}}>
+<Box sx={{width:{xs:"95%",md:"70%",lg:"80%"},display:"flex",flexDirection:"column",mt:{
+    xs:2,md:0
+  },pl:{
+    xs:1,md:4,lg:8,
+  },pr:{
+    xs:1,md:2,lg:6
+  }}}>
+   <Box sx={{display:"flex",gap:2,flexDirection:{xs:"column",md:"row"}}}>
+    <Box sx={{width:"65%",border:"1px solid",borderColor:theme.palette.divider,borderRadius:4}}>
+       <CardMedia component={"img"} src={`${FILEURLPRE}/${enrolledCourse?.course_thumbnail}`} sx={{
+                height: "250px", 
+                borderRadius:4,
+                objectFit: 'cover',}}/>
+    </Box>
+      <Box sx={{display:"flex",flexDirection:"column",width:"35%",padding:3,borderRadius:4,border:"1px solid",  borderColor:theme.palette.divider,alignItems:"center",justifyContent:"center",  backgroundImage:
+                    "radial-gradient(ellipse at 20% 40%, rgba(92, 196, 252, 0.76) 0%, transparent 60%), radial-gradient(ellipse at 70% 60%, rgba(255, 181, 131, 0.53) 0%, transparent 60%)",}}>
+       
+        <Typography variant="h5" fontWeight={650}>
+        {enrolledCourse?.title}
+        </Typography>
+         
+         <Box sx={{display:"flex",gap:2,mb:0.5,mt:1.5,ml:1,mr:1}}>
+                   <Chip label={enrolledCourse?.category} variant='filled' color="success" size='medium' sx={{fontSize:11,pl:2,pr:2,color:"white",fontWeight:600}}/>
+                   <Chip label={enrolledCourse?.language}  variant='filled' color="warning" size='medium' sx={{fontSize:11,pl:2,pr:2,color:"white",fontWeight:600}}/>
+          </Box>
+      </Box>
+   </Box>
+
+      <Box sx={{mt:3,width:"100%",mb:3,display:"flex",flexDirection:"column",gap:1,padding:1,
+               
+      }}>
+        <Typography sx={{display:'flex',alignItems:"center",gap:2,mb:1, background: "linear-gradient(to right,rgb(234, 196, 44),rgb(255, 55, 0))",WebkitBackgroundClip: "text",WebkitTextFillColor: "transparent",}} variant="h6" fontWeight={600}><span>Explore Course Lessons</span> <Explore  sx={{color:theme.palette.warning.light}} /></Typography>
       <DisplayLessonAndAssignment  lessons={enrolledCourse?.lessons} />
     </Box>
+  <Typography sx={{display:'flex',alignItems:"center",gap:1,mb:1, background: "linear-gradient(to right,rgb(234, 196, 44),rgb(255, 55, 0))",WebkitBackgroundClip: "text",WebkitTextFillColor: "transparent",}} variant="h6" fontWeight={600}><span>Course Statistics</span> <Forward sx={{color:theme.palette.warning.light}}/></Typography>
          {/*stats section*/}
-    <Box sx={{display:"flex",width:"95%",height:'330px',alignItems:"center",justifyContent:"center",gap:3,pl:2,pr:2,pb:2}}>
-      <Box sx={{height:"100%",width:"30%"}}>
-        <PieChartDash completed={enrolledCourse?.stats.completedLessons??0} totalEnrolled={enrolledCourse?.stats.totalLessons??0} inprogress={(enrolledCourse?.stats.totalLessons??0) - (enrolledCourse?.stats.completedLessons??0)} label1="Completed" label2="Total" label3="Remaining" title="Lesson Completion info"/>
+    <Box sx={{display:"grid",width:"100%",height:{
+      xs:"150vh",md:"660px",lg:'315px'
+    },gridTemplateColumns:{xs:"1fr",md:"1fr 1fr",lg:"30% 25% 41%"},alignItems:"center",justifyContent:"center",gap:3,flexDirection:{
+      xs:"column",md:"row"
+    },mb:5}}>
+      
+      <Box sx={{height:"100%"}}>
+        <PieChartDash completed={enrolledCourse?.stats.completedLessons??0} totalEnrolled={enrolledCourse?.stats.totalLessons??0} inprogress={(enrolledCourse?.stats.totalLessons??0) - (enrolledCourse?.stats.completedLessons??0)} label1="Total" label2="Completed" label3="Remaining" title="Lesson Completion info"/>
       </Box>
      
-     <Box sx={{height:"100%",width:"21%"}}>
+     <Box sx={{height:"100%"}}>
       <RadialChartDash overAllProgressPercentage={enrolledCourse?.stats.progressPercentage??0} title="Over All Completion of this course"/>
      </Box>
-    <Box sx={{height:"100%",width:"46%"}}>
+    <Box sx={{height:"100%"}}>
       <QuizPerformanceLineChart  scores={enrolledCourse?.stats.quizScores??[]} title="Performance Over View Accross All Lessons" />
      </Box>
     </Box>
     
+
+
+  </Box>
+
+
+
+
+
+
+
+
+  <Box sx={{minWidth:{xs:"95%",md:"30%",lg:"20%"},maxWidth:"100%",pr:2,display:"flex",flexDirection:"column",gap:3,mr:4}}>
+          <Box sx={{display:"flex",flexDirection:"column",gap:2}}>
+              <Box sx={{backgroundImage:
+                    "radial-gradient(ellipse at 20% 40%, rgba(92, 196, 252, 0.76) 0%, transparent 60%), radial-gradient(ellipse at 70% 60%, rgba(255, 181, 131, 0.53) 0%, transparent 60%)",padding:3,display:"flex",flexDirection:"column",gap:0.5,borderRadius:4,alignItems:"center",justifyContent:"center"}}>
+                    <Avatar  src={`${FILEURLPRE}/${enrolledCourse?.courseTeacherInfo[0].profile_url}`}  sx={{width:"150px",height:"150px",border:"1px solid",borderColor:theme.palette.divider}}/>
+                    <Typography variant="body1" fontWeight={600}  sx={{display:"flex",alignItems:"center",gap:1}}>
+                       COURSE TEACHER<Celebration/>
+                     </Typography>
+                    <Typography variant="body1" fontWeight={600} sx={{}}>
+                     {enrolledCourse?.courseTeacherInfo[0].name.split(" ")[0].toUpperCase()}
+                    </Typography>
+                    
+                 </Box>
+
+              <Box  sx={{backgroundColor:theme.palette.primary.dark,border:"1px solid",borderColor:theme.palette.divider,padding:3,display:"flex",flexDirection:"column",gap:2,borderRadius:4,alignItems:"center"}}>
+                <Thunderstorm/> 
+                 {[
+                    { label: '% Progress', value:enrolledCourse?.stats.progressPercentage, order: 1 },
+                    { label: '% Result Last Quiz', value: enrolledCourse?.stats.quizScores[enrolledCourse.stats.quizScores.length-1], order: 2 },
+                    { label: '% Result Across All Quizes', value: overallPercentage, order: 3 },
+                      ].map(({ label, value, order }) => (
+                        <Box key={label} sx={{ mb: 1,width:"100%"}}>
+                                <Typography variant="subtitle1" color="text.secondary">
+                                  {label}
+                                </Typography>
+                                <BorderLinearProgress variant="determinate" value={value} order={order} />
+                        </Box>
+                            ))}
+
+              </Box>
+          </Box>
       </Box>
+
+
    </Box>
 
    

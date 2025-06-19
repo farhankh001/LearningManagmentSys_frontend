@@ -4,7 +4,7 @@ import { useUpdateActiveStudyTimeMutation } from '../../../app/api/studentDashAp
 import { BASEURL } from '../../../app/api/baseApi';
 import toast from 'react-hot-toast';
 
-const FIVE_MINUTES = 30;
+const FIVE_MINUTES = 1;
 
 export function StudyTimeTracker() {
   const [updateTimer,{isError,error}]=useUpdateActiveStudyTimeMutation()

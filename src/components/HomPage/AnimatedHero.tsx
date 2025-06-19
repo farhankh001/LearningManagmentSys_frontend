@@ -1,7 +1,8 @@
 import React from "react";
 import { Box, Typography, Button, Container, Stack, Avatar, useTheme } from "@mui/material";
 import Lottie from "lottie-react";
-import heroAnimation from "../../assets/Animation - 1748602807457.json";
+
+import secondHeroAmi from "../../assets/Animation - 1748602807457.json"
 import { Link } from "react-router-dom";
 import { LogoCarousel} from "./Cr";
 import { Security } from "@mui/icons-material";
@@ -18,18 +19,19 @@ const HeroSection = () => {
   }, overflow: "hidden", bgcolor: "background.default",display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center" }}>
     
     {/* Background animation */}
-    <Box
+ 
+ <Box
       sx={{
         position: "absolute",
         top: 0,
         left: 0,
         width: "100%",
         height: "100%",
-        zIndex: 0,
+        zIndex: 1,
       }}
     >
       <Lottie
-        animationData={heroAnimation}
+        animationData={secondHeroAmi}
         loop
         autoplay
         style={{
@@ -38,8 +40,8 @@ const HeroSection = () => {
           objectFit: "cover",
         }}
       />
+     
     </Box>
-
     {/* Content container */}
     <Box
       sx={{

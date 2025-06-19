@@ -1,5 +1,23 @@
 import baseApi from "./baseApi";
-import { Lesson } from "./createCourseApi";
+import { Assignment, Quiz } from "./createCourseApi";
+export interface EnhancedLesson {
+  id: string;
+  title: string;
+  url_video?: string | null;
+  url_doc2?: string | null;
+  lesson_text: string;
+  url_docs?: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+  course_id: string;
+  quiz_id?: string | null;
+  assignment_id?: string | null;
+  quiz?: Quiz | null;
+  assignment?: Assignment | null;
+  completionStatus:string;
+  mcqPercentage: number | null;
+}
+
 export interface Teacher {
   id: string;
   name: string;
@@ -33,8 +51,9 @@ export interface StudentEnrolledCourseSuccessType{
         language:string,
         course_thumbnail: string,
         avgRating:number,
+        category:string,
         activationStatus: string,
-        lessons:Lesson[],
+        lessons:EnhancedLesson[],
         courseTeacherInfo:CourseTeacher[]
         stats: {
     totalLessons:number,
@@ -77,6 +96,7 @@ export type EnrolledCoursesApproved = {
     subtitle:string;
     activationStatus:string;
     language:string
+    category:string,
   };
   teacher: {
     id: string;

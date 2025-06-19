@@ -9,7 +9,7 @@ import {
   Bar,
   Cell,
 } from 'recharts';
-import { Box, Typography, Paper } from '@mui/material';
+import { Box, Typography, Paper, useTheme } from '@mui/material';
 
 export interface ChartDataItem {
   name: string;
@@ -31,8 +31,9 @@ const BarChartDash: React.FC<BarChartDashProps> = ({
   legendItems,
   height = '90%',
 }) => {
+  const theme=useTheme()
   return (
-    <Paper elevation={3} sx={{ width: '100%', height: '100%', p: 2 }}>
+    <Paper elevation={3} sx={{ width: '100%', height: '100%', p: 2,border:"1px solid", borderRadius:4,borderColor:theme.palette.divider,background:theme.palette.primary.dark,display:"flex",flexDirection:"column",alignItems:"center"}}>
       <Typography variant="body2" fontWeight={600} sx={{ mb: 2 }}>
         {title}
       </Typography>

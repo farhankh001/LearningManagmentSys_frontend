@@ -12,7 +12,7 @@ interface RadialChartProps {
   barColor?:string
 }
 
-function RadialChartDash({ overAllProgressPercentage, title,barColor }: RadialChartProps) {
+function RadialChartWithStyledBg({ overAllProgressPercentage, title,barColor }: RadialChartProps) {
   const theme=useTheme()
   const data = [
     {
@@ -22,13 +22,14 @@ function RadialChartDash({ overAllProgressPercentage, title,barColor }: RadialCh
     },
     {
       name: 'Attempted',
-      value: overAllProgressPercentage,
+      value: Math.floor(overAllProgressPercentage),
       fill: '#4caf50', // actual progress
     },
   ];
 
   return (
-    <Paper elevation={3} sx={{ width: '100%', height: '100%', p: 2,border:"1px solid", borderRadius:4,borderColor:theme.palette.divider,background:theme.palette.primary.dark,display:"flex",flexDirection:"column",alignItems:"center"}}>
+    <Paper elevation={3} sx={{ width: '100%', height: '100%', p: 2,border:"1px solid", borderRadius:4,borderColor:theme.palette.divider,backgroundImage:
+                    "radial-gradient(ellipse at 20% 40%, rgba(11, 57, 81, 0.76) 0%, transparent 60%), radial-gradient(ellipse at 70% 60%, rgba(126, 73, 35, 0.53) 0%, transparent 60%)",display:"flex",flexDirection:"column",alignItems:"center"}}>
       <Typography variant="body2" fontWeight={600} mb={1}>
         {title}
       </Typography>
@@ -59,7 +60,7 @@ function RadialChartDash({ overAllProgressPercentage, title,barColor }: RadialCh
             fontWeight="bold"
             fill="#4caf50"
           >
-            {overAllProgressPercentage}%
+            {Math.floor(overAllProgressPercentage)}%
           </text>
         </RadialBarChart>
       </ResponsiveContainer>
@@ -67,4 +68,4 @@ function RadialChartDash({ overAllProgressPercentage, title,barColor }: RadialCh
   );
 }
 
-export default RadialChartDash;
+export default RadialChartWithStyledBg;

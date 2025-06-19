@@ -8,7 +8,7 @@ import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgr
 import { data } from './feature.data'
 import { CardMedia } from '@mui/material'
 import Lottie from 'lottie-react'
-import heroAnimation from "../assets/eiffel-celebration.json";
+import heroAnimation from "../assets/Animation - 1750249071716.json";
 import { Security } from '@mui/icons-material'
 interface LinearProgressProps {
   order: number
@@ -17,7 +17,7 @@ interface LinearProgressProps {
 export const BorderLinearProgress = styled(LinearProgress, {
   shouldForwardProp: (prop) => prop !== 'color',
 })<LinearProgressProps>(({ theme, order }) => ({
-  height: 6,
+  height: 6.5,
   borderRadius: 5,
   [`&.${linearProgressClasses.colorPrimary}`]: {
     backgroundColor: theme.palette.grey[200],
@@ -25,13 +25,13 @@ export const BorderLinearProgress = styled(LinearProgress, {
   [`& .${linearProgressClasses.bar}`]: {
     borderRadius: 5,
     ...(order === 1 && {
-      backgroundColor: 'primary.main',
+      backgroundColor: '#ffcc40',
     }),
     ...(order === 2 && {
-      backgroundColor: '#c33ade',
+      backgroundColor: '#5bfccc',
     }),
     ...(order === 3 && {
-      backgroundColor: '#0063ff',
+      backgroundColor: '#f36dfc',
     }),
      ...(order === 4 && {
       backgroundColor: '#ded63a',
