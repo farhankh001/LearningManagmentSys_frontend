@@ -1,11 +1,11 @@
-import { Box, Button, Typography, useTheme, Stepper, Step, StepLabel, MobileStepper, useMediaQuery, ListItemIcon, Divider, ListItem, ListItemButton, ListItemText } from '@mui/material'
+import { Box, Button, Typography, useTheme, Stepper, Step, StepLabel, MobileStepper,ListItemIcon, Divider, ListItem, ListItemButton, ListItemText } from '@mui/material'
 import { useAttemptedMCQByStudentSubmitMutation, useMcqAttemptStatusCheckQuery } from '../../../app/api/lessonApi'
 import MCQSInputField from '../../../components/Forms/InputFields/MCQSInputField'
 import { useFormContext } from 'react-hook-form'
 import { SubmitMCQByStudentType } from '../../../types/quiz-mcqs-types'
 import toast from 'react-hot-toast'
 import { useNavigate, useParams } from 'react-router-dom'
-import { KeyboardArrowLeft, KeyboardArrowRight, AccountCircle, ApprovalRounded, Pending, Thunderstorm, ArrowForward, Forward, Insights } from '@mui/icons-material'
+import { KeyboardArrowLeft, KeyboardArrowRight, AccountCircle, ApprovalRounded, Pending, Thunderstorm,Insights } from '@mui/icons-material'
 import McqQuizResult from './McqQuizResult'
 import { useState } from 'react'
 import RadialChartWithStyledBg from '../../dashboards/Charts/RaicalChartWithStyledBg'
@@ -39,12 +39,12 @@ function MCQQuizAttemptFrom({ questions, title }: MCQQuizAttemptFormProps) {
   const { lessonId } = useParams()
   const navigate = useNavigate()
   const theme = useTheme()
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
+  // const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
   const [activeStep, setActiveStep] = useState(0)
 
   const [attemptedMCQData] = useAttemptedMCQByStudentSubmitMutation()
   const { data: attemptData, error: mcqAttemptError, isError: mcqAttemptIsError } = useMcqAttemptStatusCheckQuery({ lessonId })
-  const { handleSubmit, control, watch } = useFormContext<SubmitMCQByStudentType>()
+  const { handleSubmit, watch } = useFormContext<SubmitMCQByStudentType>()
   
   // Watch answers array to get current values
   const answers = watch('answers');
@@ -129,7 +129,7 @@ function MCQQuizAttemptFrom({ questions, title }: MCQQuizAttemptFormProps) {
                 name={`answers.${activeStep}.selectedAnswerIndex`}
                 question={{
                   id: questions[activeStep].id,
-                  question_text: questions[activeStep].question_text,
+                question: questions[activeStep].question_text,
                   options: questions[activeStep].options
                 }}
                 isRequired={true}

@@ -1,13 +1,9 @@
-import { Typography, Button, Box, useTheme, List, ListItem} from '@mui/material';
-import { useCreateCategoriesMutation } from './app/api/categoriesApi';
-import CourseDetails from './components/Layouts/CourseDetails';
-// import HomeHero from './test/hero';
-import HomeFeature from './test/feature';
+import {  Box, useTheme} from '@mui/material';
+
 import { useSelector } from 'react-redux';
 import { RootState } from './app/store';
 import HeroSection from './components/HomPage/AnimatedHero';
-import ProductSection from './components/HomPage/ProductSection';
-import FeaturesBoxes from './components/HomPage/FeaturesBoxes';
+
 import { Footer } from './components/HomPage/footer';
 
 
@@ -17,11 +13,15 @@ function App() {
  const authState = useSelector((state: RootState) => state.auth);
   console.log("in app: ",authState)
 
-  const [create_category,{}]=useCreateCategoriesMutation()
-   const createCategory=()=>{
-    create_category({title:"Politices",description:"Knowledge society."})
-   }
-
+//   const [create_category,{}]=useCreateCategoriesMutation()
+//    const createCategory=()=>{
+//     create_category({title:"Politices",description:"Knowledge society."})
+//    }
+//  const avatarUrls = [
+//     "/images/avatars/4.jpg",
+//     "/images/avatars/2.jpg",
+//     "/images/avatars/3.jpg",
+//   ];
   return (
     <Box sx={{maxWidth:"100%"}}>
       <Box>
@@ -29,17 +29,8 @@ function App() {
       <HeroSection/>
       </Box>
 
-       
-        
-         <Box sx={{marginTop:10}}>
-       <ProductSection/>
-      </Box>
-      
-       <Box sx={{marginTop:15}}>
-        <HomeFeature/>
-       </Box>
-     
-     
+
+    
       <Box
         sx={{
           display: 'flex',

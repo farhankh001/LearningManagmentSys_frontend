@@ -1,32 +1,40 @@
-import { Children } from "react";
-import { array, z } from "zod";
+
+import { z } from "zod";
+
+// enum Enrollment_Status {
+//   InProgress
+//   Passed
+//   Failed
+// }
+
+
+
 
 
 //rich text editor schemas
 
 // Define the enums first
-export const Education_Levels = z.enum([
-  "PRIMARY_SCHOOL",
-  "MIDDLE_SCHOOL",
-  "HIGH_SCHOOL",
-  "BACHELOR",
-  "MASTERS",
-  "DOCTORATE",
-  "PHD",
-  "OTHER"
-]);
+export const Education_Levels = z.enum([  
+  "Primary",
+  "Middle",
+  "HighSchool",
+  "Bachelor",
+  "Masters",
+  "Doctorate",
+  "PhD",
+  "Others"]);
 
 export const Sales_Category = z.enum([
-  "FREE",
-  "BASIC",
-  "STANDARD",
-  "PREMIUM",
-  "ENTERPRISE"
+  "Free",
+  "Basic",
+  "Standard",
+  "Premium",
+  "Enterprise"
 ]);
 
 export const Activation_Status = z.enum([
-  "ACTIVE",
-  "INACTIVE"
+  "Active",
+  "Inactive"
 ]);
 
 const createCourseCategoriesSchema=(avaliableCategories:string[]=["OTHERS"])=>{
@@ -61,10 +69,13 @@ const avatarSchema = z.custom<File | undefined>((file) => {
 
 
 export const createCourseFormSchema = (availableCategories: string[] = ["OTHERS"])=>z.object({
-  title: z.string().min(3,"Title must be longer then 3 characters").max(100,"Title must be less then 100 characters"),
-  subtitle: z.string().max(500,"Subtitle must be smaller then 200 characters.").refine(
+  title: z.string().max(1000,"Title must not be longer then 1000 characters").refine(
     (val) => val.trim().split(/\s+/).length >= 5,
-    "Description must be at least 5 words."
+    "Title must be descriptive and should have at least 7 words."
+  ),
+  subtitle: z.string().max(500,"Subtitle must be smaller then 500 characters.").refine(
+    (val) => val.trim().split(/\s+/).length >=7,
+    "Description must be at least 10 words."
   ),
   description: z.string().max(5000,"Description must not have more then 5000 characters").refine(
     (val) => val.trim().split(/\s+/).length >= 25,
@@ -131,11 +142,11 @@ export const createCourseDefaultValues: CreateCourseFormType = {
   title: "",
   subtitle: "",
   description: "",
-  level: "OTHER",
+  level: "Others",
   language: "English",
-  activationStatus: "INACTIVE",
+  activationStatus: "Active",
   price: "0",
-  sales_category: "FREE",
+  sales_category: "Free",
   duration: "0",
   course_thumbnail:undefined,
   course_category:[],

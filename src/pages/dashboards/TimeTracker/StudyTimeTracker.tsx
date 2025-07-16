@@ -1,10 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { useIdleTimerContext } from 'react-idle-timer';
 import { useUpdateActiveStudyTimeMutation } from '../../../app/api/studentDashApis';
-import { BASEURL } from '../../../app/api/baseApi';
 import toast from 'react-hot-toast';
 
-const FIVE_MINUTES = 1;
+const FIVE_MINUTES =300 ;
 
 export function StudyTimeTracker() {
   const [updateTimer,{isError,error}]=useUpdateActiveStudyTimeMutation()
@@ -75,7 +74,7 @@ useEffect(() => {
         [JSON.stringify({ seconds })],
         { type: 'application/json' }
     );
-    navigator.sendBeacon(`${BASEURL}/update-active-study-time`, blob);
+    navigator.sendBeacon(`${import.meta.env.BASE_URL}/update-active-study-time`, blob);
       }
     };
     window.addEventListener('beforeunload', handleUnload);

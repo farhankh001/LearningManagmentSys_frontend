@@ -1,11 +1,11 @@
-import React from 'react';
+
 import {
   ResponsiveContainer,
   PieChart,
   Pie,
   Cell,
 } from 'recharts';
-import { Box, Typography, Paper, useTheme } from '@mui/material';
+import { Typography, Paper, useTheme } from '@mui/material';
 
 interface GaugeChartProps {
   value: number; // e.g. 0–100
@@ -55,7 +55,7 @@ const GaugeChartDash = ({ value, title, color }: GaugeChartProps) => {
             outerRadius={100}
             dataKey="value"
           >
-            {data.map((entry, index) => (
+            {data.map((_, index) => (
               <Cell key={`cell-${index}`} fill={COLORS[index]} />
             ))}
           </Pie>

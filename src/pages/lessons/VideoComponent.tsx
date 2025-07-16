@@ -1,4 +1,4 @@
-import React from 'react'
+
 import { FILEURLPRE } from '../../components/other/Defaulturl';
 import '@vidstack/react/player/styles/default/theme.css';
 import '@vidstack/react/player/styles/default/layouts/video.css';

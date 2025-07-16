@@ -1,7 +1,7 @@
   import { FormProvider, useForm } from 'react-hook-form'
   import { createTeacherSchema,registerTeacherDefaultValues, TeacherRegisterType } from '../../../types/register.types';
   import { zodResolver } from '@hookform/resolvers/zod';
-  import Register from '../../../pages/Register';
+  
   import { useSelector } from 'react-redux';
   import { RootState } from '../../../app/store';
 import TeacherRegister from '../../../pages/TeacherRegister';

@@ -6,7 +6,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts';
-import { Paper, Typography, Box, useTheme } from '@mui/material';
+import { Paper, Typography, useTheme } from '@mui/material';
 
 interface PieChartDataItem {
   name: string;
@@ -46,7 +46,7 @@ export const PieChartDashComparison: React.FC<PieChartDashProps> = ({
             label
             dataKey="value"
           >
-            {data.map((entry, index) => (
+            {data.map((_, index) => (
               <Cell
                 key={`cell-${index}`}
                 fill={colors[index % colors.length]}

@@ -1,13 +1,12 @@
-import { Height, Info, Insights } from '@mui/icons-material'
+import { Info} from '@mui/icons-material'
 import { Box, Chip, Typography, useTheme } from '@mui/material'
-import React from 'react'
 import { EnrolledCourse } from '../../../app/api/studentDashApis'
 import CourseTable from '../../../components/Table/CourseTable'
 import { MRT_ColumnDef } from 'material-react-table'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../../app/store'
 import PieChartWithoutHole from '../Charts/PieChartWithOutHole'
-import CircularProgressDash from '../Charts/CircularProgressBarDash'
+
 import GaugeChartDash from '../Charts/CircularProgressBarDash'
 const courseTeacherDashColumnsPending: MRT_ColumnDef<EnrolledCourse>[] = [
 
@@ -48,7 +47,7 @@ const courseTeacherDashColumnsPending: MRT_ColumnDef<EnrolledCourse>[] = [
  
 ];
 function StudentPendingEnrollments() {
-    const pendingCourses = useSelector((state: RootState) => (state as RootState).courses.enrolledCourses);
+    const pendingCourses = useSelector((state: RootState) => (state as RootState).courses.pendingCourses);
     const theme=useTheme()
   return (
   <Box sx={{display:"flex",alignItems:"self-start",width:'100%',gap:5,justifyContent:"center",mt:2,}}> 
@@ -60,9 +59,9 @@ function StudentPendingEnrollments() {
 
         <Box sx={{height:"530px",display:"flex",flexDirection:"column",width:"25%",gap:3}}>
        
-       <Box sx={{height:"55%"}}> <GaugeChartDash  title='Percentage Approved courses' value={(pendingCourses?.enrollmentSummary.totalApproved ?? 0) /((pendingCourses?.enrollmentSummary.totalEnrolled ?? 1)) * 100}/></Box>
+       <Box sx={{height:"55%"}}> <GaugeChartDash  title='Percentage Approved courses' value={(pendingCourses?.enrollmentSummary.totalApproved.count ?? 0) /((pendingCourses?.enrollmentSummary.totalEnrolled.count ?? 1)) * 100}/></Box>
         <Box sx={{height:"100%"}}>
-            <PieChartWithoutHole completed={pendingCourses.enrollmentSummary.totalApproved} inprogress={pendingCourses.enrollmentSummary.totalPending} totalEnrolled={pendingCourses.enrollmentSummary.totalEnrolled}  label1='Total Requests' label2='Approved' label3='Pending' title='Pending Requests Summary'/>
+            <PieChartWithoutHole completed={pendingCourses.enrollmentSummary.totalApproved.count} inprogress={pendingCourses.enrollmentSummary.totalPending.count} totalEnrolled={pendingCourses.enrollmentSummary.totalEnrolled.count}  label1='Total Requests' label2='Approved' label3='Pending' title='Pending Requests Summary'/>
         </Box>
     </Box>
   </Box>

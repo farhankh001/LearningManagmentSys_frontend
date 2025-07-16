@@ -1,7 +1,7 @@
 
 import {
   Button,
-  Chip,
+
   Table,
   TableBody,
   TableCell,
@@ -10,11 +10,11 @@ import {
   TableRow,
   useTheme,
   Paper,
-  useMediaQuery,
+
   Avatar,
 } from "@mui/material";
 import { Link } from "react-router-dom";
-import { CourseTeacher, EnrolledCourse } from "../../app/api/studentDashApis";
+import { CourseTeacher } from "../../app/api/studentDashApis";
 
 const courseTableHeader = [
   "Teacher Name",
@@ -29,7 +29,7 @@ interface CourseTableForStudentProp{
 function TableAtCourseInfoEnrolled({courseTeacher}:CourseTableForStudentProp) {
   const theme = useTheme();
   console.log(courseTeacher)
- const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+//  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   return (
     <TableContainer component={Paper} sx={{ borderRadius: 2, boxShadow: 2 }}>
       <Table size="medium">

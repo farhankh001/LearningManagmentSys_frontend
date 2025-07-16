@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import  { FC } from 'react'
 import Box from '@mui/material/Box'
 import Link from '@mui/material/Link'
 

@@ -67,7 +67,7 @@ const PieChartWithoutHole: React.FC<PieChartDashProps> = ({
             outerRadius={100} // Removed innerRadius
             dataKey="value"
           >
-            {data.map((entry, index) => (
+            {data.map((_, index) => (
               <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
             ))}
           </Pie>

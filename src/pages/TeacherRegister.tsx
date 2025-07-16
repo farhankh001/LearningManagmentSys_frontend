@@ -1,41 +1,29 @@
-import { RegisterType, TeacherRegisterType } from '../types/register.types';
+import { TeacherRegisterType } from '../types/register.types';
 import { SubmitHandler, useFormContext } from 'react-hook-form';
-import { Box, Alert, Typography, useTheme, LinearProgress } from '@mui/material';
-import { LoadingButton } from '@mui/lab';
+import { Box,Typography, useTheme} from '@mui/material';
 import TextInputField from '../components/Forms/InputFields/TextInputField';
-import { useRegisterTeacherMutation, useRegisterUserMutation } from '../app/api/userApi';
-import { useNavigate, Link } from 'react-router-dom';
+import { useRegisterTeacherMutation } from '../app/api/userApi';
+import { useNavigate } from 'react-router-dom';
 import FileInputField from '../components/Forms/InputFields/FileInputField';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import MultipleSelectInputField from '../components/Forms/InputFields/MultipleSelectField';
 import SelectInputField from '../components/Forms/InputFields/SelectInputField';
 import { useSelector } from 'react-redux';
 import { RootState } from '../app/store';
 import toast from 'react-hot-toast';
-import { uploadToCloudinary } from '../utils/uploadToCloundinary';
 import { StepDefinition, useMultiStepForm } from '../components/MultistepFormSetup/useMultiStepFormhook';
 import { MultiStepFormWrapper } from '../components/MultistepFormSetup/MultiStepFromWrapper';
-import { SvgIconComponent, ArtTrack, Quiz, Insights, SupportAgent, LibraryBooks, BarChart, MonetizationOn, PeopleAlt, WorkspacePremium } from '@mui/icons-material';
 
-interface Feature {
-  icon: SvgIconComponent;
-  text: string;
-}
 
-const teacherBenefits: Feature[] = [
-  { icon: LibraryBooks, text: 'Create and manage your own courses' },
-  { icon: PeopleAlt, text: 'Build and engage with your student community' },
-  { icon: BarChart, text: 'Track student performance and course analytics' },
-  { icon: MonetizationOn, text: 'Earn revenue from published courses' },
-  { icon: WorkspacePremium, text: 'Gain recognition as a certified instructor' }
-];
+
+
+
 
 
 function TeacherRegister() {
-  const [uploadProgress, setUploadProgress] = useState({  image: 0, })
   const navigate = useNavigate();
-  const { handleSubmit, watch, reset } = useFormContext<TeacherRegisterType>();
-  const [registerTeacher, { isLoading, isSuccess, isError, error }] = useRegisterTeacherMutation();
+  const { handleSubmit,  reset } = useFormContext<TeacherRegisterType>();
+  const [registerTeacher, { isSuccess, isError, error }] = useRegisterTeacherMutation();
   const categories = useSelector((state: RootState) => state.categories.categories);
   useEffect(() => {
     if (isSuccess) {
@@ -46,7 +34,12 @@ function TeacherRegister() {
       }, 1000);
     }
   }, [isSuccess, navigate, reset]);
-
+ useEffect(()=>{
+if(isError&&error&&"data" in error){
+  console.log(error)
+  toast.error(`${JSON.stringify((error.data as any).error)}`)
+}
+ },[isError,error])
   const submitForm: SubmitHandler<TeacherRegisterType> = async (data: TeacherRegisterType) => {
     try {
     //   let profile_picture_url=""
@@ -85,10 +78,10 @@ function TeacherRegister() {
   };
 const theme=useTheme()
 
-if(isError&&error&&"data" in error){
-  console.log(error)
-  toast.error(`${JSON.stringify((error.data as any).error)}`)
-}
+
+
+
+
 
 
 
@@ -97,6 +90,7 @@ if(isError&&error&&"data" in error){
       id: 'basic-info',
       title: 'Basic Information',
       description: 'Enter your personal details',
+      instructions:"Enter Your Personal Details",
       fields: ['name', 'email', 'password','profile_picture']
     },
     
@@ -104,7 +98,8 @@ if(isError&&error&&"data" in error){
       id: 'teacher-info',
       title: 'Academic Information',
       description: 'Tell us about your education',
-      fields: ['role','teacher_expertise', 'qualifications']
+      instructions:"Enter your education and interests.",
+      fields: ['role','qualifications', 'teacher_expertise']
     },
 
   ];
@@ -125,21 +120,24 @@ if(isError&&error&&"data" in error){
       case 'basic-info':
         return (
           <Box sx={{ display: 'flex', flexDirection:"column", gap: 3 }}>
-            <TextInputField<RegisterType>
+            <TextInputField<TeacherRegisterType>
+              key="Fullname-field"
               isRequired={true}
               label="Full Name"
               name="name"
               type="text"
               hideData={false}
             />
-            <TextInputField<RegisterType>
+            <TextInputField<TeacherRegisterType>
+              key="Email-field"
               isRequired={true}
               label="Email"
               name="email"
               type="email"
               hideData={false}
             />
-            <TextInputField<RegisterType>
+            <TextInputField<TeacherRegisterType>
+              key="Password-field"
               isRequired={true}
               label="Password"
               name="password"
@@ -147,7 +145,8 @@ if(isError&&error&&"data" in error){
               hideData={true}
             />
            
-             <FileInputField<RegisterType>
+             <FileInputField<TeacherRegisterType>
+              key="Profile-picture-field"
               isRequired={true}
               label="Profile Picture"
               name="profile_picture"
@@ -161,27 +160,29 @@ if(isError&&error&&"data" in error){
       case 'teacher-info':
         return (
 
-          <Box sx={{ display: 'flex',flexDirection:"column", gap: 4 }}>
+          <Box sx={{ display: 'flex',flexDirection:"column", gap: 3 }}>
              <SelectInputField<TeacherRegisterType>
+              key="Role-field"
               isRequired={true}
               label="Role"
               name="role"
               options={["Teacher"]}
             />
-            <SelectInputField<TeacherRegisterType>
-              isRequired={true}
-              label="Qualifications"
-              name="qualifications"
-              options={[
-                "PRIMARY_SCHOOL", "MIDDLE_SCHOOL", "HIGH_SCHOOL",
-                "BACHELOR", "MASTERS", "DOCTORATE", "PHD", "OTHER"
-              ]}
-            />
+           
             <MultipleSelectInputField<TeacherRegisterType>
+              key="Expertise-field"
               isRequired={true}
               label="Expertise"
               name="teacher_expertise"
               options={categories || ["Others"]}
+            />
+
+             <TextInputField<TeacherRegisterType>
+              key="Qualifications-field"
+              isRequired={true}
+              label="Qualifications/Speciality"
+              name="qualifications"
+              type='text'
             />
           </Box>
         );
@@ -195,53 +196,17 @@ if(isError&&error&&"data" in error){
   return (
     <Box
       sx={{
-        minHeight: '90vh',
         display: 'flex',
         backgroundColor: 'background.default',
         flexDirection:{ xs:"column",md:"row", }}}
-    >  
-    <Box
-  sx={{
-    backgroundColor: theme.palette.background.paper,
-    minHeight: { xs: '40%', md: '100%' },
-    minWidth: '30%',
-    display: {
-      xs: 'none', // Hide on small devices
-      md: 'flex',
-    },
-    flexDirection: 'column',
-    justifyContent: 'start',
-    alignItems: 'flex-start',
-    gap: 3,
-    px: 4,
-    py: 6,
-  }}
->
-  <Typography variant="h6" fontWeight={600} sx={{}}>
-    Why Create an Account?
-  </Typography>
 
-  {teacherBenefits.map((benefit, index) => {
-    const Icon = benefit.icon;
-    return (
-      <Box key={index} sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-        <Icon  sx={{color:theme.palette.text.primary
-        }}/>
-        <Typography variant="body1" fontWeight={500}>
-          {benefit.text}
-        </Typography>
-      </Box>
-    );
-  })}
-</Box>
+    >  
       
     <Box
         sx={{
           width:  '100%' ,
-          // backgroundColor: "blue",
-          minWidth:"60%",
           boxShadow: 1,
-          padding: { xs: 3, sm: 4 },
+        
           display:"flex",
           alignItems:"center",
           justifyContent:"center",
@@ -261,12 +226,17 @@ if(isError&&error&&"data" in error){
         >
           Register as Teacher
         </Typography>
-        <Box sx={{width:"70%"}}>
+        <Box sx={{width:"80%"}}>
         <form onSubmit={handleSubmit(submitForm)}>
         <MultiStepFormWrapper
           state={multiStepState}
           actions={multiStepActions}
-          stepTitles={steps.map(step => step.title)}
+           stepTitles={steps.map(step =>{
+            return {
+              steptitle:step.title,
+              instructions:step.instructions
+            }
+          })}
         >
           {renderCurrentStepFields()}
         </MultiStepFormWrapper>
@@ -280,166 +250,3 @@ if(isError&&error&&"data" in error){
 }
 
 export default TeacherRegister;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  // {isSuccess && (
-  //         <Alert severity="success" sx={{ mb: 2 }}>
-  //           Registration successful! Redirecting to login...
-  //         </Alert>
-  //       )}
-
-  //     {isError && error && 'data' in error &&
-  //             <Alert severity="error" sx={{ mb: 2 }}>
-  //                   {JSON.stringify((error.data as any).error)}  
-  //              </Alert>
-  //               }
-  //      {uploadProgress.image > 0 && (
-  //       <Box sx={{margin:3,display:"flex",flexDirection:'column',gap:3}}>
-  //         <Typography variant="body2">Uploading Image: {uploadProgress.image}%</Typography>
-  //         <LinearProgress variant="determinate" value={uploadProgress.image} sx={{color:theme.palette.success.main}} />
-  //       </Box>
-  //     )}
-
-
-
-
-//  <Box sx={{
-
-//             display: 'grid',
-//             gridTemplateColumns: { xs: '1fr', sm: '1fr ', md: '1fr 1fr ',lg:"1fr 1fr" },
-//             gap: { xs: 2, md: 2},
-//             justifyContent: 'center',
-
-//           }}>
-//             <TextInputField<RegisterType>
-//               isRequired={true}
-//               label="Full Name"
-//               name="name"
-//               type="text"
-//               hideData={false}
-//             />
-//             <TextInputField<RegisterType>
-//               isRequired={true}
-//               label="Email"
-//               name="email"
-//               type="email"
-//               hideData={false}
-//             />
-//             <TextInputField<RegisterType>
-//               isRequired={true}
-//               label="Password"
-//               name="password"
-//               type="password"
-//               hideData={true}
-//             />
-
-
-//             <SelectInputField<RegisterType>
-//               isRequired={true}
-//               label="Role"
-//               name="role"
-//               options={["Student", "Teacher", "Admin"]}
-//             />
-
-
-           
-//            <TextAreaField<RegisterType> isRequired={false} label='Your Introduction' name='bio' rows={4} type='text' />
-
-
-//           <FileInputField<RegisterType>
-//               isRequired={true}
-//               label="profile_picture"
-//               name="profile_picture"
-//               fileType={['image/jpeg', 'image/jpg', 'image/png', 'image/webp']}
-//               maxFiles={1}
-//               maxSize={100000}
-//             />
-          
-//   {/* Role-specific Fields */}
-  
-//     {currentRole === "Student" && (
-//               <>
-//                 <SelectInputField<RegisterType>
-//                   isRequired={true}
-//                   label="Education Level"
-//                   name="education_level"
-//                   options={[
-//                     "PRIMARY_SCHOOL",
-//                     "MIDDLE_SCHOOL",
-//                     "HIGH_SCHOOL",
-//                     "BACHELOR",
-//                     "MASTERS",
-//                     "DOCTORATE",
-//                     "PHD",
-//                     "OTHER"
-//                   ]}
-//                 />
-//                 <MultipleSelectInputField<RegisterType>
-//                   isRequired={true}
-//                   label="Interests"
-//                   name="interests"
-//                   options={categories||["Others"]}
-//                 />
-//               </>
-//             )}
-  
-  
-//     {currentRole === "Teacher" && (
-//               <>
-//               <TextInputField<RegisterType> isRequired={true}  label='Qualifications' name='qualifications' hideData={false} type='text'/>
-//               <MultipleSelectInputField<RegisterType>
-//                   isRequired={true}
-//                   label="Areas of Expertise"
-//                   name="teacher_expertise"
-//                   options={categories||["Others"]}
-                
-//                 />
-//               </>
-//             )}
-
-//             <LoadingButton
-//               type="submit"
-//               variant="contained"
-//               loading={isLoading}
-//               disabled={isLoading}
-//               size="large"
-//               sx={{ mt: 1 }}
-//             >
-//               {isLoading ? 'Registering...' : 'Register'}
-//             </LoadingButton>
-
-//             <Typography 
-//               variant="body2" 
-//               sx={{ 
-//                 textAlign: 'center',
-//                 color: 'text.secondary'
-//               }}
-//             >
-//               Already have an account?{' '}
-//               <Link 
-//                 to="/login"
-//                 style={{
-//                   color: 'inherit',
-//                   textDecoration: 'underline',
-//                 }}
-//               >
-//                 Login here
-//               </Link>
-//             </Typography>
-//           </Box>

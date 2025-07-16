@@ -1,4 +1,4 @@
-import { Box, Typography, Paper, useTheme } from '@mui/material';
+import {  Typography, Paper, useTheme } from '@mui/material';
 import { useGetActiveStudyTimeQuery } from '../../../app/api/studentDashApis';
 
 

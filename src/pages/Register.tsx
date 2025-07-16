@@ -1,42 +1,30 @@
 import { RegisterType } from '../types/register.types';
 import { SubmitHandler, useFormContext } from 'react-hook-form';
-import { Box, Alert, Typography, useTheme, LinearProgress } from '@mui/material';
-import { LoadingButton } from '@mui/lab';
+import { Box} from '@mui/material';
 import TextInputField from '../components/Forms/InputFields/TextInputField';
 import { useRegisterUserMutation } from '../app/api/userApi';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import FileInputField from '../components/Forms/InputFields/FileInputField';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import MultipleSelectInputField from '../components/Forms/InputFields/MultipleSelectField';
 import SelectInputField from '../components/Forms/InputFields/SelectInputField';
 import { useSelector } from 'react-redux';
 import { RootState } from '../app/store';
 import toast from 'react-hot-toast';
-// import { uploadToCloudinary } from '../utils/uploadToCloundinary';
+
 import { StepDefinition, useMultiStepForm } from '../components/MultistepFormSetup/useMultiStepFormhook';
 import { MultiStepFormWrapper } from '../components/MultistepFormSetup/MultiStepFromWrapper';
-import { SvgIconComponent, ArtTrack, Quiz, Insights, SupportAgent } from '@mui/icons-material';
 
-interface Feature {
-  icon: SvgIconComponent;
-  text: string;
-}
 
-const registerBenefits: Feature[] = [
-  { icon: ArtTrack, text: 'Full access to all courses' },
-  { icon: Quiz, text: 'Take interactive quizzes and assessments' },
-  { icon: Insights, text: 'Track your progress and achievements' },
-  { icon: SupportAgent, text: 'Get mentor support and consultation' }
-];
+
 
 
 function Register() {
-  // const [uploadProgress, setUploadProgress] = useState({  image: 0, })
+
   const navigate = useNavigate();
-  const { handleSubmit, watch, reset } = useFormContext<RegisterType>();
-  const [registerUser, { isLoading, isSuccess, isError, error }] = useRegisterUserMutation();
+  const { handleSubmit, reset } = useFormContext<RegisterType>();
+  const [registerUser, {  isSuccess, isError, error }] = useRegisterUserMutation();
   const categories = useSelector((state: RootState) => state.categories.categories);
-  const currentRole = watch('role');
   useEffect(() => {
     if (isSuccess) {
       reset();
@@ -83,7 +71,7 @@ function Register() {
       console.error('Registration failed:', err);
     }
   };
-const theme=useTheme()
+
 
 if(isError&&error&&"data" in error){
   console.log(error)
@@ -97,6 +85,7 @@ if(isError&&error&&"data" in error){
       id: 'basic-info',
       title: 'Basic Information',
       description: 'Enter your personal details',
+      instructions:"Enter Your Personal Details",
       fields: ['name', 'email', 'password','profile_picture']
     },
     
@@ -104,6 +93,7 @@ if(isError&&error&&"data" in error){
       id: 'student-info',
       title: 'Academic Information',
       description: 'Tell us about your education',
+      instructions:"Enter your education and interests.",
       fields: ['role','education_level', 'interests']
     },
 
@@ -124,7 +114,7 @@ if(isError&&error&&"data" in error){
     switch (currentStepId) {
       case 'basic-info':
         return (
-          <Box sx={{ display: 'flex', flexDirection:"column", gap: 3 }}>
+          <Box sx={{ display: 'grid', gridTemplateColumns:"1fr", gap:3 }}>
             <TextInputField<RegisterType>
               isRequired={true}
               label="Full Name"
@@ -161,7 +151,7 @@ if(isError&&error&&"data" in error){
       case 'student-info':
         return (
 
-          <Box sx={{ display: 'flex',flexDirection:"column", gap: 4 }}>
+          <Box sx={{ display: 'flex',flexDirection:"column", gap: 3 }}>
              <SelectInputField<RegisterType>
               isRequired={true}
               label="Role"
@@ -172,10 +162,15 @@ if(isError&&error&&"data" in error){
               isRequired={true}
               label="Education Level"
               name="education_level"
-              options={[
-                "PRIMARY_SCHOOL", "MIDDLE_SCHOOL", "HIGH_SCHOOL",
-                "BACHELOR", "MASTERS", "DOCTORATE", "PHD", "OTHER"
-              ]}
+              options={[  
+  "Primary",
+  "Middle",
+  "HighSchool",
+  "Bachelor",
+  "Masters",
+  "Doctorate",
+  "PhD",
+  "Others"]}
             />
             <MultipleSelectInputField<RegisterType>
               isRequired={true}
@@ -198,47 +193,14 @@ if(isError&&error&&"data" in error){
         minHeight: '90vh',
         display: 'flex',
         backgroundColor: 'background.default',
-        flexDirection:{ xs:"column",md:"row", }}}
-    >  
-    <Box
-  sx={{
-    backgroundColor: theme.palette.background.paper,
-    minHeight: { xs: '40%', md: '100%' },
-    minWidth: '30%',
-    display: {
-      xs: 'none', // Hide on small devices
-      md: 'flex',
-    },
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'flex-start',
-    gap: 3,
-    px: 4,
-    py: 6,
-  }}
->
-  <Typography variant="h6" fontWeight={600} color="primary" gutterBottom>
-    Why Create an Account?
-  </Typography>
-
-  {registerBenefits.map((benefit, index) => {
-    const Icon = benefit.icon;
-    return (
-      <Box key={index} sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-        <Icon color="primary" />
-        <Typography variant="body1" fontWeight={500}>
-          {benefit.text}
-        </Typography>
-      </Box>
-    );
-  })}
-</Box>
-      
+        flexDirection:{ xs:"column",md:"row", },
+        alignItems:"center",
+        justifyContent:"center"
+      }}
+    >   
     <Box
         sx={{
-          width:  '100%' ,
-          // backgroundColor: "blue",
-          minWidth:"60%",
+          width:  '80%' ,
           boxShadow: 1,
           padding: { xs: 3, sm: 4 },
           display:"flex",
@@ -249,23 +211,19 @@ if(isError&&error&&"data" in error){
         }}
       >
       
-        <Typography
-          variant="h5"
-          sx={{
-            fontWeight: 600,
-            color:theme.palette.text.primary,
-            mb: 1,
-            textAlign: 'center'
-          }}
-        >
-          Create Account
-        </Typography>
-        <Box sx={{width:"70%"}}>
+    
+        <Box sx={{width:"100%"}}>
         <form onSubmit={handleSubmit(submitForm)}>
         <MultiStepFormWrapper
           state={multiStepState}
           actions={multiStepActions}
-          stepTitles={steps.map(step => step.title)}
+           stepTitles={steps.map(step =>{
+            return {
+              steptitle:step.title,
+              instructions:step.instructions
+            }
+          })}
+        
         >
           {renderCurrentStepFields()}
         </MultiStepFormWrapper>

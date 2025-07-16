@@ -1,5 +1,5 @@
-import { Box, Paper, Typography, useTheme } from '@mui/material';
-import React from 'react';
+import {  Paper, Typography, useTheme } from '@mui/material';
+
 import {
   RadialBarChart,
   RadialBar,
@@ -12,7 +12,7 @@ interface RadialChartProps {
   barColor?:string
 }
 
-function RadialChartWithStyledBg({ overAllProgressPercentage, title,barColor }: RadialChartProps) {
+function RadialChartWithStyledBg({ overAllProgressPercentage, title }: RadialChartProps) {
   const theme=useTheme()
   const data = [
     {

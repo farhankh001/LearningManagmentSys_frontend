@@ -1,17 +1,17 @@
-import React from 'react'
+
 import { useGetQuizForStudentQuery } from '../../../app/api/lessonApi'
 import { useParams } from 'react-router-dom'
-import LoadingScreen from '../../../components/other/Loading'
-import { Box, Chip, Divider, Typography, useTheme } from '@mui/material'
-import AttemptQuizForm from './AttemptQuizForm'
+
+import { Box, Chip, CircularProgress, Divider, Typography, useTheme } from '@mui/material'
+
 import QuizSubmissionFormProvider from '../../../components/Forms/FormProviders/QuizSubmissionFormProvider'
 
 function AttemptQuiz() {
   const {lessonId}=useParams()
-  const {data:quizIncomingData,error:quizIncomingError,isError:quizEncomingIsError,isSuccess:quizEncomingIsSuccess,isLoading:quizIncomingLoading}=useGetQuizForStudentQuery({lessonId:lessonId})
+  const {data:quizIncomingData,isLoading:quizIncomingLoading}=useGetQuizForStudentQuery({lessonId:lessonId})
   const theme=useTheme()
   if(quizIncomingLoading){
-    return <LoadingScreen/>
+    return  <Box sx={{width:"100%",height:"70vh",alignItems:"center",justifyContent:"center"}}><CircularProgress/></Box>;
   }
   
   return (

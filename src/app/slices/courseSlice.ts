@@ -8,15 +8,21 @@ export interface Category {
   }
   
 export interface CourseCategory {
-    id:string;
-    title:string
+     category:{
+    title: string;
+   }
   }
   
 export interface CourseTeacher {
     name:string,
     profile:string
     id:string,
-    qualifications:string
+    qualifications:string,
+    expertise:{
+      category:{
+        title:string
+      }
+    }[]
   }
   
 export interface Course {
@@ -36,7 +42,7 @@ export interface Course {
     duration: number;
     course_thumbnail_url: string;
     createdAt: Date;
-    course_category: CourseCategory[];
+    course_categories: CourseCategory[];
     course_teacher: CourseTeacher;
   }
   
@@ -49,11 +55,8 @@ export interface TeacherCourseResponse {
 export interface SingleCourseResponse {
     course: Course;
   }
-interface CourseStats{
-  totalCourses:number;
-  approvedCourses:number;
 
-}
+
 
 interface CourseState {
     teacherCourses: Course[];
@@ -75,34 +78,80 @@ const initialState: CourseState = {
   allCourses: [],
   favoriteCourses: [],
   pendingCourses: {
-    courses:[],
-    enrollmentSummary:{
-      completed:0,
-      inProgress:0,
-      overallProgressPercentage:0,
-      totalApproved:0,
-      totalCompletedLessonsWithMcq:0,
-      totalEnrolled:0,
-      totalLessonsWithMcq:0,
-      totalPending:0
-
+    courses: [],
+    enrollmentSummary: {
+      totalEnrolled: {
+        name: "Total Enrolled",
+        count: 0,
+      },
+      inProgress: {
+        name: "In Progress",
+        count: 0,
+      },
+      completed: {
+        name: "Completed",
+        count: 0,
+      },
+      totalPending: {
+        name: "Pending Approval",
+        count: 0,
+      },
+      totalApproved: {
+        name: "Approved",
+        count: 0,
+      },
+      totalLessonsWithMcq: {
+        name: "Lessons with MCQs",
+        count: 0,
+      },
+      totalCompletedLessonsWithMcq: {
+        name: "MCQs Attempted",
+        count: 0,
+      },
+      overallProgressPercentage: {
+        name: "Overall Progress (%)",
+        count: 0
+      }
     }
   },
-  enrolledCourses:{
-    courses:[],
-    enrollmentSummary:{
-      completed:0,
-      inProgress:0,
-      overallProgressPercentage:0,
-      totalApproved:0,
-      totalCompletedLessonsWithMcq:0,
-      totalEnrolled:0,
-      totalLessonsWithMcq:0,
-      totalPending:0
-
-    }
-  },
-  };
+  enrolledCourses: {
+    enrollmentSummary: {
+      totalEnrolled: {
+        name: "Total Enrolled",
+        count: 0
+      },
+      inProgress: {
+        name: "In Progress",
+        count: 0
+      },
+      completed: {
+        name: "Completed",
+        count: 0
+      },
+      totalPending: {
+        name: "Pending Approval",
+        count: 0
+      },
+      totalApproved: {
+        name: "Approved",
+        count: 0
+      },
+      totalLessonsWithMcq: {
+        name: "Lessons with MCQs",
+        count: 0
+      },
+      totalCompletedLessonsWithMcq: {
+        name: "MCQs Attempted",
+        count: 0
+      },
+      overallProgressPercentage: {
+        name: "Overall Progress (%)",
+        count: 0
+      }
+    },
+    courses: []
+  }
+}
 const courseSlice=createSlice({
     initialState,
     name:"course",

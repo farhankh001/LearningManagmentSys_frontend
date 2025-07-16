@@ -1,11 +1,10 @@
 import { useParams } from 'react-router-dom'
 import { useGetSingleCourseQuery } from '../../app/api/createCourseApi'
-import { Alert, Avatar, Box, Button, Card, CardMedia, CircularProgress, Container,  List, ListItem, Rating,  Typography, useMediaQuery, useTheme } from '@mui/material'
-import { AssignmentTurnedIn, CheckCircle, Language,  Lightbulb,  Speed,  } from '@mui/icons-material';
+import { Avatar, Box, Card, CardMedia, CircularProgress, Container,  List, ListItem, Rating,  Typography, useMediaQuery, useTheme } from '@mui/material'
+import {  CheckCircle, Language,  Speed,  } from '@mui/icons-material';
 import { FaStopwatch, } from 'react-icons/fa';
 import DOMPurify from 'dompurify';
-import { useEnrollStudentMutation } from '../../app/api/enrollmentApi';
-import toast from 'react-hot-toast';
+
 import { FILEURLPRE } from '../../components/other/Defaulturl';
 
 
@@ -16,7 +15,7 @@ function EnrolledCourseMoreInfo() {
     const isSm = useMediaQuery(theme.breakpoints.between('sm', 'md'));
     const isMd = useMediaQuery(theme.breakpoints.between('md', 'lg'));
     const isLgUp = useMediaQuery(theme.breakpoints.up('lg'));
-    const { data: courseData, isFetching, isError, error } = useGetSingleCourseQuery({courseId});
+    const { data: courseData, isFetching} = useGetSingleCourseQuery({courseId});
     
     if (!courseId) {
         return (

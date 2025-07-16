@@ -27,6 +27,7 @@ function FileInputField<T extends FieldValues>({
     const theme=useTheme()
     return (
       <Controller
+
         name={name}
         control={control}
         render={({ field: { value, onChange }, fieldState: { error } }) => {
@@ -69,6 +70,17 @@ function FileInputField<T extends FieldValues>({
   
           return (
             <FormControl required={isRequired} error={!!error}>
+                <Typography
+            variant="body2"
+            fontWeight={600}
+            sx={{
+              color: theme.palette.text.secondary,
+              mb: 0.5,
+              ml: 0.5,
+            }}
+          >
+            {label}
+          </Typography>
               <Box
                 {...getRootProps()}
                 sx={{
@@ -80,14 +92,14 @@ function FileInputField<T extends FieldValues>({
                     xl:4
                   },
                   border: "1px solid",
-                  borderColor: theme.palette.primary.main, // Use theme divider color
+                  borderColor: theme.palette.divider, // Use theme divider color
                   cursor: "pointer",
                   bgcolor: isDragActive ? "action.hover" : "background.paper", // Use theme colors
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
                   justifyContent: "center",
-                  borderRadius:1
+                  borderRadius:3
                 }}
               >
                 <input {...getInputProps()} />
@@ -148,8 +160,9 @@ function FileInputField<T extends FieldValues>({
         spacing={2}
         alignItems="center"
         sx={{
+          mt:1,
           p: 1.5,
-          borderRadius: 1,
+          borderRadius: 4,
           bgcolor: "background.paper", // Use theme background color
           border: "1px solid",
           borderColor: "divider", // Use theme divider color

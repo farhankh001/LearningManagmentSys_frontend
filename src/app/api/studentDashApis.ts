@@ -84,9 +84,11 @@ export type EnrolledCourse = {
     email: string;
   } | null;
 };
+
+
 export type EnrolledCoursesApproved = {
   enrollmentId: string;
-  enrollmentDate: string; // or Date if not serialized
+  enrollmentDate: string; 
   enrollmentStatus: string;
   approvalStatus: string;
   course: {
@@ -117,14 +119,38 @@ export type EnrolledCoursesGrouped = {
 };
 
 export type EnrollmentSummary = {
-  totalEnrolled: number;
-  inProgress: number;
-  completed: number;
-  totalPending:number;
-  totalApproved:number;
-  totalLessonsWithMcq:number;
-  totalCompletedLessonsWithMcq:number;
-  overallProgressPercentage:number;
+  totalEnrolled: {
+    name: "Total Enrolled";
+    count: number;
+  };
+  inProgress: {
+    name: "In Progress";
+    count: number;
+  };
+  completed: {
+    name: "Completed";
+    count: number;
+  };
+  totalPending: {
+    name: "Pending Approval";
+    count: number;
+  };
+  totalApproved: {
+    name: "Approved";
+    count: number;
+  };
+  totalLessonsWithMcq: {
+    name: "Lessons with MCQs";
+    count: number;
+  };
+  totalCompletedLessonsWithMcq: {
+    name: "MCQs Attempted";
+    count: number;
+  };
+  overallProgressPercentage: {
+    name: "Overall Progress (%)";
+    count: number;
+  };
 };
 
 export type GetAllEnrolledCoursesResponse = {
@@ -132,7 +158,7 @@ export type GetAllEnrolledCoursesResponse = {
   summary: EnrollmentSummary;
   enrollments: EnrolledCoursesGrouped;
 };
-``
+
 
 const studentDashApis=baseApi.injectEndpoints({
     endpoints:(builder)=>({

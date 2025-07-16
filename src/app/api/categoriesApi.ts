@@ -1,5 +1,5 @@
 import baseApi from "./baseApi";
-// import { CategoryState } from "../slices/categorySlice";
+
 interface CategoriesResponse {
     categories: string[];
     message: string;
@@ -10,6 +10,7 @@ interface create_categories{
   title:string,
   description:string
 }
+
 const categoriesApi=baseApi.injectEndpoints({
     endpoints:(builder)=>({
         getAllCategories:builder.query<CategoriesResponse,void>({

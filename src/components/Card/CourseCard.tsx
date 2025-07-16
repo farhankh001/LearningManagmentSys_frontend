@@ -16,7 +16,7 @@ const limitWords = (str: string, limit: number) => {
   return str;
 };
 function CourseCard({ course }: CourseProps) {
- const [enrollStudent,{error:enrollmentError,isError:isEnrollmentError,isSuccess:enrollmentSuccess,isLoading:enrollmentLoading}]=useEnrollStudentMutation()
+ const [enrollStudent,{error:enrollmentError,isError:isEnrollmentError,isSuccess:enrollmentSuccess}]=useEnrollStudentMutation()
  const enrollStudentHandle=()=>{
          if(course.id){
             enrollStudent({courseId:course.id})

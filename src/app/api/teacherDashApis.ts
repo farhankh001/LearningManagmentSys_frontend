@@ -1,24 +1,45 @@
 import { CreateCourseFormType } from "../../types/create_course.types";
 import baseApi from "./baseApi";
 import { CreateCourseSbumitType } from "./createCourseApi";
-enum activationStatus{
-  "ACTIVE",
-  "INACTIVE"
-};
-export type TeacherCoursesResponse = {
-  averageRating: number;
-  totalApprovedEnrollments: number;
-  totalRejectedEnrollments: number;
-  totalCourses: number;
-  fiveStarRatings: number;
-  courses: {
-    id: string;
-    title: string;
-    activationStatus: string; // adjust based on your enum
-    createdAt: string; // or `Date` if you don't stringify in your response
-    totalEnrollmentsPerCourse: number;
-  }[];
-};
+// enum activationStatus{
+//   "ACTIVE",
+//   "INACTIVE"
+// };
+export interface TeacherCoursesResponse{
+  teacherExpertise: {
+    category: {
+        title: string;
+    };
+}[];
+teacherQualifications: string;
+  averageRating: number,
+  totalApprovedEnrollments: number,
+  totalPendingEnrollments: number,
+  totalCourses: number,
+  fiveStarRatings: number,
+  courses: Array<{
+    id: string,
+    title: string,
+    activationStatus: string,
+    createdAt: string,
+    totalEnrollments: number,
+    totalAcceptedEnrollments: number,
+    totalPendingEnrollments: number,
+    totalRejectedEnrollments: number
+  }>,
+  mostPopularCourse?: {
+    title: string,
+    totalEnrollments: number
+  },
+  mostUnpopularCourse?: {
+    title: string,
+    totalEnrollments: number
+  },
+  dailyEnrollmentsTrend: Array<{
+    date: string,  // yyyy-MM-dd
+    count: number
+  }>
+}
 
 
 export type ApprovalStatus = 'PENDING' | 'APPROVED' | 'REJECTED';

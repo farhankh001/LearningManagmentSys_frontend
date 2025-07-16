@@ -1,5 +1,5 @@
-import { Box, Paper, Typography, useTheme } from '@mui/material';
-import { ResponsiveContainer, CartesianGrid, XAxis, YAxis, Tooltip, Line, Legend,LineChart } from 'recharts'
+import {Paper, Typography, useTheme } from '@mui/material';
+import { ResponsiveContainer, XAxis, YAxis, Tooltip, Line,LineChart } from 'recharts'
 
 
 interface QuizPerformanceLineChartProps{

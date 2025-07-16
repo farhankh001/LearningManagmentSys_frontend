@@ -1,13 +1,12 @@
-import z, { string } from "zod"
-import CreateLesson from "../pages/lessons/CreateLesson";
-import { QuizSharp } from "@mui/icons-material";
+import z from "zod"
 
 
-const videoMimeTypes = [
-  "video/mp4",
-  "video/webm",
-  "video/ogg",
-];
+
+// const videoMimeTypes = [
+//   "video/mp4",
+//   "video/webm",
+//   "video/ogg",
+// ];
 
 const documentMimeTypes = [
   "application/pdf",
@@ -17,18 +16,18 @@ const documentMimeTypes = [
   "application/vnd.openxmlformats-officedocument.presentationml.presentation", // .pptx
 ];
 
-const imageMimeTypes = [
-  "image/jpeg",
-  "image/png",
-  "image/webp",
-  "image/gif",
-];
+// const imageMimeTypes = [
+//   "image/jpeg",
+//   "image/png",
+//   "image/webp",
+//   "image/gif",
+// ];
 
 
-const ActivationStatusEnum = z.enum(["ACTIVE", "INACTIVE"]);
+const ActivationStatusEnum = z.enum(["Active", "Inactive"]);
 
 // 2. Schema for Quiz (optional)
-const QuizAndAssignmentSchema = z.object({
+export const QuizAndAssignmentSchema = z.object({
   title: z.string().min(1, "Quiz title is required"),
   description: z.string().optional(),
   question: z.string().min(1, "Question is required"),
@@ -78,10 +77,19 @@ const QuizAndAssignmentSchema = z.object({
     ),
 });
 
-
-const MAX_VIDEO_SIZE = 50 * 1024 * 1024; // 50MB
-const MAX_DOC_SIZE = 10 * 1024 * 1024;   // 10MB
-const MAX_IMAGE_SIZE = 5 * 1024 * 1024;  // 5MB
+export type AssignmentType = z.infer<typeof QuizAndAssignmentSchema>
+export const AssignmentDefaultValues: AssignmentType = {
+  activationStatus: "Active",
+  passingScore: "0",
+  question: "",
+  timeLimit: "",
+  title: "",
+  totalScore: "",
+  description: ""
+}
+// const MAX_VIDEO_SIZE = 50 * 1024 * 1024; // 50MB
+const MAX_DOC_SIZE = 2 * 1024 * 1024;   // 10MB
+// const MAX_IMAGE_SIZE = 5 * 1024 * 1024;  // 5MB
 
 export const createLessonSchema = z.object({
   lesson_video: z.string().optional(),
@@ -141,24 +149,24 @@ export const createLessonSchema = z.object({
 });
 
 
-const submitCourseSchema=z.object({
-  lesson_document2:z.string(),
-  lesson_video:z.string(),
-  lesson_document:z.string(),
-  lesson_title:z.string(),
-  lesson_text:z.string(),
-  courseId:z.string().optional(),
-  quiz:QuizAndAssignmentSchema.optional(),
-  assignment:QuizAndAssignmentSchema.optional()
+const submitCourseSchema = z.object({
+  lesson_document2: z.string(),
+  lesson_video: z.string(),
+  lesson_document: z.string(),
+  lesson_title: z.string(),
+  lesson_text: z.string(),
+  courseId: z.string().optional(),
+  quiz: QuizAndAssignmentSchema.optional(),
+  assignment: QuizAndAssignmentSchema.optional()
 })
 
-export type submitCourseType=z.infer<typeof submitCourseSchema>
-export type CreateLessonType=z.infer<typeof createLessonSchema>
+export type submitCourseType = z.infer<typeof submitCourseSchema>
+export type CreateLessonType = z.infer<typeof createLessonSchema>
 
-export const createLessonDefaultValues:CreateLessonType={
-    lesson_text:"",
-    lesson_title:"",
-    lesson_document:undefined,
-    lesson_document2:undefined,
-    lesson_video:undefined
+export const createLessonDefaultValues: CreateLessonType = {
+  lesson_text: "",
+  lesson_title: "",
+  lesson_document: undefined,
+  lesson_document2: undefined,
+  lesson_video: undefined
 }

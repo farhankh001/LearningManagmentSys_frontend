@@ -1,14 +1,14 @@
 import { useEffect } from 'react'
 import { useResultsMcqForStudentQuery } from '../../../app/api/lessonApi'
 import { useParams } from 'react-router-dom'
-import { Box, useTheme } from '@mui/material'
+import { Box } from '@mui/material'
 import toast from 'react-hot-toast'
 import McqQuizResult from './McqQuizResult'
 
 function MCQResults() {
     const {submissionId}=useParams()
-    const {data,error,isSuccess,isError}=useResultsMcqForStudentQuery({submissionId})
-    const theme=useTheme()
+    const {data,error,isError}=useResultsMcqForStudentQuery({submissionId})
+    // const theme=useTheme()
     useEffect(() => {
    
   if(isError&&error&&"data" in error){

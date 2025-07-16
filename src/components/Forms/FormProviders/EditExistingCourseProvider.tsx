@@ -2,8 +2,7 @@ import { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import {
   createCourseDefaultValues,
-  createCourseFormSchema,
-  CreateCourseFormType,
+
   editCourseFormSchema,
   EditCourseFormType,
 } from '../../../types/create_course.types'

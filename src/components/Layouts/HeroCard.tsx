@@ -1,5 +1,5 @@
-import { Image } from '@mui/icons-material';
-import { Box, Button, Card, CardActions, CardContent, CardMedia, Typography, useMediaQuery, useTheme } from '@mui/material'
+
+import { Box, Button, CardMedia, Typography, useMediaQuery, useTheme } from '@mui/material'
 import { Link } from 'react-router-dom';
 
 interface HeroCardProps{
@@ -16,11 +16,11 @@ interface HeroCardProps{
 
 // ...existing imports...
 
-function HeroCard({textBeforeColor, colorText, textAfterColor, imageUrl, showButtons, showImage}: HeroCardProps) {
+function HeroCard({textBeforeColor, colorText, textAfterColor, imageUrl, showImage}: HeroCardProps) {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-    const isXMobile = useMediaQuery(theme.breakpoints.down('xs'));
-    const isLargeScreen = useMediaQuery(theme.breakpoints.down('lg'));
+    // const isXMobile = useMediaQuery(theme.breakpoints.down('xs'));
+    // const isLargeScreen = useMediaQuery(theme.breakpoints.down('lg'));
   
     return (
       <Box sx={{

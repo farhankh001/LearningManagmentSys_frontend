@@ -1,71 +1,115 @@
-import { Box, Chip, Divider, FormControl, FormHelperText, InputLabel, MenuItem, Select } from "@mui/material"
-import { Controller, FieldValues, Path, useFormContext } from "react-hook-form"
+import {
+  Box,
+  Chip,
+  FormControl,
+  FormHelperText,
 
-interface SelectProps<T>{
-    name:Path<T>;
-    label:string;
-    options:Array<string>;
-    isRequired:boolean;
+  MenuItem,
+  Select,
+  Typography,
+  useTheme,
+} from "@mui/material";
+import {
+  Controller,
+  type FieldValues,
+  type Path,
+  useFormContext,
+} from "react-hook-form";
 
+interface SelectProps<T> {
+  name: Path<T>;
+  label: string;
+  options: Array<string>;
+  isRequired: boolean;
 }
 
+function MultipleSelectInputField<T extends FieldValues>({
+  name,
+  label,
+  options,
+  isRequired,
+}: SelectProps<T>) {
+  const { control } = useFormContext<T>();
+  const theme = useTheme();
 
-function MultipleSelectInputField<T extends FieldValues>({name,label,options,isRequired}:SelectProps<T>) {
-    const {control}=useFormContext<T>()
   return (
     <Controller
-    control={control}
-    name={name}
-    render={({field,fieldState:{error}})=>(
-        <FormControl 
-        error={!!error}
-        required={isRequired}>
-          <InputLabel 
-             id={`${name}-label`}
-                sx={{
-                    
-                }}
-             >
-            {label}
-            </InputLabel>
-        <Select
-        multiple
-        labelId={`${name}-label`}
-        {...field}
-        label={label}
-         value={Array.isArray(field.value) ? field.value : []} 
-        size="medium"
-        variant="filled"
-     
-        renderValue={(selected)=>(
-            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-            {Array.isArray(selected) ? selected.map((value: string) => (
-              <Chip 
-                key={value} 
-                label={value}
-  
-              />
-            )) : null}
-          </Box>
-        )}
+      control={control}
+      name={name}
+      render={({ field, fieldState: { error } }) => (
+        <FormControl
+          fullWidth
+          error={!!error}
+          required={isRequired}
+         
         >
-        {
-        options&&options.map((option)=>(
-            <MenuItem 
-                value={option}
-                key={option}>
-                    {option}
-            </MenuItem>
-                ))
+          {/* Custom Label */}
+          <Typography
+            variant="body2"
+            fontWeight={600}
+            sx={{
+              color: theme.palette.text.secondary,
+              mb: 0.5,
+              ml: 0.5,
+            }}
+          >
+            {label}
+          </Typography>
+
+          <Select
+            {...field}
+            multiple
+            displayEmpty
+            value={Array.isArray(field.value) ? field.value : []}
+            size="small"
+            variant="outlined"
+            renderValue={(selected) =>
+              selected.length === 0 ? (
+                <span>Select {label}</span>
+              ) : (
+                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                  {selected.map((value: string) => (
+                    <Chip key={value} label={value} />
+                  ))}
+                </Box>
+              )
             }
-        </Select>
-        <FormHelperText>
-            {error&&error.message}
-        </FormHelperText>
+            sx={{
+              backgroundColor: theme.palette.background.paper,
+              borderRadius: 2,
+              "& .MuiOutlinedInput-root": {
+                borderRadius: "10px",
+                fontSize: "0.9rem",
+              },
+              "& .MuiSelect-select": {
+                padding: "16px 14px",
+              },
+              "& fieldset": {
+                borderColor: theme.palette.divider,
+              },
+              "&:hover fieldset": {
+                borderColor: theme.palette.primary.light,
+              },
+              "&.Mui-focused fieldset": {
+                borderColor: theme.palette.primary.main,
+              },
+            }}
+          >
+            <MenuItem disabled value="">
+              <em>Select {label}</em>
+            </MenuItem>
+            {options.map((option) => (
+              <MenuItem key={option} value={option}>
+                {option}
+              </MenuItem>
+            ))}
+          </Select>
+
+          <FormHelperText>{error?.message}</FormHelperText>
         </FormControl>
-    )}
+      )}
     />
-  )
+  );
 }
 
-export default MultipleSelectInputField
+export default MultipleSelectInputField;

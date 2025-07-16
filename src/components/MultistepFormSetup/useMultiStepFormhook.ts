@@ -1,13 +1,14 @@
-import { useTheme,Box } from "@mui/material";
 
-import { ReactNode, useMemo, useState } from "react";
-import { FieldValues, Path, useFormContext } from "react-hook-form";
+
+import { useMemo, useState } from "react";
+import { type FieldValues, type Path, useFormContext } from "react-hook-form";
 
 export interface StepDefinition<T extends FieldValues>{
     id:string;
     title:string;
     description:string;
     fields:Path<T>[];
+    instructions:string;
     condition?:(formData:Partial<T>)=>boolean
     validations?:(formData:Partial<T>)=>boolean|string
 }
@@ -51,7 +52,7 @@ export function useMultiStepForm<T extends FieldValues>({steps,initialStep=0,onS
     const totalSteps = visibleSteps.length;
     const validateCurrentStep=async():Promise<boolean>=>{
         if(!currentStep) return false
-        const isValid=await trigger(currentStep.fields);
+         const isValid=await trigger(currentStep.fields, { shouldFocus: false });
 
         if(currentStep.validations){
             const customValidations=currentStep.validations(formData);

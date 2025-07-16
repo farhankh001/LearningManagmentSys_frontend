@@ -5,15 +5,17 @@ import {
   Drawer,
   IconButton,
   Toolbar,
-  Typography,
+ 
+  useTheme,
 } from "@mui/material";
-import { JSX, useState } from "react";
-import { FaBars, FaTimes, FaSun, FaMoon, FaUserAlt } from "react-icons/fa";
+import { useState } from "react";
+import {   FaSun, FaMoon } from "react-icons/fa";
 import NavBarOptions from "./NavBarOptions";
-import { Home, Login, Logout, School, Settings } from "@mui/icons-material";
+import { Cancel, Menu, } from "@mui/icons-material";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import { Link } from "react-router-dom";
+
 const navOptions:any=[]
 const navUnregisteredOptions=[
    {
@@ -80,6 +82,7 @@ interface NavProps {
 
 const NavBar: React.FC<NavProps> = ({ darkMode, setDarkMode }) => {
   const [openMenu, setOpenMenu] = useState(false);
+  const theme=useTheme()
    const userRole=useSelector((state:RootState)=>state.auth.user?.role)
       const baseNav = [...navOptions];
     if (userRole && ['Teacher', 'Student', 'Admin'].includes(userRole)) {
@@ -107,7 +110,7 @@ const NavBar: React.FC<NavProps> = ({ darkMode, setDarkMode }) => {
       >
         {/* Menu Icon */}
         <IconButton onClick={() => setOpenMenu(!openMenu)}>
-          {openMenu ? <FaTimes /> : <FaBars />}
+          {openMenu ? <Cancel sx={{color:theme.palette.text.primary}}/> : <Menu sx={{fontSize:30,color:theme.palette.text.primary}} />}
         </IconButton>
 
         {/* Drawer for Navigation Options */}
@@ -121,7 +124,9 @@ const NavBar: React.FC<NavProps> = ({ darkMode, setDarkMode }) => {
           <Typography variant="h6" fontWeight={600} sx={{textAlign:"center"}}>Cyber Range Learning Managment System </Typography>
         </Box> */}
       <Box>
-        {baseNav&&baseNav.map((navopt=><Button component={Link} to={navopt.path}>
+        {baseNav&&baseNav.map((navopt=><Button component={Link} to={navopt.path} sx={
+          {color:theme.palette.warning.light}
+        }>
           {
             navopt.name
           }

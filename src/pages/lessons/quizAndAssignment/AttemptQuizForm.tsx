@@ -1,12 +1,11 @@
-import { Alert, Box, Button, LinearProgress, Typography, useTheme } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import { Alert, Box,  CircularProgress, LinearProgress, Typography, useTheme } from '@mui/material'
+import { useEffect, useState } from 'react'
 import RichTextInputField from '../../../components/Forms/InputFields/RichTextInputField'
 import { QuizAndAssignmentFormType } from '../../../types/quizAndAssignment'
 import FileInputField from '../../../components/Forms/InputFields/FileInputField'
 import { SubmitHandler, useFormContext } from 'react-hook-form'
 import { uploadToCloudinary } from '../../../utils/uploadToCloundinary'
 import { SubmitQuizByStudentType, useSubmitQuizByStudentMutation } from '../../../app/api/lessonApi'
-import LoadingScreen from '../../../components/other/Loading'
 import toast from 'react-hot-toast'
 import { LoadingButton } from '@mui/lab'
 
@@ -45,7 +44,7 @@ function AttemptQuizForm({lessonId}:AttemptQuizProps) {
             }
        }
     if(submitQuizIsLoading){
-        return <LoadingScreen/>
+        return  <Box sx={{width:"100%",height:"70vh",alignItems:"center",justifyContent:"center"}}><CircularProgress/></Box>;
     }
     if(submitQuizIsError&&submitQuizError&&"data" in submitQuizError){
          console.log(submitQuizError)

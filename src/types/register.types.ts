@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const passwordREGEX = /^(?=.*[A-Za-z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$#!%*?&]{8,}$/;
+// const passwordREGEX = /^(?=.*[A-Za-z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$#!%*?&]{8,}$/;
 
 const usernameSchema = z
   .string()
@@ -34,35 +34,17 @@ const passwordSchema = z
 
 
 
-// const roleSchema = z.enum(["admin", "teacher", "student"]);
-
-
-
-
-
-
-
-
-const bioSchema = z.string()
-.transform(val => val === '' ? null : val) // Transform empty string to null
-.nullable()
-.refine((val) => {
-    if (val === null) return true; // Allow null/empty bio
-    return val.length >= 10;
-}, "Bio should contain at least 10 characters.")
-.refine((val) => {
-    if (val === null) return true; // Allow null/empty bio
-    return val.length <= 1000;
-}, "Bio cannot be more than 1000 words long");
-
-
-
-
-
 export const baseRegisterSchema = z.object({
 
 });
 
+
+
+// enum Approval_Status {
+//   Pending
+//   Approved
+//   Rejected
+// }
 
 
 export const createStudentSchema=(avaliableCategories:string[])=>z.object({
@@ -72,14 +54,14 @@ export const createStudentSchema=(avaliableCategories:string[])=>z.object({
   profile_picture:avatarSchema.optional(),
   role:z.enum(["Student"]),//always keep this in this formate first letter capital others small.
   education_level:z.enum([  
-    "PRIMARY_SCHOOL",
-    "MIDDLE_SCHOOL",
-    "HIGH_SCHOOL",
-    "BACHELOR",
-    "MASTERS",
-    "DOCTORATE",
-    "PHD",
-    "OTHER"]),
+  "Primary",
+  "Middle",
+  "HighSchool",
+  "Bachelor",
+  "Masters",
+  "Doctorate",
+  "PhD",
+  "Others"]),
     interests:z.array(
       z.string().refine(val=>avaliableCategories.includes(val),"Selected expertise must be from available categories")
     ).min(1,"Select at least one expertise area.").max(5,"You cannot select more then 5 expertise")
@@ -106,7 +88,7 @@ export const registerDefaultValues:RegisterType={
   password: "",
   profile_picture:null,
   role:"Student",
-  education_level:"BACHELOR",
+  education_level:"Bachelor",
   interests:[]
 }
 
@@ -130,7 +112,7 @@ export type TeacherRegisterType = z.infer<ReturnType<typeof createTeacherSchema>
 
 export const registerTeacherDefaultValues:TeacherRegisterType={
   name: "",
-  email: "",
+  email: "",  
   password: "",
   profile_picture:null,
   role:"Teacher",

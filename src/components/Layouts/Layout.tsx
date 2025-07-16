@@ -6,19 +6,18 @@ import NavBar from "./NavBar";
 import { CssBaseline } from "@mui/material";
 import { Toaster } from 'react-hot-toast';
 import { useDispatch } from "react-redux";
-import { clearUser, setUser } from "../../app/slices/authSlice";
-import { useLoggedInUserInofQuery } from "../../app/api/userApi";
+
 import { useGetAllCoursesQuery } from "../../app/api/createCourseApi";
 import { useGetAllCategoriesQuery } from "../../app/api/categoriesApi";
 import { setCategories } from "../../app/slices/categorySlice";
 import { setAllCourses } from "../../app/slices/courseSlice";
-import { IdleTimerProvider, useIdleTimerContext } from 'react-idle-timer';
-import { StudyTimeTracker } from "../../pages/dashboards/TimeTracker/StudyTimeTracker";
+import { IdleTimerProvider } from 'react-idle-timer';
+import AuthInitializer from "../../AuthInitializer";
+
 
 
 const Layout = () => {
   const[darkMode,setDarkMode]=useState(true)
-  const {data:currentUserInfo,isError,isLoading,error,isFetching,isSuccess}=useLoggedInUserInofQuery();
   const { data: categoriesData, isSuccess: categorySuccess } = useGetAllCategoriesQuery();
   const { data: coursesData, isSuccess: courseSuccess } = useGetAllCoursesQuery({});
   
@@ -39,19 +38,12 @@ const Layout = () => {
   }, [courseSuccess, coursesData, dispatch]);
 
 
-  useEffect(()=>{
-    if(isSuccess&&currentUserInfo){
-        dispatch(setUser(currentUserInfo))
-    }else if(!isLoading&&isError){
-       
-        dispatch(clearUser())
-         }
-       },[isSuccess, isError, currentUserInfo, error,isLoading,isFetching, dispatch])
-      
+
   return (
     <>
       <ThemeProvider theme={darkMode?darkTheme:lightTheme}>
       <CssBaseline/>
+      <AuthInitializer/>
         <NavBar darkMode={darkMode} setDarkMode={setDarkMode}/>
          <Toaster position="top-right" reverseOrder={false} />
 

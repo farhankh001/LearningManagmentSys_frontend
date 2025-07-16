@@ -1,50 +1,56 @@
-// components/ProtectedRoute.tsx
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "./app/store";
-import { useLoggedInUserInofQuery } from "./app/api/userApi";
-import LoadingScreen from "./components/other/Loading";
 import toast from "react-hot-toast";
-import { current } from "@reduxjs/toolkit";
+import { useEffect, useState } from "react";
+import { Box, CircularProgress } from "@mui/material";
 
 interface ProtectedRouteProps {
   allowedRoles?: string[];
 }
 
 const ProtectedRoute = ({ allowedRoles }: ProtectedRouteProps) => {
-  // Get the loading state from the same query that Layout is using
-  const {data:CurrentUserData, isLoading, isFetching,isError,isSuccess,error } = useLoggedInUserInofQuery();
-  const authState = useSelector((state: RootState) => state.auth);
-  
-  // Wait for Layout to finish its authentication check
-  const authInitializing = isLoading || isFetching;
-  
-  console.log("ProtectedRoute status:", {
-    authInitializing,
-    isAuthenticated: authState.isAuthenticated,
-    user: authState.user?.role,
-    isLoading,
-    isFetching
-  });
+  const { isAuthenticated, user, hydrationCompleted } = useSelector(
+    (state: RootState) => state.auth
+  );
+  const [toastShown, setToastShown] = useState(false);
+  const location = useLocation();
 
-  // Show loading while Layout is still checking authentication
-  if (authInitializing) {
-    return <LoadingScreen />;
+  useEffect(() => {
+    if (!isAuthenticated && hydrationCompleted && !toastShown && location.pathname !== "/logout") {
+      toast.error("You must be logged in to access this page.");
+      setToastShown(true);
+    }
+  }, [isAuthenticated, hydrationCompleted, toastShown, location.pathname]);
+
+  useEffect(() => {
+    if (
+      isAuthenticated &&
+      user &&
+      allowedRoles &&
+      !allowedRoles.includes(user.role) &&
+      !toastShown
+    ) {
+      toast.error("You are not authorized to access this page.");
+      setToastShown(true);
+    }
+  }, [isAuthenticated, user, allowedRoles, toastShown]);
+
+  if (!hydrationCompleted) {
+    return <Box sx={{width:"100%",height:"70vh",alignItems:"center",justifyContent:"center"}}><CircularProgress/></Box>;
   }
 
-  // Only after auth check is complete, redirect if not authenticated
-  if (isError||!isSuccess||!CurrentUserData) {
-    toast.error("Something went wrong. Try Logging in again.")
-    console.log(error)
+  if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
 
-  // Check role permissions
-  if (CurrentUserData && CurrentUserData.role && allowedRoles&&!allowedRoles.includes(CurrentUserData.role)) {
+  if (allowedRoles && user && !allowedRoles.includes(user.role)) {
     return <Navigate to="/unauthorized" replace />;
   }
 
   return <Outlet />;
 };
 
-export default ProtectedRoute;
+
+export default ProtectedRoute
+

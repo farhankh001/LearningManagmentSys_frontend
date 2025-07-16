@@ -1,7 +1,7 @@
 import { QuizAndAssignmentFormDefault, QuizAndAssignmentFormType, quizAndAssignmentSchema } from '../../../types/quizAndAssignment'
 import { FormProvider, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import AttemptQuizForm from '../../../pages/lessons/quizAndAssignment/AttemptQuizForm'
+
 import AttemptAssignmentForm from '../../../pages/lessons/quizAndAssignment/AttemptAssignmentForm'
 interface AttemptQuizProps{
     lessonId:string|undefined

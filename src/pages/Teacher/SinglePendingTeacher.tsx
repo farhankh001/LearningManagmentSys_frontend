@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import  { useEffect } from 'react'
+import {  useNavigate, useParams } from 'react-router-dom'
 import { useGetSingleTeacherByIdQuery } from '../../app/api/teacherDashApis'
-import { Box, Typography, Avatar, Chip, CircularProgress, Button, Card, CardMedia, useTheme } from '@mui/material'
-import { FaGraduationCap, FaDollarSign } from 'react-icons/fa'
+import { Box, Typography, Chip, CircularProgress, Button, Card, CardMedia, useTheme } from '@mui/material'
+import { FaGraduationCap } from 'react-icons/fa'
 import { ArtTrack, Quiz, Insights, SupportAgent } from '@mui/icons-material'
-import LoadingScreen from '../../components/other/Loading'
+
 import { useApproveTeacherMutation, useRejectTeacherMutation } from '../../app/api/adminApis'
 import toast from 'react-hot-toast'
 
@@ -23,9 +23,9 @@ const instructions = [
 function SinglePendingTeacher() {
   const { teacherId } = useParams()
   const navigate=useNavigate()
-  const { data: teacherData, isLoading:isLoadingTeacherData, isError:isTeacherDataError, error:teacherDataError } = useGetSingleTeacherByIdQuery({ teacherId })
-  const [rejectTeacher,{isError:rejectTeacherIsError,isLoading:rejectTeacherIsLoading,error:rejectTeacherError,isSuccess:rejectTeacherIsuccess}]=useRejectTeacherMutation()
-  const [approveTeacher,{isError:approveTeacherIsError,isLoading:approveTeacherIsLoading,error:approveTeacherError,isSuccess:approveTeacherSuccess}]=useApproveTeacherMutation()
+  const { data: teacherData, isLoading:isLoadingTeacherData, isError:isTeacherDataError, } = useGetSingleTeacherByIdQuery({ teacherId })
+  const [rejectTeacher,{isError:rejectTeacherIsError,error:rejectTeacherError,isSuccess:rejectTeacherIsuccess}]=useRejectTeacherMutation()
+  const [approveTeacher,{isError:approveTeacherIsError,error:approveTeacherError,isSuccess:approveTeacherSuccess}]=useApproveTeacherMutation()
   const theme=useTheme()
     useEffect(() => {
     if (approveTeacherSuccess) {
@@ -72,7 +72,7 @@ useEffect(() => {
 
   if (isLoadingTeacherData) {
     return (
-      <LoadingScreen/>
+       <Box sx={{width:"100%",height:"70vh",alignItems:"center",justifyContent:"center"}}><CircularProgress/></Box>
     )
   }
 

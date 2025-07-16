@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import  { FC } from 'react'
 import { Link } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import MuiLink from '@mui/material/Link'

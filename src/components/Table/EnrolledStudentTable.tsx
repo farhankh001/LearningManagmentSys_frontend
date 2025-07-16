@@ -17,7 +17,7 @@ interface EnrolltableProp{
 
 function EnrolledStudentTable({courseId}:EnrolltableProp) {
     const theme=useTheme()
-    const {data:courseDataForTeacher,error,isError,isSuccess}=useGetSingleCourseByTeacherQuery({courseId})
+    const {data:courseDataForTeacher}=useGetSingleCourseByTeacherQuery({courseId})
   return (
     <TableContainer component={Paper} sx={{ borderRadius: 2, boxShadow: 2 }}>
       <Table>
@@ -34,7 +34,7 @@ function EnrolledStudentTable({courseId}:EnrolltableProp) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {courseDataForTeacher?.courseDetails.enrolledStudents.map((student, index) => (
+          {courseDataForTeacher?.courseDetails.approvedStudents.map((student, index) => (
             <TableRow
               key={index}
               hover

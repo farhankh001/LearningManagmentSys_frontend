@@ -1,6 +1,6 @@
-import  { useEffect, useState } from "react";
+
 import { useSelector } from "react-redux";
-import {Box, Typography,Avatar,Chip, useTheme,ListItem,ListItemButton,Divider,ListItemIcon,ListItemText,Rating,LinearProgress, Container, Button,} from "@mui/material";
+import {Box, Typography,Avatar,Chip, useTheme,ListItem,ListItemButton,Divider,ListItemIcon,ListItemText, Button, CircularProgress,} from "@mui/material";
 import { CheckCircle, Cancel, AccountCircle, Create, UpdateSharp, StarRate, Group, MenuBook, AttachMoney, Stars } from '@mui/icons-material';
 import { RootState } from "../../app/store";
 import { Link } from "react-router-dom";
@@ -8,7 +8,7 @@ import CourseTable from "../../components/Table/CourseTable";
 
 import { MRT_ColumnDef } from "material-react-table";
 import { PendingTeacher, useGetAdminApprovalQuery, useGetAdminTeacherStatsQuery, useGetAllPendingTeachersQuery } from "../../app/api/adminApis";
-import LoadingScreen from "../../components/other/Loading";
+
 
 export interface CourseTeacherDashType {
     id:string;
@@ -61,11 +61,11 @@ const courseAdminDashColumns: MRT_ColumnDef<PendingTeacher>[] = [
 function AdminDashboard() {
   const user = useSelector((state: RootState) => state.auth.user);
   const theme=useTheme()
-  const {data:pendingTeacherData,isError:isErrorGetPendingTeacher,isLoading:isFetchingPendingTeacher,isSuccess:isSuccessPendingTeacher,error:errorPendingTeacher}=useGetAllPendingTeachersQuery()
-  const{data:adminApprovalStatus,isError:approvalIsError,isLoading:approvalLoading,isSuccess:approvalSuccess,error:approvalError}=useGetAdminApprovalQuery()
+  const {data:pendingTeacherData,isError:isErrorGetPendingTeacher,isLoading:isFetchingPendingTeacher,error:errorPendingTeacher}=useGetAllPendingTeachersQuery()
+  const{data:adminApprovalStatus,isError:approvalIsError,isLoading:approvalLoading,error:approvalError}=useGetAdminApprovalQuery()
   const {data:adminStats,isError:adminStatsIsError,isLoading:adminIsLoading,error:adminStatsError}=useGetAdminTeacherStatsQuery()
   if(adminIsLoading||approvalLoading||isFetchingPendingTeacher){
-    return <LoadingScreen/>
+    return  <Box sx={{width:"100%",height:"70vh",alignItems:"center",justifyContent:"center"}}><CircularProgress/></Box>;
   }
   const isAnyError =
   isErrorGetPendingTeacher ||
@@ -99,7 +99,7 @@ function AdminDashboard() {
     );
   }
   
-  if(adminApprovalStatus?.status==="PENDING"){
+  if(adminApprovalStatus?.status==="Pending"){
     <Box sx={{width:"100%",height:"70vh",display:"flex",flexDirection:"column",gap:3}}>
       <Typography variant="h2">
         You are not approved admin yet. Your request is pending
@@ -108,7 +108,7 @@ function AdminDashboard() {
       />
     </Box>
   }
-   if(adminApprovalStatus?.status==="REJECTED"){
+   if(adminApprovalStatus?.status==="Rejected"){
     <Box sx={{width:"100%",height:"70vh",display:"flex",flexDirection:"column",gap:3}}>
       <Typography variant="h2">
         Your Request was rejected. Stay around admin may change his mind in futur.
@@ -118,7 +118,7 @@ function AdminDashboard() {
     </Box>
   }
 
-  if(user.role!=="Admin"||adminApprovalStatus?.status!=="APPROVED"){
+  if(user.role!=="Admin"||adminApprovalStatus?.status!=="Approved"){
     return (
       <Box sx={{ p: 3, textAlign: 'center' }}>
         <Typography variant="h5" color="error">You are not authorized to access this page.</Typography>
@@ -126,7 +126,7 @@ function AdminDashboard() {
     );
   }
    
-  const { name, email, profile_picture, email_verified,role } = user;
+  const { name,  profile_picture, email_verified,role } = user;
   const settingsOptions=[
     {
         name:"Admin Settings",

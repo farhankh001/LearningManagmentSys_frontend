@@ -1,7 +1,7 @@
-import { Forward, Info, Insights } from '@mui/icons-material'
+import { Forward, Info, } from '@mui/icons-material'
 import { Box, Button, Chip, Typography, useTheme } from '@mui/material'
 import { Link } from 'react-router-dom'
-import React from 'react'
+
 import { EnrolledCourse } from '../../../app/api/studentDashApis'
 import CourseTable from '../../../components/Table/CourseTable'
 import { MRT_ColumnDef } from 'material-react-table'
@@ -83,9 +83,9 @@ function StudentAllEnrolledCourses() {
 
         <Box sx={{height:"530px",display:"flex",flexDirection:"column",width:"25%",gap:3}}>
        
-       <Box sx={{height:"55%"}}> <GaugeChartDash  title='Percentage Completed Courses' value={enrolledCourses.enrollmentSummary.overallProgressPercentage}/></Box>
+       <Box sx={{height:"55%"}}> <GaugeChartDash  title='Percentage Completed Courses' value={(enrolledCourses.enrollmentSummary.completed.count/(enrolledCourses.enrollmentSummary.totalEnrolled.count??1))*100}/></Box>
         <Box sx={{height:"100%"}}>
-            <PieChartWithoutHole completed={enrolledCourses.enrollmentSummary.completed} inprogress={enrolledCourses.enrollmentSummary.inProgress} totalEnrolled={enrolledCourses.enrollmentSummary.totalEnrolled}  label1='Enrolled' label2='Completed' label3='Inprogress' title='Course Completion Summary'/>
+            <PieChartWithoutHole completed={enrolledCourses.enrollmentSummary.completed.count} inprogress={enrolledCourses.enrollmentSummary.inProgress.count} totalEnrolled={enrolledCourses.enrollmentSummary.totalEnrolled.count}  label1='Enrolled' label2='Completed' label3='Inprogress' title='Course Completion Summary'/>
         </Box>
     </Box>
   </Box>

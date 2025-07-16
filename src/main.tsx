@@ -25,8 +25,6 @@ import AttemptQuiz from './pages/lessons/quizAndAssignment/AttemptQuiz.tsx'
 import AttemptAssignment from './pages/lessons/quizAndAssignment/AttemptAssignment.tsx'
 import Unauthorized from './Unauthorize.tsx'
 import Logout from './pages/Logout.tsx'
-import Quiz from './pages/courses/MCQsBasedQuiz.tsx'
-import QuizMCQS from './pages/courses/QuizMCQS.tsx'
 import MCQsCreateQuizFormProvider from './components/Forms/FormProviders/MCQsCreateQuizFormProvider.tsx'
 import SubmitMCQQuizStudentFormProvider from './components/Forms/FormProviders/SubmitMCQQuizStudentFormProvider.tsx'
 import MCQResults from './pages/lessons/quizAndAssignment/MCQResults.tsx'
@@ -37,9 +35,13 @@ import EnrolledCourseMoreInfo from './pages/courses/EnrolledCourseMoreInfo.tsx'
 import StudentAllEnrolledCourses from './pages/dashboards/DashSettingsPages/StudentAllEnrolledCourses.tsx'
 import StudentPendingEnrollments from './pages/dashboards/DashSettingsPages/StudentPendingEnrollments.tsx'
 import StudentEnrollCourse from './pages/dashboards/DashSettingsPages/StudentEnrollCourse.tsx'
+import CreateLabFromProvider from './components/Forms/FormProviders/CreateLabFromProvider.tsx'
+import CreateLabChallengeFormProvider from './components/Forms/FormProviders/CreateLabChallengeFormProvider.tsx'
+import LessonSettings from './pages/lessons/LessonSettings.tsx'
+import CreateNewAssignmentProvider from './components/Forms/FormProviders/CreateNewAssignmentProvider.tsx'
 
 
- // Types
+// Types
 export interface QuizQuestion {
   id: string;
   question: string;
@@ -74,43 +76,47 @@ const router = createBrowserRouter(
       <Route path="/unauthorized" element={<Unauthorized />} />
       <Route path="/teacher-register" element={<TeacherRegisterFormProvider />} />
       <Route element={<ProtectedRoute />}> {/* No role check here */}
-          <Route path="/logout" element={<Logout />} />
+        <Route path="/logout" element={<Logout />} />
       </Route>
       {/* Protected Routes */}
-      <Route element={<ProtectedRoute allowedRoles={["Teacher"]}/>}>
+      <Route element={<ProtectedRoute allowedRoles={["Teacher"]} />}>
         <Route path="/teacher-dash" element={<TeacherDashboard />} />
         <Route path="/create-new-course" element={<CreateNewCourseProvider />} />
         <Route path="/create-new-lesson/:courseId" element={<CreateNewLessonProvider />} />
         <Route path="/course-settings/:courseId" element={<CourseSettings />} />
-        <Route path="/edit-course/:courseId" element={<EditExistingCourseProvider/>} />
-       <Route path="/create-MCQS-quiz/:lessonId" element={<MCQsCreateQuizFormProvider/>}/>
-       <Route path="/handle-enrollment-approval/:enrollmentId" element={<SingleStudentProfile/>}/>
+        <Route path="/edit-course/:courseId" element={<EditExistingCourseProvider />} />
+        <Route path="/create-MCQS-quiz/:lessonId" element={<MCQsCreateQuizFormProvider />} />
+        <Route path="/handle-enrollment-approval/:enrollmentId" element={<SingleStudentProfile />} />
+        <Route path="/create-lab/:lessonId" element={<CreateLabFromProvider />} />
+        <Route path="/create-assignment/:lessonId" element={<CreateNewAssignmentProvider />} />
+        <Route path="/lesson-settings/:lessonId" element={<LessonSettings />} />
+        <Route path="/add-lab-challenge/:labId" element={<CreateLabChallengeFormProvider />} />
       </Route>
-      <Route element={<ProtectedRoute allowedRoles={["Student"]}/>}>
+      <Route element={<ProtectedRoute allowedRoles={["Student"]} />}>
         <Route path="/student-dash" element={<StudentDashboard />} />
         <Route path="/display-all-courses" element={<DisplayAllCourses />} />
         <Route path="/get-single-course-by-enrolled-student/:courseId" element={<EnrolledCourseInfo />} />
-        <Route path="/attempt-quiz/:lessonId" element={<AttemptQuiz/>}/>
-        <Route path="/attempt-assignment/:lessonId" element={<AttemptAssignment/>}/>
-        <Route path="/logout" element={<Logout/>} />
-        <Route path="/attempt-MCQS-quiz/:lessonId" element={<SubmitMCQQuizStudentFormProvider/>}/>
-        <Route path="/view-mcq-results-std/:submissionId" element={<MCQResults/>}/>
-        <Route path="/enrolled-course-more-info/:courseId" element={<EnrolledCourseMoreInfo/>}/>
-         <Route path="/all-enrolled-courses-settings" element={<StudentAllEnrolledCourses/>}/>
-          <Route path="/all-pending-courses-settings" element={<StudentPendingEnrollments/>}/>
-           <Route path="/enroll-in-a-course" element={<StudentEnrollCourse/>}/>
+        <Route path="/attempt-quiz/:lessonId" element={<AttemptQuiz />} />
+        <Route path="/attempt-assignment/:lessonId" element={<AttemptAssignment />} />
+        <Route path="/logout" element={<Logout />} />
+        <Route path="/attempt-MCQS-quiz/:lessonId" element={<SubmitMCQQuizStudentFormProvider />} />
+        <Route path="/view-mcq-results-std/:submissionId" element={<MCQResults />} />
+        <Route path="/enrolled-course-more-info/:courseId" element={<EnrolledCourseMoreInfo />} />
+        <Route path="/all-enrolled-courses-settings" element={<StudentAllEnrolledCourses />} />
+        <Route path="/all-pending-courses-settings" element={<StudentPendingEnrollments />} />
+        <Route path="/enroll-in-a-course" element={<StudentEnrollCourse />} />
       </Route>
-         <Route element={<ProtectedRoute allowedRoles={["Admin"]}/>}>
-         <Route path="/admin-dash" element={<AdminDashboard />} />
-          <Route path="/single-pending-teacher/:teacherId" element={<SinglePendingTeacher/>}/>
-         </Route>
+      <Route element={<ProtectedRoute allowedRoles={["Admin"]} />}>
+        <Route path="/admin-dash" element={<AdminDashboard />} />
+        <Route path="/single-pending-teacher/:teacherId" element={<SinglePendingTeacher />} />
+      </Route>
     </Route>
   )
 );
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Provider store={store}>
-    <RouterProvider router={router}/>
+      <RouterProvider router={router} />
     </Provider>
   </StrictMode>,
 )

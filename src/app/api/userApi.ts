@@ -1,31 +1,7 @@
+import { setUser } from "../slices/authSlice";
 import {baseApi} from "./baseApi";
 
 
-type StudentData =  {
-  education_level: "PRIMARY_SCHOOL" | "MIDDLE_SCHOOL" | "HIGH_SCHOOL" | "BACHELOR" | "MASTERS" | "DOCTORATE" | "PHD" | "OTHER";
-  interests: string[];
-};
-
-type TeacherData = {
-  qualifications: string;
-  teacher_expertise: string[];
-};
-
-type AdminData = {
-  
-};
-
-type RegistrationRequest = {
-  userData: {
-    name: string;
-    email: string;
-    password: string;
-    role: "Student" | "Teacher" | "Admin";
-    bio?: string | null;
-    profile_picture: string;
-  };
-  roleSpecificData: StudentData | TeacherData | AdminData;
-};
 
 
 interface LoggedInUserType{
@@ -38,30 +14,37 @@ interface LoggedInUserType{
     };
 
 interface LogInReturntype{
-  user:{
-    role:string,
-  id:string
-  }
+  accessToken:string;
+  user:LoggedInUserType
 }
 export const userApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    // Registration Mutation
+
     registerUser: builder.mutation<any,FormData>({
       query: (formData) => ({
-        url: '/create-user', // Backend endpoint for registration
-        method: 'POST', // HTTP method
-        body: formData, // Data to send in the request body
+        url: '/create-user',
+        method: 'POST', 
+        body: formData, 
       }),
     }),
-    loginUser:builder.mutation<LogInReturntype,any>({
-        query:(loginData)=>({
-            url:"/login",
-            method:"POST",
-            body:loginData,
-            credentials:'include'
-        }),
-        invalidatesTags:["User","Enrollment","StdActiveTime"]
-    }),
+   loginUser: builder.mutation<LogInReturntype, any>({
+  query: (loginData) => ({
+    url: '/login',
+    method: 'POST',
+    body: loginData,
+  }),
+  async onQueryStarted(_, { dispatch, queryFulfilled }) {
+    try {
+      const { data } = await queryFulfilled;
+      dispatch(setUser({ ...data.user, accessToken: data.accessToken }));
+    } catch (error) {
+      console.log(error)
+    
+    }
+  },
+  invalidatesTags: ['User', 'Enrollment', 'StdActiveTime'],
+}),
+
     loggedInUserInof:builder.query<LoggedInUserType,void>({
       query:()=>({
         method:"GET",
@@ -78,12 +61,27 @@ export const userApi = baseApi.injectEndpoints({
     }),
     registerTeacher: builder.mutation<any,FormData>({
       query: (formData) => ({
-        url: '/create-Teacher', // Backend endpoint for registration
-        method: 'POST', // HTTP method
-        body: formData, // Data to send in the request body
+        url: '/create-Teacher', 
+        method: 'POST',
+        body: formData,
       }),
     }),
+    refreshToken: builder.query<LogInReturntype, void>({
+  query: () => ({
+    url: "/refresh-token",
+    method: "POST",
+  }),
+  async onQueryStarted(_, { dispatch, queryFulfilled }) {
+    try {
+      const { data } = await queryFulfilled;
+      dispatch(setUser({ ...data.user, accessToken: data.accessToken }));
+    } catch (error) {
+      console.error("Refresh failed", error);
+      // Optionally dispatch(clearUser()) if you want to force logout
+    }
+  },
+}),
   }),
 });
 
-export const { useRegisterUserMutation,useLoginUserMutation,useLoggedInUserInofQuery,useLogOutUserMutation,useRegisterTeacherMutation } = userApi;
+export const { useRegisterUserMutation,useLoginUserMutation,useLoggedInUserInofQuery,useLogOutUserMutation,useRegisterTeacherMutation,useLazyRefreshTokenQuery } = userApi;

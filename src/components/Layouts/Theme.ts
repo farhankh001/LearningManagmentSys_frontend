@@ -26,7 +26,7 @@ export const darkTheme: ThemeOptions = createTheme({
     secondary: {
       main: "#3D4141", 
       light: "#090a0d", 
-      dark: "#262626",
+      dark: "#ff2929",
       contrastText: "#FAFAFA"
     },
     grey:{
@@ -50,12 +50,36 @@ export const darkTheme: ThemeOptions = createTheme({
       disabled: "rgba(255, 255, 255, 0.5)"
     },
     background: {
-      default: "#02051f", //very dark gray
+      default: "#000000", //very dark gray
       paper: "#222A32", //slightly lighter gary
     
     }
   },
-  typography: sharedTypography
+  typography: sharedTypography,
+    components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          scrollbarWidth: 'thin',
+          scrollbarColor: '#555 #222A32',
+        },
+        '*::-webkit-scrollbar': {
+          width: '7px',
+          height: '2px',
+        },
+        '*::-webkit-scrollbar-track': {
+          background: '#222A32',
+        },
+        '*::-webkit-scrollbar-thumb': {
+          backgroundColor: '#555',
+          borderRadius: '4px',
+        },
+        '*::-webkit-scrollbar-thumb:hover': {
+          backgroundColor: '#888',
+        },
+      }
+    }
+  }
 });
 
 export const lightTheme: ThemeOptions = createTheme({

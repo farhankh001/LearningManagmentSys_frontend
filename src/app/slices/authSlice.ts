@@ -12,25 +12,35 @@ interface User {
 interface AuthState {
   user: User | null;
   isAuthenticated: boolean;
+   accessToken: string | null;
+    hydrationCompleted: boolean,
 }
 
 const initialState: AuthState = {
   user: null,
-  isAuthenticated: false
+  isAuthenticated: false,
+  accessToken: null,
+   hydrationCompleted: false,
 };
 
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setUser: (state, action: PayloadAction<User>) => {
-      state.user = action.payload;
+    setUser: (state, action: PayloadAction<User&{accessToken:string}>) => {
+      const {accessToken,...user}=action.payload;
+      state.user = user;
+      state.accessToken=accessToken;
       state.isAuthenticated = true;
+         state.hydrationCompleted = true;
     },
     clearUser: (state) => {
       state.user = null;
+      state.accessToken=null;
       state.isAuthenticated = false;
+       state.hydrationCompleted = true;
     }
+
   }
 });
 

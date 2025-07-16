@@ -1,5 +1,5 @@
 import { Box, Divider, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, ListSubheader } from "@mui/material"
-import { FaBars, FaHome, FaSignInAlt, FaTimes, FaUserAlt, FaUserPlus } from "react-icons/fa"
+import { FaBars, FaTimes, FaUserAlt } from "react-icons/fa"
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom"
 import { RootState } from "../../app/store";

@@ -17,7 +17,7 @@ import {
 
 interface QuizQuestion {
   id: string;
-  question_text: string;
+  question: string;
   options: string[];
 }
 
@@ -29,7 +29,7 @@ interface MCQSInputFieldProps<T> {
 }
 
 function MCQSInputField<T extends FieldValues>({
-  label,
+  
   name,
   question,
   isRequired
@@ -44,7 +44,7 @@ function MCQSInputField<T extends FieldValues>({
       rules={{ required: isRequired ? 'This field is required' : false }}
       render={({ field, fieldState }) => (
         <FormControl component="fieldset" error={!!fieldState.error}>
-          <Typography variant='body1' sx={{m:1, fontSize:"1.1rem"}}>{question.question_text}</Typography>
+          <Typography variant='body1' sx={{m:1, fontSize:"1.1rem"}}>{question.question}</Typography>
           <RadioGroup
             sx={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:2}}
             value={field.value ?? -1} // Ensure -1 as default

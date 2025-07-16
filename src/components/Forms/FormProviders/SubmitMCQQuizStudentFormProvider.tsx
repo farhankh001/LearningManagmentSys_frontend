@@ -1,16 +1,15 @@
 import React from 'react'
-import { CreateMCQQuizFormDefaultValues, createMCQSchema, CreateQuizMCQFormType, submitMCQByStudent, submitMCQByStudentDefault, SubmitMCQByStudentType } from '../../../types/quiz-mcqs-types'
+import {  submitMCQByStudent, SubmitMCQByStudentType } from '../../../types/quiz-mcqs-types'
 import { FormProvider, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import MCQQuizAttemptFrom from '../../../pages/lessons/quizAndAssignment/MCQQuizAttemptFrom'
 import { useParams } from 'react-router-dom'
 import { useGetMCQsQuizForStudentQuery } from '../../../app/api/lessonApi'
-import LoadingScreen from '../../other/Loading'
-import { Box } from '@mui/material'
+import { Box, CircularProgress } from '@mui/material'
 
 function SubmitMCQQuizStudentFormProvider() {
   const {lessonId}=useParams()
-  const {data:mcqData,isError:mcqIncomingIsError,isSuccess:mcqIncomingIsSuccess,error:mcqIncomingError,isLoading:mcqDataIsloading}=useGetMCQsQuizForStudentQuery({lessonId})
+  const {data:mcqData,isError:mcqIncomingIsError,error:mcqIncomingError,isLoading:mcqDataIsloading}=useGetMCQsQuizForStudentQuery({lessonId})
 
   const methods=useForm<SubmitMCQByStudentType>({
              mode:"all",
@@ -35,7 +34,7 @@ function SubmitMCQQuizStudentFormProvider() {
     }
   }, [mcqData, lessonId, methods]);
   if(mcqDataIsloading){
-    return <LoadingScreen/>
+    return  <Box sx={{width:"100%",height:"70vh",alignItems:"center",justifyContent:"center"}}><CircularProgress/></Box>;
   }
   if(mcqIncomingIsError&&mcqIncomingError){
     return <Box>Error</Box>

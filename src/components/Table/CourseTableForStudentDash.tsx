@@ -9,7 +9,7 @@ import {
   TableRow,
   useTheme,
   Paper,
-  useMediaQuery,
+
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import { EnrolledCourse } from "../../app/api/studentDashApis";
@@ -30,7 +30,7 @@ interface CourseTableForStudentProp{
 function CourseTableForStudentDash({courses}:CourseTableForStudentProp) {
   const theme = useTheme();
  console.log(courses)
- const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+//  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   return (
     <TableContainer component={Paper} sx={{ borderRadius: 2, boxShadow: 2 }}>
       <Table size="medium">

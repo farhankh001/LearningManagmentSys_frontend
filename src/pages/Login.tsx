@@ -4,8 +4,7 @@ import TextInputField from "../components/Forms/InputFields/TextInputField";
 import { LoginType } from "../types/login.types";
 import { SubmitHandler, useFormContext } from "react-hook-form";
 import { useLoginUserMutation } from "../app/api/userApi";
-import { useDispatch } from "react-redux";
-import { setUser } from "../app/slices/authSlice";
+
 import { useNavigate, Link } from "react-router-dom";
 
 

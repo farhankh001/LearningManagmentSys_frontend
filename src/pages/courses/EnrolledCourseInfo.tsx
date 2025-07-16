@@ -1,14 +1,13 @@
-import {Box, Typography,Avatar,Chip, useTheme,ListItem,ListItemButton,Divider,ListItemIcon,ListItemText,Rating,LinearProgress, Alert, CircularProgress, Button, Card, CardMedia,} from "@mui/material";
-import { CheckCircle, Cancel, Create, UpdateSharp, Info, Email, School, Forward, Book, Forward10, EmojiEvents, Celebration, Thunderstorm, Insights, Explore } from '@mui/icons-material';
-import { Link } from "react-router-dom";
+import {Box, Typography,Avatar,Chip, useTheme, Alert, CircularProgress, CardMedia,} from "@mui/material";
+import {  Forward, Celebration, Thunderstorm,  Explore } from '@mui/icons-material';
+
 import { useParams } from 'react-router-dom'
 import DisplayLessonAndAssignment from '../lessons/DisplayLessonAndAssignment';
 import { useGetSingleCourseByEnrolledStudentQuery } from "../../app/api/studentDashApis";
-import TableAtCourseInfoEnrolled from "../../components/Table/TableAtCourseInfoEnrolled";
+
 
 import { FILEURLPRE } from "../../components/other/Defaulturl";
-import { FaUniversity } from "react-icons/fa";
-import { limitWords } from "../dashboards/DashCards/ApprovedCoursesCards";
+
 import QuizPerformanceLineChart from "../dashboards/Charts/QuizPerformanceLineChart";
 import PieChartDash from "../dashboards/Charts/PieChartDash";
 import RadialChartDash from "../dashboards/Charts/RadialChartDash";
@@ -17,7 +16,7 @@ import { StudyTimeTracker } from "../dashboards/TimeTracker/StudyTimeTracker";
 
 function EnrolledCourseInfo() {
     const {courseId}=useParams()
-    const {data:enrolledCourse,error,isError,isSuccess,isLoading}=useGetSingleCourseByEnrolledStudentQuery({courseId})
+    const {data:enrolledCourse,error,isError,isLoading}=useGetSingleCourseByEnrolledStudentQuery({courseId})
     const theme=useTheme()
    
   if (!courseId) {

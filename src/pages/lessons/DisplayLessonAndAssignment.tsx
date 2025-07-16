@@ -1,6 +1,6 @@
-import { Article, AutoStories, Book, ExpandMore, Insights, LibraryBooks, MenuBook, OndemandVideo, ViewAgenda } from '@mui/icons-material'
-import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Card, Chip, Divider, LinearProgress, Typography, useTheme } from '@mui/material'
-import { Lesson, Quiz, useGetSingleCourseByTeacherQuery } from '../../app/api/createCourseApi'
+import { ExpandMore, Insights, LibraryBooks,  OndemandVideo, } from '@mui/icons-material'
+import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Card, Chip,  LinearProgress, Typography, useTheme } from '@mui/material'
+
 import  DocViewer,{ DocViewerRenderers, IDocument } from "@cyntler/react-doc-viewer";
 import { JSX, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -9,10 +9,9 @@ import { RootState } from '../../app/store';
 import ReactPlayer from 'react-player';
 
 import { FILEURLPRE } from '../../components/other/Defaulturl';
-import VideoComponent from './VideoComponent';
-import { limitWords } from '../dashboards/DashCards/ApprovedCoursesCards';
+
 import { EnhancedLesson } from '../../app/api/studentDashApis';
-import { BorderLinearProgress } from '../../test/feature';
+
 
 interface DisplayLessonAndAssignmentprops{
     lessons:EnhancedLesson[]|undefined
@@ -88,6 +87,7 @@ function DisplayLessonAndAssignment({lessons}:DisplayLessonAndAssignmentprops) {
   const [expanded,setExpanded]=useState<number|null>(null)
     console.log(lessons)
     const theme=useTheme()
+    
   return (
     lessons&&lessons.map((lesson,index)=>{
         return  <Accordion  
@@ -129,7 +129,7 @@ function DisplayLessonAndAssignment({lessons}:DisplayLessonAndAssignmentprops) {
               padding: 0, // Remove default padding since we add our own
             },
           }}
-          onChange={(e, isExpanded) => setExpanded(isExpanded ? index : null)}
+          onChange={(_, isExpanded) => setExpanded(isExpanded ? index : null)}
         >
       <AccordionSummary 
         expandIcon={<ExpandMore/>} 
@@ -178,12 +178,30 @@ function DisplayLessonAndAssignment({lessons}:DisplayLessonAndAssignmentprops) {
    <Box sx={{mt:5}}>
      <Typography sx={{display:'flex',alignItems:"center",gap:2,mb:1,background: "linear-gradient(to right,rgb(234, 196, 44),rgb(255, 55, 0))",WebkitBackgroundClip: "text",WebkitTextFillColor: "transparent",}} variant="h6" fontWeight={600}><span>Additional Resources</span> <LibraryBooks  sx={{color:theme.palette.warning.light}} /></Typography>
      {expanded==index&&lesson.url_docs ? (
-     <FilePreviewer fileUrl={`${FILEURLPRE}/${lesson.url_docs}`} />) : null}
+    <Button
+  variant="outlined"
+  color="primary"
+  href={`${FILEURLPRE}/${lesson.url_docs}`}
+  download
+  target="_blank"
+>
+  Download Document
+</Button>)
+ : null}
      {
       lesson.url_doc2&& <Typography sx={{display:'flex',alignItems:"center",gap:2,mb:1,mt:2, background: "linear-gradient(to right,rgb(234, 196, 44),rgb(255, 55, 0))",WebkitBackgroundClip: "text",WebkitTextFillColor: "transparent",}} variant="h6" fontWeight={600}><span> Second Document</span> <LibraryBooks  sx={{color:theme.palette.warning.light}} /></Typography>
      }
      {expanded==index&&lesson.url_doc2 ? (
-     <FilePreviewer fileUrl={`${FILEURLPRE}/${lesson.url_doc2}`} />) : null}
+     <Button
+  variant="outlined"
+  color="primary"
+  href={`${FILEURLPRE}/${lesson.url_doc2}`}
+  download
+  target="_blank"
+>
+  Download Document
+</Button>
+) : null}
    </Box>
     </Box>
       { authUser?.role==="Student"&&<Box sx={{display:"flex",alignItems:"center",justifyContent:"center",gap:3,p:2,borderTop:`1px solid ${theme.palette.divider}`}}>

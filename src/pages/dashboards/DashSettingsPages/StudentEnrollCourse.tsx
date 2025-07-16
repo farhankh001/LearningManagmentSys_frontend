@@ -1,11 +1,13 @@
-import React from 'react'
+import { Box, useTheme } from '@mui/material'
+import CoursesWithTeacher from '../DashCards/CoursesWithTeacher'
+
 
 function StudentEnrollCourse() {
+  const theme=useTheme()
   return (
-    <div>
-        enroll course
-      
-    </div>
+    <Box>
+      <CoursesWithTeacher bgc={theme.palette.primary.dark} />
+    </Box>
   )
 }
 

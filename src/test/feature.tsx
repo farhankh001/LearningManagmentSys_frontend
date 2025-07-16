@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import { FC } from 'react'
 import Box from '@mui/material/Box'
 import { styled, useTheme } from '@mui/material/styles'
 import Container from '@mui/material/Container'
@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography'
 import CircularProgress from '@mui/material/CircularProgress'
 import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress'
 import { data } from './feature.data'
-import { CardMedia } from '@mui/material'
+
 import Lottie from 'lottie-react'
 import heroAnimation from "../assets/Animation - 1750249071716.json";
 import { Security } from '@mui/icons-material'

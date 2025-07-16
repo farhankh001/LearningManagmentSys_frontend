@@ -1,17 +1,17 @@
-import React from 'react'
-import { useGetAssignmentForStudentQuery, useGetQuizForStudentQuery } from '../../../app/api/lessonApi'
+
+import { useGetAssignmentForStudentQuery, } from '../../../app/api/lessonApi'
 import { useParams } from 'react-router-dom'
-import LoadingScreen from '../../../components/other/Loading'
-import { Box, Chip, Divider, Typography, useTheme } from '@mui/material'
+
+import { Box, Chip, CircularProgress, Divider, Typography, useTheme } from '@mui/material'
 
 import AssignmentSubmissionFormProvider from '../../../components/Forms/FormProviders/AssignmentSubmissionProvider'
 
 function AttemptAssignment() {
   const {lessonId}=useParams()    
-  const {data:assignmentIncomingData,error:assignmentIncomingError,isError:assignmentEncomingIsError,isSuccess:assignemntIncomingIsSuccess,isLoading:assignmentIncomingLoading}=useGetAssignmentForStudentQuery({lessonId:lessonId})
+  const {data:assignmentIncomingData,isLoading:assignmentIncomingLoading}=useGetAssignmentForStudentQuery({lessonId:lessonId})
   const theme=useTheme()
   if(assignmentIncomingLoading){
-    return <LoadingScreen/>
+    return  <Box sx={{width:"100%",height:"70vh",alignItems:"center",justifyContent:"center"}}><CircularProgress/></Box>;
   }
   
   return (
