@@ -30,8 +30,8 @@ const ActivationStatusEnum = z.enum(["Active", "Inactive"]);
 export const QuizAndAssignmentSchema = z.object({
   title: z.string().min(1, "Quiz title is required"),
   description: z.string().optional(),
-  question: z.string().min(1, "Question is required"),
-  timeLimit: z.string()
+  questions: z.string().min(1, "Question is required"),
+  timelimit: z.string()
     .refine(
       (val) => !isNaN(Number(val)),
       "Time limit must be a valid number (in minutes)"
@@ -45,7 +45,7 @@ export const QuizAndAssignmentSchema = z.object({
       "Time limit can only have up to 1 decimal place"
     ),
   activationStatus: ActivationStatusEnum,
-  passingScore: z.string()
+  passing_score: z.string()
     .refine(
       (val) => !isNaN(Number(val)),
       "Passing scores must be a valid number"
@@ -58,10 +58,13 @@ export const QuizAndAssignmentSchema = z.object({
       (val) => Number(Number(val).toFixed(1)) === Number(val),
       "Passing score can only have up to 1 decimal place"
     ),
-  totalScore: z.string()
+  total_score: z.string()
     .refine(
       (val) => !isNaN(Number(val)),
       "Total score must be a valid number"
+    ).refine(
+      (val) => Number(val) > 0,
+      "Passing scores must be greater than 0"
     )
     .refine(
       (val) => Number(val) >= 0,
@@ -79,12 +82,12 @@ export const QuizAndAssignmentSchema = z.object({
 
 export type AssignmentType = z.infer<typeof QuizAndAssignmentSchema>
 export const AssignmentDefaultValues: AssignmentType = {
-  activationStatus: "Active",
-  passingScore: "0",
-  question: "",
-  timeLimit: "",
+  activationStatus: "Inactive",
+  passing_score: "",
+  questions: "",
+  timelimit: "",
   title: "",
-  totalScore: "",
+  total_score: "",
   description: ""
 }
 // const MAX_VIDEO_SIZE = 50 * 1024 * 1024; // 50MB
@@ -144,8 +147,7 @@ export const createLessonSchema = z.object({
     .string()
     .min(1, "Lesson details are required"),
 
-  quiz: QuizAndAssignmentSchema.optional(),
-  assignment: QuizAndAssignmentSchema.optional()
+
 });
 
 
@@ -156,8 +158,7 @@ const submitCourseSchema = z.object({
   lesson_title: z.string(),
   lesson_text: z.string(),
   courseId: z.string().optional(),
-  quiz: QuizAndAssignmentSchema.optional(),
-  assignment: QuizAndAssignmentSchema.optional()
+
 })
 
 export type submitCourseType = z.infer<typeof submitCourseSchema>

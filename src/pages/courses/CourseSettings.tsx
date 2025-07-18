@@ -18,18 +18,14 @@ import { useApproveEnrollmentMutation } from "../../app/api/teacherDashApis";
 
 const coourseSettings: MRT_ColumnDef<LessonWithFlags>[] = [
   {
-    header: 'Course title',
-    accessorKey: 'title',
-    size: 240,
+    header: 'Created At',
+    accessorKey: 'createdAt',
+    Cell: ({ cell }) => new Date(cell.getValue<string>()).toLocaleDateString(),
   },
   {
-    header: 'Video Url',
-    accessorKey: 'url_video',
-    size: 240,
-    Cell: ({ cell }) => {
-      const url = cell.getValue<string | null | undefined>();
-      return url ? url : '-';
-    },
+    header: 'Lesson title',
+    accessorKey: 'title',
+    size: 290,
   },
   {
     header: 'Has Mcq Quiz',
@@ -38,10 +34,10 @@ const coourseSettings: MRT_ColumnDef<LessonWithFlags>[] = [
     Cell: ({ cell }) => {
       const value = cell.getValue<boolean>()
       return <Chip
-        label={value === true ? "Quiz created" : "No quiz"}
+        label={value === true ? "Has Quiz" : "No quiz"}
         color={
           cell.getValue<boolean>() === true
-            ? 'info'
+            ? 'success'
             : cell.getValue<boolean>() === false
               ? 'warning'
               : 'default'
@@ -63,7 +59,7 @@ const coourseSettings: MRT_ColumnDef<LessonWithFlags>[] = [
     Cell: ({ cell }) => {
       const value = cell.getValue<boolean>()
       return <Chip
-        label={value === true ? "Lab created" : "No Lab"}
+        label={value === true ? "Has Lab" : "No Lab"}
         color={
           cell.getValue<boolean>() === true
             ? 'success'
@@ -87,10 +83,10 @@ const coourseSettings: MRT_ColumnDef<LessonWithFlags>[] = [
     Cell: ({ cell }) => {
       const value = cell.getValue<boolean>()
       return <Chip
-        label={value === true ? "Assignment created" : "No Assignment"}
+        label={value === true ? "Has Assignment" : "No Assignment"}
         color={
           cell.getValue<boolean>() === true
-            ? 'warning'
+            ? 'success'
             : cell.getValue<boolean>() === false
               ? 'error'
               : 'default'
@@ -100,7 +96,7 @@ const coourseSettings: MRT_ColumnDef<LessonWithFlags>[] = [
         size="small"
         sx={{
           p: { xs: 0.2, sm: 0.5 },
-          fontSize: { xs: '0.7rem', sm: '0.8rem' }
+          fontSize: { xs: '0.7rem', sm: '0.8rem' }, color: "text.primary"
         }}
       />
     },
@@ -116,12 +112,12 @@ const coourseSettings: MRT_ColumnDef<LessonWithFlags>[] = [
           component={Link}
           to={`/lesson-settings/${lessonId}`}
           variant="contained"
-          endIcon={<Settings />}
+          startIcon={<Settings sx={{ fontSize: '14px !important' }} />}
           sx={{
 
             borderRadius: 3,
             background: "primary.main",
-            fontSize: "0.80rem",
+            fontSize: "0.75rem",
             fontWeight: 500,
 
 
@@ -186,13 +182,13 @@ const enrolledStdTeacherDashColumns: MRT_ColumnDef<EnrolledStudent>[] = [
         <Button
           component={Link}
           to={`/handle-enrollment-approval/${enrollmentId}`}
-          endIcon={<Settings />}
+          startIcon={<Settings sx={{ fontSize: '14px !important' }} />}
           variant="contained"
           sx={{
 
             borderRadius: 3,
             background: "primary.main",
-            fontSize: "0.80rem",
+            fontSize: "0.75rem",
             fontWeight: 500,
 
 
@@ -214,12 +210,12 @@ function CourseSettings() {
     {
       name: "Create new lesson",
       path: `/create-new-lesson/${courseId}`,
-      icon: <AddCircleOutlineOutlined />
+      icon: <AddCircleOutlineOutlined sx={{ fontSize: '16px !important' }} />
     },
     {
       name: "Edit this course",
       path: `/edit-course/${courseId}`,
-      icon: <UpdateSharp />
+      icon: <UpdateSharp sx={{ fontSize: '16px !important' }} />
     },
   ]
 
@@ -295,12 +291,12 @@ function CourseSettings() {
             component={Link}
             to={`/handle-enrollment-approval/${enrollmentId}`}
             variant="contained"
-            endIcon={<People />}
+            startIcon={<People sx={{ fontSize: '14px !important' }} />}
             sx={{
 
               borderRadius: 3,
               background: theme.palette.primary.main,
-              fontSize: "0.80rem",
+              fontSize: "0.75rem",
               fontWeight: 500,
 
 
@@ -321,14 +317,14 @@ function CourseSettings() {
           <Button
             onClick={() => handleEnrollment(enrollmentId)}
             variant="contained"
-            endIcon={<Send />}
+            endIcon={<Send sx={{ fontSize: '14px !important' }} />}
             sx={{
 
               borderRadius: 3,
               background: `linear-gradient(135deg, 
                                    ${theme.palette.success.main} 0%, 
                                    ${theme.palette.success.dark} 100%)`,
-              fontSize: "0.80rem",
+              fontSize: "0.75rem",
               fontWeight: 500,
 
 
@@ -409,7 +405,7 @@ function CourseSettings() {
             variant="h5"
             sx={{
               textAlign: 'center',
-              fontSize: { xs: '1.2rem', sm: '1.5rem' }
+              fontSize: { xs: '1rem', sm: '1.3rem' }
             }}
             fontWeight={600}
           >
@@ -420,7 +416,7 @@ function CourseSettings() {
             icon={courseDataForTeacher?.courseDetails.activationStatus ? <CheckCircle /> : <Cancel />}
             label={courseDataForTeacher?.courseDetails.activationStatus}
             color={courseDataForTeacher?.courseDetails.activationStatus === "Active" ? "success" : "error"}
-            size="medium"
+            size="small"
           />
 
           <Box sx={{
@@ -449,7 +445,7 @@ function CourseSettings() {
                     color: theme.palette.background.default,
                     width: { xs: "100%", sm: "auto" },
                     fontSize: { xs: '0.8rem', sm: '0.9rem' },
-                    minHeight: { xs: 36, sm: 40 }
+
                   }}
                 >
                   {setting.name}
@@ -459,7 +455,9 @@ function CourseSettings() {
           </Box>
         </Box>
       </Box>
-
+      <Box sx={{ height: "330px", width: "1200px", border: "1px solid", borderColor: theme.palette.divider, p: 2, borderRadius: 4, mt: 3, background: alpha(theme.palette.background.paper, 0.4), }}>
+        <EnrollmentTrendHeatmap courseData={courseDataForTeacher} />
+      </Box>
       {/* Lesson Details Table */}
       <Box sx={{
         width: { xs: "100%", sm: "95%", md: "90%", lg: "80%" },
@@ -468,7 +466,7 @@ function CourseSettings() {
         display: "flex",
         flexDirection: "column"
       }}>
-        <Box sx={{ mt: { xs: 3, sm: 5 }, mb: { xs: 3, sm: 2 } }}>
+        <Box >
           <ReusableTable<LessonWithFlags>
             columns={coourseSettings}
             data={courseDataForTeacher?.courseDetails.lessons ?? []}
@@ -477,9 +475,7 @@ function CourseSettings() {
           />
         </Box>
       </Box>
-      <Box sx={{ height: "330px", width: "1200px", border: "1px solid", borderColor: theme.palette.divider, p: 2, borderRadius: 4, mt: 3, background: alpha(theme.palette.background.paper, 0.4), }}>
-        <EnrollmentTrendHeatmap courseData={courseDataForTeacher} />
-      </Box>
+
       {/* Enrolled Students Section */}
       <Typography
         variant="h5"
@@ -516,7 +512,7 @@ function CourseSettings() {
           />
         </Box>
       </Box>
-    </Box>
+    </Box >
   )
 }
 

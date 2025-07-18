@@ -1,6 +1,6 @@
 import { RegisterType } from '../types/register.types';
 import { SubmitHandler, useFormContext } from 'react-hook-form';
-import { Box} from '@mui/material';
+import { Box } from '@mui/material';
 import TextInputField from '../components/Forms/InputFields/TextInputField';
 import { useRegisterUserMutation } from '../app/api/userApi';
 import { useNavigate } from 'react-router-dom';
@@ -23,60 +23,62 @@ function Register() {
 
   const navigate = useNavigate();
   const { handleSubmit, reset } = useFormContext<RegisterType>();
-  const [registerUser, {  isSuccess, isError, error }] = useRegisterUserMutation();
+  const [registerUser, { isSuccess, isError, error }] = useRegisterUserMutation();
   const categories = useSelector((state: RootState) => state.categories.categories);
   useEffect(() => {
     if (isSuccess) {
       reset();
-      setTimeout(() => { 
+      setTimeout(() => {
         toast.success("Registered Successfully.")
         navigate('/login');
       }, 1000);
     }
   }, [isSuccess, navigate, reset]);
-
+  useEffect(() => {
+    if (isError && error && "data" in error) {
+      console.log(error)
+      toast.error(`${JSON.stringify((error.data as any).error)}`)
+    }
+  }, [isError, error])
   const submitForm: SubmitHandler<RegisterType> = async (data: RegisterType) => {
     try {
-    //   let profile_picture_url=""
-    //   if (data.profile_picture instanceof File) {
-    //   const profile_picture=await uploadToCloudinary(data.profile_picture,(percent)=>setUploadProgress({image:percent}))
-    //   profile_picture_url=profile_picture
-    // }
-    //   const studentData = {
-    //     name: data.name,
-    //     email: data.email,
-    //     password: data.password,
-    //     role: data.role,
-    //     profile_picture:profile_picture_url,
-    //     education_level:data.education_level,
-    //     interests:data.interests
-    //   };
-    const formData=new FormData;
-    formData.append("name",data.name);
-    formData.append("email",data.email)
-    formData.append("password",data.password)
-    formData.append("role",data.role)
-    formData.append("education_level",data.education_level)
-    data.interests.forEach((item: string) => {
-     formData.append("interests[]", item);
-        });
-    if (data.profile_picture instanceof File) {
-        formData.append("profile_picture",data.profile_picture)
-    }
+      //   let profile_picture_url=""
+      //   if (data.profile_picture instanceof File) {
+      //   const profile_picture=await uploadToCloudinary(data.profile_picture,(percent)=>setUploadProgress({image:percent}))
+      //   profile_picture_url=profile_picture
+      // }
+      //   const studentData = {
+      //     name: data.name,
+      //     email: data.email,
+      //     password: data.password,
+      //     role: data.role,
+      //     profile_picture:profile_picture_url,
+      //     education_level:data.education_level,
+      //     interests:data.interests
+      //   };
+      const formData = new FormData;
+      formData.append("name", data.name);
+      formData.append("email", data.email)
+      formData.append("password", data.password)
+      formData.append("role", data.role)
+      formData.append("education_level", data.education_level)
+      data.interests.forEach((item: string) => {
+        formData.append("interests[]", item);
+      });
+      if (data.profile_picture instanceof File) {
+        formData.append("profile_picture", data.profile_picture)
+      }
 
-    // console.log()
+      // console.log()
       await registerUser(formData).unwrap();
-      
+
     } catch (err) {
       console.error('Registration failed:', err);
     }
   };
 
 
-if(isError&&error&&"data" in error){
-  console.log(error)
-  toast.error(`${JSON.stringify((error.data as any).error)}`)
-}
+
 
 
 
@@ -85,16 +87,16 @@ if(isError&&error&&"data" in error){
       id: 'basic-info',
       title: 'Basic Information',
       description: 'Enter your personal details',
-      instructions:"Enter Your Personal Details",
-      fields: ['name', 'email', 'password','profile_picture']
+      instructions: "Enter Your Personal Details",
+      fields: ['name', 'email', 'password', 'profile_picture']
     },
-    
+
     {
       id: 'student-info',
       title: 'Academic Information',
       description: 'Tell us about your education',
-      instructions:"Enter your education and interests.",
-      fields: ['role','education_level', 'interests']
+      instructions: "Enter your education and interests.",
+      fields: ['role', 'education_level', 'interests']
     },
 
   ];
@@ -107,14 +109,14 @@ if(isError&&error&&"data" in error){
   });
 
 
- const renderCurrentStepFields = () => {
-  
+  const renderCurrentStepFields = () => {
+
     const currentStepId = multiStepState.currentStepInfo.id;
-    
+
     switch (currentStepId) {
       case 'basic-info':
         return (
-          <Box sx={{ display: 'grid', gridTemplateColumns:"1fr", gap:3 }}>
+          <Box sx={{ display: 'grid', gridTemplateColumns: "1fr", gap: 3 }}>
             <TextInputField<RegisterType>
               isRequired={true}
               label="Full Name"
@@ -136,8 +138,8 @@ if(isError&&error&&"data" in error){
               type="password"
               hideData={true}
             />
-           
-             <FileInputField<RegisterType>
+
+            <FileInputField<RegisterType>
               isRequired={true}
               label="Profile Picture"
               name="profile_picture"
@@ -147,12 +149,12 @@ if(isError&&error&&"data" in error){
             />
           </Box>
         );
-        
+
       case 'student-info':
         return (
 
-          <Box sx={{ display: 'flex',flexDirection:"column", gap: 3 }}>
-             <SelectInputField<RegisterType>
+          <Box sx={{ display: 'flex', flexDirection: "column", gap: 3 }}>
+            <SelectInputField<RegisterType>
               isRequired={true}
               label="Role"
               name="role"
@@ -162,15 +164,15 @@ if(isError&&error&&"data" in error){
               isRequired={true}
               label="Education Level"
               name="education_level"
-              options={[  
-  "Primary",
-  "Middle",
-  "HighSchool",
-  "Bachelor",
-  "Masters",
-  "Doctorate",
-  "PhD",
-  "Others"]}
+              options={[
+                "Primary",
+                "Middle",
+                "HighSchool",
+                "Bachelor",
+                "Masters",
+                "Doctorate",
+                "PhD",
+                "Others"]}
             />
             <MultipleSelectInputField<RegisterType>
               isRequired={true}
@@ -180,7 +182,7 @@ if(isError&&error&&"data" in error){
             />
           </Box>
         );
-        
+
       default:
         return null;
     }
@@ -193,210 +195,48 @@ if(isError&&error&&"data" in error){
         minHeight: '90vh',
         display: 'flex',
         backgroundColor: 'background.default',
-        flexDirection:{ xs:"column",md:"row", },
-        alignItems:"center",
-        justifyContent:"center"
+        flexDirection: { xs: "column", md: "row", },
+        alignItems: "center",
+        justifyContent: "center"
       }}
-    >   
-    <Box
+    >
+      <Box
         sx={{
-          width:  '80%' ,
+          width: '80%',
           boxShadow: 1,
           padding: { xs: 3, sm: 4 },
-          display:"flex",
-          alignItems:"center",
-          justifyContent:"center",
-          flexDirection:"column"
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          flexDirection: "column"
 
         }}
       >
-      
-    
-        <Box sx={{width:"100%"}}>
-        <form onSubmit={handleSubmit(submitForm)}>
-        <MultiStepFormWrapper
-          state={multiStepState}
-          actions={multiStepActions}
-           stepTitles={steps.map(step =>{
-            return {
-              steptitle:step.title,
-              instructions:step.instructions
-            }
-          })}
-        
-        >
-          {renderCurrentStepFields()}
-        </MultiStepFormWrapper>
-        </form>
+
+
+        <Box sx={{ width: "100%" }}>
+          <form onSubmit={handleSubmit(submitForm)}>
+            <MultiStepFormWrapper
+              state={multiStepState}
+              actions={multiStepActions}
+              stepTitles={steps.map(step => {
+                return {
+                  steptitle: step.title,
+                  instructions: step.instructions
+                }
+              })}
+
+            >
+              {renderCurrentStepFields()}
+            </MultiStepFormWrapper>
+          </form>
         </Box>
-        </Box>
-      
-     
+      </Box>
+
+
     </Box>
   );
 }
 
 export default Register;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  // {isSuccess && (
-  //         <Alert severity="success" sx={{ mb: 2 }}>
-  //           Registration successful! Redirecting to login...
-  //         </Alert>
-  //       )}
-
-  //     {isError && error && 'data' in error &&
-  //             <Alert severity="error" sx={{ mb: 2 }}>
-  //                   {JSON.stringify((error.data as any).error)}  
-  //              </Alert>
-  //               }
-  //      {uploadProgress.image > 0 && (
-  //       <Box sx={{margin:3,display:"flex",flexDirection:'column',gap:3}}>
-  //         <Typography variant="body2">Uploading Image: {uploadProgress.image}%</Typography>
-  //         <LinearProgress variant="determinate" value={uploadProgress.image} sx={{color:theme.palette.success.main}} />
-  //       </Box>
-  //     )}
-
-
-
-
-//  <Box sx={{
-
-//             display: 'grid',
-//             gridTemplateColumns: { xs: '1fr', sm: '1fr ', md: '1fr 1fr ',lg:"1fr 1fr" },
-//             gap: { xs: 2, md: 2},
-//             justifyContent: 'center',
-
-//           }}>
-//             <TextInputField<RegisterType>
-//               isRequired={true}
-//               label="Full Name"
-//               name="name"
-//               type="text"
-//               hideData={false}
-//             />
-//             <TextInputField<RegisterType>
-//               isRequired={true}
-//               label="Email"
-//               name="email"
-//               type="email"
-//               hideData={false}
-//             />
-//             <TextInputField<RegisterType>
-//               isRequired={true}
-//               label="Password"
-//               name="password"
-//               type="password"
-//               hideData={true}
-//             />
-
-
-//             <SelectInputField<RegisterType>
-//               isRequired={true}
-//               label="Role"
-//               name="role"
-//               options={["Student", "Teacher", "Admin"]}
-//             />
-
-
-           
-//            <TextAreaField<RegisterType> isRequired={false} label='Your Introduction' name='bio' rows={4} type='text' />
-
-
-//           <FileInputField<RegisterType>
-//               isRequired={true}
-//               label="profile_picture"
-//               name="profile_picture"
-//               fileType={['image/jpeg', 'image/jpg', 'image/png', 'image/webp']}
-//               maxFiles={1}
-//               maxSize={100000}
-//             />
-          
-//   {/* Role-specific Fields */}
-  
-//     {currentRole === "Student" && (
-//               <>
-//                 <SelectInputField<RegisterType>
-//                   isRequired={true}
-//                   label="Education Level"
-//                   name="education_level"
-//                   options={[
-//                     "PRIMARY_SCHOOL",
-//                     "MIDDLE_SCHOOL",
-//                     "HIGH_SCHOOL",
-//                     "BACHELOR",
-//                     "MASTERS",
-//                     "DOCTORATE",
-//                     "PHD",
-//                     "OTHER"
-//                   ]}
-//                 />
-//                 <MultipleSelectInputField<RegisterType>
-//                   isRequired={true}
-//                   label="Interests"
-//                   name="interests"
-//                   options={categories||["Others"]}
-//                 />
-//               </>
-//             )}
-  
-  
-//     {currentRole === "Teacher" && (
-//               <>
-//               <TextInputField<RegisterType> isRequired={true}  label='Qualifications' name='qualifications' hideData={false} type='text'/>
-//               <MultipleSelectInputField<RegisterType>
-//                   isRequired={true}
-//                   label="Areas of Expertise"
-//                   name="teacher_expertise"
-//                   options={categories||["Others"]}
-                
-//                 />
-//               </>
-//             )}
-
-//             <LoadingButton
-//               type="submit"
-//               variant="contained"
-//               loading={isLoading}
-//               disabled={isLoading}
-//               size="large"
-//               sx={{ mt: 1 }}
-//             >
-//               {isLoading ? 'Registering...' : 'Register'}
-//             </LoadingButton>
-
-//             <Typography 
-//               variant="body2" 
-//               sx={{ 
-//                 textAlign: 'center',
-//                 color: 'text.secondary'
-//               }}
-//             >
-//               Already have an account?{' '}
-//               <Link 
-//                 to="/login"
-//                 style={{
-//                   color: 'inherit',
-//                   textDecoration: 'underline',
-//                 }}
-//               >
-//                 Login here
-//               </Link>
-//             </Typography>
-//           </Box>

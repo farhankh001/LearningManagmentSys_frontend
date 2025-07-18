@@ -39,6 +39,12 @@ import CreateLabFromProvider from './components/Forms/FormProviders/CreateLabFro
 import CreateLabChallengeFormProvider from './components/Forms/FormProviders/CreateLabChallengeFormProvider.tsx'
 import LessonSettings from './pages/lessons/LessonSettings.tsx'
 import CreateNewAssignmentProvider from './components/Forms/FormProviders/CreateNewAssignmentProvider.tsx'
+import EditLabProvider from './components/Forms/FormProviders/EditForms/EditLabProvider.tsx'
+import EditQuizFormProvider from './components/Forms/FormProviders/EditForms/EditQuizFormProvider.tsx'
+import EditAssignmentProvider from './components/Forms/FormProviders/EditForms/EditAssignmentProvider.tsx'
+import ViewAllLabChallenges from './pages/Labs/ViewAllLabChallenges.tsx'
+import EditLabChallengeFormProvider from './components/Forms/FormProviders/EditForms/EditLabChallengeFormProvider.tsx'
+import EditLessonFormProvider from './components/Forms/FormProviders/EditForms/EditLessonFormProvider.tsx'
 
 
 // Types
@@ -90,7 +96,14 @@ const router = createBrowserRouter(
         <Route path="/create-lab/:lessonId" element={<CreateLabFromProvider />} />
         <Route path="/create-assignment/:lessonId" element={<CreateNewAssignmentProvider />} />
         <Route path="/lesson-settings/:lessonId" element={<LessonSettings />} />
+        <Route path="/edit-quiz/:quizId" element={<EditQuizFormProvider />} />
+        <Route path="/edit-lab/:labId" element={<EditLabProvider />} />
+        <Route path="/edit-assignment/:assignmentId" element={<EditAssignmentProvider />} />
         <Route path="/add-lab-challenge/:labId" element={<CreateLabChallengeFormProvider />} />
+        <Route path="/view-all-lab-challenge/:labId" element={<ViewAllLabChallenges />} />
+        <Route path="/update-challenge/:challengeId" element={<EditLabChallengeFormProvider />} />
+        <Route path="/update-lesson/:lessonId" element={<EditLessonFormProvider />} />
+
       </Route>
       <Route element={<ProtectedRoute allowedRoles={["Student"]} />}>
         <Route path="/student-dash" element={<StudentDashboard />} />

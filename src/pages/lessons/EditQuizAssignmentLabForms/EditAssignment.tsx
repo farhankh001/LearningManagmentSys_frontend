@@ -1,30 +1,30 @@
 import { useTheme } from '@emotion/react'
+import { Box, Alert, Typography } from '@mui/material'
 import { useEffect } from 'react'
 import { SubmitHandler, useFormContext } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { useParams, useNavigate } from 'react-router-dom'
-import { useCreateNewAssignmentMutation, } from '../../app/api/lessonApi'
-import { AssignmentType } from '../../types/create_lesson.types'
-import { StepDefinition, useMultiStepForm } from '../../components/MultistepFormSetup/useMultiStepFormhook'
-import { Alert, Box, Typography } from '@mui/material'
+import { useCreateNewAssignmentMutation } from '../../../app/api/lessonApi'
+import RichTextInputField from '../../../components/Forms/InputFields/RichTextInputField'
+import SelectInputField from '../../../components/Forms/InputFields/SelectInputField'
+import TextAreaField from '../../../components/Forms/InputFields/TextAreaField'
+import TextInputField from '../../../components/Forms/InputFields/TextInputField'
+import { HorizontalMultiStepFormWrapper } from '../../../components/MultistepFormSetup/HorizontalFormWrapper'
+import { StepDefinition, useMultiStepForm } from '../../../components/MultistepFormSetup/useMultiStepFormhook'
+import { AssignmentType } from '../../../types/create_lesson.types'
+import { useEditAssignmentMutation } from '../../../app/api/quizAndAssignmentApi'
 
-import TextInputField from '../../components/Forms/InputFields/TextInputField'
-import TextAreaField from '../../components/Forms/InputFields/TextAreaField'
-import SelectInputField from '../../components/Forms/InputFields/SelectInputField'
-import { HorizontalMultiStepFormWrapper } from '../../components/MultistepFormSetup/HorizontalFormWrapper'
-import RichTextInputField from '../../components/Forms/InputFields/RichTextInputField'
 
-function CreateAssignment() {
-    const { lessonId } = useParams()
+function EditAssignment() {
+    const { assignmentId } = useParams()
     const navigate = useNavigate()
     const { handleSubmit, reset } = useFormContext<AssignmentType>()
-    const [createNewAssignment, { error: assignmentCreationError, isError: assignmentCreationIsError, isSuccess: assignmentCreationIsSuccess, isLoading: assignmentCreationIsLoading }] = useCreateNewAssignmentMutation()
+    const [editAssignment, { error: assignmentCreationError, isError: assignmentCreationIsError, isSuccess: assignmentCreationIsSuccess, isLoading: assignmentCreationIsLoading }] = useEditAssignmentMutation()
     const theme = useTheme()
     useEffect(() => {
         if (assignmentCreationIsSuccess) {
-            toast.success("Assignment Created Successfully.")
+            toast.success("Assignment Updated Successfully.")
             reset();
-            navigate(`/lesson-settings/${lessonId}`);
 
         }
     }, [assignmentCreationIsSuccess, navigate, reset]);
@@ -41,9 +41,9 @@ function CreateAssignment() {
         try {
             const payload = {
                 ...data,
-                lessonId: lessonId, // courseId is a string from useParams
+                assignmentId: assignmentId, // courseId is a string from useParams
             };
-            await createNewAssignment(payload).unwrap();
+            await editAssignment(payload).unwrap();
         } catch (err: any) {
 
             console.error(err);
@@ -53,23 +53,23 @@ function CreateAssignment() {
     const steps: StepDefinition<AssignmentType>[] = [
         {
             id: 'basic-info',
-            title: 'Basic Assignemnt Information',
-            description: 'Assignment Basic Details like title, description and activation status',
-            instructions: "Enter basic assignment details",
+            title: 'Edit Basic Assignemnt Information',
+            description: 'Edit Assignment Basic Details like title, description and activation status',
+            instructions: "Edit basic assignment details",
             fields: ['title', 'description', 'activationStatus',]
         },
         {
             id: 'scoring',
-            title: 'Detailed Assignment Information',
-            description: 'Assignment details about time limit, total score and passing score',
-            instructions: "Enter meta data",
+            title: 'Edit Detailed Assignment Information',
+            description: 'Edit assignment details about time limit, total score and passing score',
+            instructions: "Edit meta data",
             fields: ["passing_score", 'total_score', "timelimit"]
         },
         {
             id: 'questions',
-            title: 'Assignment Questions',
-            description: 'Detaied questions, create question paper in text field below',
-            instructions: "Create assignment question paper",
+            title: 'Edit Assignment Questions',
+            description: 'Edit Detaied questions, create question paper in text field below',
+            instructions: "Edit assignment question paper",
             fields: ["questions"]
         },
     ]
@@ -159,4 +159,4 @@ function CreateAssignment() {
     )
 }
 
-export default CreateAssignment
+export default EditAssignment

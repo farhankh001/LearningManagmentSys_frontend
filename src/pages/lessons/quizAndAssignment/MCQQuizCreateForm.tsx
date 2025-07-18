@@ -24,6 +24,7 @@ function MCQQuizCreateForm() {
   type SingleQuestionType = CreateQuizMCQFormType["questions"][number];
   const [submittedQuestions, setSubmittedQuestions] = useState<SingleQuestionType[]>([]);
   const [createMCQQuiz, { isError, isLoading, isSuccess, error }] = useCreateMCQsQuizMutation()
+  const { lessonId } = useParams()
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -35,7 +36,7 @@ function MCQQuizCreateForm() {
       setSubmittedQuestions([]);
       toast.success("Quiz created Successfully.")
       setTimeout(() => {
-        navigate('/teacher-dash');
+        navigate(`/lesson-settings/${lessonId}`);
       }, 1000);
     }
   }, [isSuccess, reset]);
@@ -43,7 +44,6 @@ function MCQQuizCreateForm() {
     console.log(error)
     toast.error(`${JSON.stringify((error.data as any).error)}`)
   }
-  const { lessonId } = useParams()
   const createQuizSubmitHandler = (data: CreateQuizMCQFormType) => {
     try {
       const quizMCQSubmtData: SubmitQuizMCQType = {
@@ -138,7 +138,7 @@ function MCQQuizCreateForm() {
 
           <form onSubmit={handleSubmit(createQuizSubmitHandler)}>
             <Box sx={{ backgroundColor: alpha(theme.palette.primary.dark, 0.55), display: "flex", flexDirection: "column", p: 5, justifyContent: "center", alignItems: "center", border: "1px solid", borderRadius: 4, borderColor: theme.palette.divider, }}>
-              <Typography variant='h4' fontWeight={600} sx={{ color: theme.palette.text.primary, fontStyle: "italic", textShadow: `0 0 12px ${theme.palette.warning.light}` }}>
+              <Typography variant='h4' fontWeight={600} sx={{ color: theme.palette.text.primary, textShadow: `0 0 12px ${theme.palette.warning.light}` }}>
                 <AddCircleOutlineOutlined sx={{ fontSize: 25, mr: 2, color: theme.palette.warning.light }} />
                 Create MCQ Quiz
               </Typography>

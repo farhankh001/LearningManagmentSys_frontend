@@ -1,5 +1,5 @@
 
-import { Alert, Box, useTheme } from '@mui/material'
+import { Alert, Box, Typography, useTheme } from '@mui/material'
 import TextInputField from '../../components/Forms/InputFields/TextInputField'
 import { CreateLessonType, } from '../../types/create_lesson.types'
 import FileInputField from '../../components/Forms/InputFields/FileInputField'
@@ -59,13 +59,6 @@ function CreateLesson() {
         formData.append("lesson_document2", data.lesson_document2);
       }
 
-      if (data.quiz) {
-        formData.append("quiz", JSON.stringify(data.quiz));
-      }
-
-      if (data.assignment) {
-        formData.append("assignment", JSON.stringify(data.assignment));
-      }
 
       createLessonWithQAA(formData)
     } catch (error) {
@@ -109,8 +102,9 @@ function CreateLesson() {
         );
       case "lesson_text":
         return (
-          <Box sx={{ display: 'flex' }}>
+          <Box sx={{ display: 'flex', flexDirection: "column", gap: 1 }}>
             <RichTextInputField<CreateLessonType> isRequired={true} label={"Provide course content in textual formate if you have any"} name={"lesson_text"} />
+            <Typography variant='caption' sx={{ color: "text.secondary" }}>Click submit after creating question paper*</Typography>
           </Box>
         )
     }

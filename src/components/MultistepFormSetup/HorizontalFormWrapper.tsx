@@ -38,7 +38,7 @@ interface MultiStepFormWrapperProps {
   allowStepNavigation?: boolean;
   nextButtonText?: string;
   prevButtonText?: string;
-  stepTitles?: { 
+  stepTitles?: {
     steptitle: string;
     instructions: string;
   }[];
@@ -77,24 +77,24 @@ export function HorizontalMultiStepFormWrapper({
   const StepIcon = ({ active, completed }: { active: boolean; completed: boolean }) => {
     if (completed) {
       return (
-        <CheckCircle 
-          sx={{ 
+        <CheckCircle
+          sx={{
             color: theme.palette.success.main,
             fontSize: isXs ? 20 : 24,
             filter: 'drop-shadow(0 0 8px rgba(76, 175, 80, 0.4))'
-          }} 
+          }}
         />
       );
     }
     return (
-      <RadioButtonUnchecked 
-        sx={{ 
-          color: active ? theme.palette.primary.main : theme.palette.grey[600],
-          fontSize: isXs ? 20 : 24,
-          ...(active && {
-            filter: 'drop-shadow(0 0 8px rgba(33, 150, 243, 0.4))'
-          })
-        }} 
+      <RadioButtonUnchecked
+        sx={{
+          fontSize: 10,
+          color: theme.palette.warning.light,
+          boxShadow: `0 0 6px 2px ${theme.palette.warning.light}`,
+          borderRadius: '50%',
+          background: theme.palette.warning.light
+        }}
       />
     );
   };
@@ -129,7 +129,7 @@ export function HorizontalMultiStepFormWrapper({
                   background: `linear-gradient(135deg, 
                     ${alpha(theme.palette.primary.dark, 0.9)} 0%, 
                     ${alpha(theme.palette.background.paper, 0.7)} 100%)`,
-                    border:"2px solid",
+                  border: "2px solid",
                   borderColor: theme.palette.divider,
                   borderRadius: 4,
                   backdropFilter: "blur(10px)",
@@ -140,15 +140,15 @@ export function HorizontalMultiStepFormWrapper({
                   <Typography
                     variant="h6"
                     fontWeight={600}
-                    sx={{ mb: 3, color: theme.palette.text.primary , textShadow: `0 0 12px ${theme.palette.warning.light}`}}
+                    sx={{ mb: 3, color: theme.palette.text.primary, textShadow: `0 0 12px ${theme.palette.warning.light}` }}
                   >
                     Progress Overview
                   </Typography>
-                  
+
                   <Stepper
                     activeStep={state.currentStep}
                     orientation="vertical"
-                    sx={{ 
+                    sx={{
                       "& .MuiStepConnector-line": {
                         borderColor: alpha(theme.palette.primary.main, 0.3),
                         borderWidth: 2,
@@ -159,7 +159,7 @@ export function HorizontalMultiStepFormWrapper({
                     {stepTitles.map((step, index) => {
                       const isActive = state.currentStep === index;
                       const isCompleted = state.currentStep > index;
-                      
+
                       return (
                         <Step key={step.steptitle}>
                           <StepLabel
@@ -185,21 +185,21 @@ export function HorizontalMultiStepFormWrapper({
                             onClick={() => handleStepClick(index)}
                           >
                             <Box>
-                              <Typography 
-                                variant="body2" 
+                              <Typography
+                                variant="body2"
                                 fontWeight={isActive ? 600 : 500}
                                 sx={{
-                                  color: isActive 
-                                    ? theme.palette.primary.main 
-                                    : theme.palette.text.primary,
+                                  color: isActive
+                                    ? theme.palette.warning.light
+                                    : theme.palette.text.secondary,
                                   mb: 0.5,
                                   fontSize: isXs ? "0.875rem" : "0.9rem"
                                 }}
                               >
                                 {step.steptitle}
                               </Typography>
-                              <Typography 
-                                variant="caption" 
+                              <Typography
+                                variant="caption"
                                 sx={{
                                   color: theme.palette.text.secondary,
                                   fontSize: isXs ? "0.7rem" : "0.75rem",
@@ -229,9 +229,9 @@ export function HorizontalMultiStepFormWrapper({
                 background: `linear-gradient(135deg, 
                   ${alpha(theme.palette.primary.dark, 0.8)} 0%, 
                   ${alpha(theme.palette.background.paper, 0.5)} 100%)`,
-                  borderRadius:4,
-               border:"2px solid",
-                  borderColor: theme.palette.divider,
+                borderRadius: 4,
+                border: "2px solid",
+                borderColor: theme.palette.divider,
                 backdropFilter: "blur(10px)",
                 minHeight: { lg: "600px" },
               }}
@@ -243,25 +243,25 @@ export function HorizontalMultiStepFormWrapper({
                     <Typography
                       variant={isXs ? "h5" : "h4"}
                       fontWeight={700}
-                     sx={{
-    textShadow: `0 0 16px ${theme.palette.warning.light}`,
-  }}
+                      sx={{
+                        textShadow: `0 0 16px ${theme.palette.warning.light}`,
+                      }}
                     >
                       {stepTitles[state.currentStep]?.steptitle || "Step"}
                     </Typography>
                     <Tooltip title="Step Information">
                       <IconButton size="small" sx={{ color: theme.palette.text.secondary }}>
-                        <Info fontSize="small"  sx={{
-                  fontSize: 17,
-                  color:theme.palette.warning.light,
-                  boxShadow: `0 0 10px 2px ${theme.palette.warning.light}`,
-                  borderRadius: '50%',  
-                  background:theme.palette.text.primary
-               }}/>
+                        <Info fontSize="small" sx={{
+                          fontSize: 17,
+                          color: theme.palette.warning.light,
+                          boxShadow: `0 0 10px 2px ${theme.palette.warning.light}`,
+                          borderRadius: '50%',
+                          background: theme.palette.text.primary
+                        }} />
                       </IconButton>
                     </Tooltip>
                   </Box>
-                  
+
                   <Typography
                     variant="caption"
                     sx={{
@@ -292,8 +292,8 @@ export function HorizontalMultiStepFormWrapper({
                     flexDirection: { xs: "column-reverse", sm: "row" },
                     mt: "auto",
                     pt: 2,
-                    mb:2,
-                    
+                    mb: 2,
+
                   }}
                 >
                   <Button
@@ -303,16 +303,16 @@ export function HorizontalMultiStepFormWrapper({
                     startIcon={<ArrowBack />}
                     sx={{
                       minWidth: { xs: "100%", sm: 140 },
-                        border:"1px solid",
-                       borderColor:theme.palette.divider,
+                      border: "1px solid",
+                      borderColor: theme.palette.divider,
                       borderRadius: 4,
-                      background:theme.palette.background.paper,
+                      background: theme.palette.background.paper,
                       color: theme.palette.text.primary,
                       fontSize: "0.95rem",
                       fontWeight: 500,
                       transition: "all 0.3s ease",
                       "&:hover": {
-                        
+
                         transform: "translateY(-1px)",
                       },
                       "&:disabled": {
@@ -330,20 +330,20 @@ export function HorizontalMultiStepFormWrapper({
                       variant="contained"
                       endIcon={<Send />}
                       sx={{
-                       
+
                         borderRadius: 3,
                         background: `linear-gradient(135deg, 
                           ${theme.palette.success.main} 0%, 
                           ${theme.palette.success.dark} 100%)`,
                         fontSize: "0.95rem",
                         fontWeight: 600,
-                       
+
                         transition: "all 0.3s ease",
                         "&:hover": {
                           background: `linear-gradient(135deg, 
                             ${theme.palette.success.dark} 0%, 
                             ${theme.palette.success.main} 100%)`,
-                         
+
                           transform: "translateY(-2px)",
                         },
                       }}
@@ -357,16 +357,16 @@ export function HorizontalMultiStepFormWrapper({
                       endIcon={<ArrowForward />}
                       sx={{
                         minWidth: { xs: "100%", sm: 140 },
-                       border:"1px solid",
-                       borderColor:theme.palette.divider,
+                        border: "1px solid",
+                        borderColor: theme.palette.divider,
                         borderRadius: 4,
-                        background:theme.palette.primary.main,
+                        background: theme.palette.primary.main,
                         fontSize: "0.95rem",
                         fontWeight: 600,
-                        
+
                         transition: "all 0.3s ease",
                         "&:hover": {
-                      
+
                           boxShadow: `0 0 4px 1px ${theme.palette.primary.main}`,
                           transform: "translateY(-2px)",
                         },
@@ -381,7 +381,7 @@ export function HorizontalMultiStepFormWrapper({
           </Slide>
         </Box>
       </Box>
-      
+
     </Box>
   );
 }

@@ -123,19 +123,20 @@ interface MCQNotAttemptedResponse extends BaseMCQAttemptResponse {
 export type MCQAttemptStatusResponse = MCQAttemptedResponse | MCQNotAttemptedResponse;
 
 
-type LessonDetailsResponse = {
+export type GetLessonByIdResponse = {
     id: string;
     title: string;
     text: string;
     docs: string | null;
     docs2: string | null;
     video: string | null;
+    createdAt: string; // ISO date
+    updatedAt: string; // ISO date
+
     course: {
         id: string;
         title: string;
     };
-    createdAt: string;
-    updatedAt: string;
 
     hasQuiz: boolean;
     hasAssignment: boolean;
@@ -162,7 +163,7 @@ type LessonDetailsResponse = {
         timelimit: number;
         total_score: number;
         passing_score: number;
-        activationStatus: "Active" | "Inactive";
+        activationStatus: string;
         createdAt: string;
         updatedAt: string;
     } | null;
@@ -172,36 +173,28 @@ type LessonDetailsResponse = {
         title: string;
         description: string;
         timelimit: number;
-        activationStatus: "Active" | "Inactive";
+        activationStatus: string;
         createdAt: string;
         updatedAt: string;
     } | null;
 
-    submissionStats: {
-        quizSubmissionsCount: number;
-        quizSubmissions: {
-            studentName: string;
-            studentEmail: string;
-            createdAt: string;
-        }[];
+    studentSubmissions: {
+        studentName: string;
+        studentEmail: string;
 
-        assignmentSubmissionsCount: number;
-        assignmentSubmissions: {
-            studentName: string;
-            studentEmail: string;
-            createdAt: string;
-        }[];
+        quizAttempted: boolean;
+        quizMarks: number | null;
 
-        labSubmissionsCount: number;
-        labSubmissions: {
-            studentName: string;
-            studentEmail: string;
-            submittedAt: string | null;
-            similarityScore: number | null;
-            obtainedMarks: number | null;
-        }[];
-    };
+        labAttempted: boolean;
+        labMarks: number | null;
+        labSimilarity: number | null;
+
+        assignmentAttempted: boolean;
+        assignmentSubmissionId: string | null;
+        assignmentSubmittedAt: string | null;
+    }[];
 };
+
 
 
 
@@ -279,23 +272,39 @@ const lessonApi = baseApi.injectEndpoints({
                 params: { lessonId }
             })
         }),
-        getLessonById: builder.query<LessonDetailsResponse, any>({
+        getLessonById: builder.query<GetLessonByIdResponse, any>({
             query: ({ lessonId }) => ({
                 url: "lesson_by_id",
                 method: "GET",
                 params: { lessonId }
-            })
+            }), providesTags: ["Courses", "Lesson"]
         }),
         createNewAssignment: builder.mutation<any, any>({
             query: (data) => ({
                 url: "create-new-assignment",
-                method: "Post",
-                data: data
+                method: "POST",
+                body: data
+            }), invalidatesTags: ["Courses", "Lesson"]
+        }),
+        getLessonForEdit: builder.query<any, any>({
+            query: ({ lessonId }) => ({
+                url: "get-lesson-for-edit",
+                method: "GET",
+                params: { lessonId }
             })
+        }),
+        updateLesson: builder.mutation<any, any>({
+            query: (data) => ({
+                url: "/update-lesson",
+                method: "POST",
+                body: data
+            }), invalidatesTags: ["Lesson"]
         })
+
 
     })
 })
 
 
-export const { useGetAssignmentForStudentQuery, useCreateNewLessonWithQuizAndAssignmentMutation, useGetQuizForStudentQuery, useSubmitQuizByStudentMutation, useSubmitAssignmentByStudentMutation, useCreateMCQsQuizMutation, useGetMCQsQuizForStudentQuery, useAttemptedMCQByStudentSubmitMutation, useResultsMcqForStudentQuery, useMcqAttemptStatusCheckQuery, useGetLessonByIdQuery, useCreateNewAssignmentMutation } = lessonApi
+export const { useGetAssignmentForStudentQuery, useCreateNewLessonWithQuizAndAssignmentMutation, useGetQuizForStudentQuery, useSubmitQuizByStudentMutation, useSubmitAssignmentByStudentMutation, useCreateMCQsQuizMutation, useGetMCQsQuizForStudentQuery, useAttemptedMCQByStudentSubmitMutation, useResultsMcqForStudentQuery, useMcqAttemptStatusCheckQuery, useGetLessonByIdQuery, useCreateNewAssignmentMutation, useGetLessonForEditQuery, useUpdateLessonMutation } = lessonApi
+
