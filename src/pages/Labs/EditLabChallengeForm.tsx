@@ -91,13 +91,13 @@ function EditLabChallengeForm() {
                 flexDirection: "column",
                 gap: 1,
                 width: "100%",
-                alignItems: "center", justifyContent: "center"
+                alignItems: "center", justifyContent: "center", m: 3
             }}
         >
 
 
 
-            <Box sx={{ width: "90%" }} >
+            <Box sx={{ width: "100%" }} >
                 {isSuccess && (
                     <Alert severity="success" sx={{ mb: 1 }}>
                         Challenge Updated Successfully.

@@ -27,17 +27,19 @@ const courseTeacherDashColumns: MRT_ColumnDef<CourseTeacherDashType>[] = [
     header: 'Created At',
     accessorKey: 'createdAt',
     Cell: ({ cell }) => new Date(cell.getValue<string>()).toLocaleDateString(),
+    size: 140
   },
   {
     header: 'Title',
     accessorKey: 'title',
     enableGlobalFilter: true,
-    size: 300
+    size: 270
   },
 
   {
     header: 'Activation Status',
     accessorKey: 'activationStatus',
+    size: 140,
     Cell: ({ cell }) => (
       <Chip
         label={cell.getValue<string>()}
@@ -81,7 +83,7 @@ const courseTeacherDashColumns: MRT_ColumnDef<CourseTeacherDashType>[] = [
   {
     header: 'Total Enrollemnts',
     accessorKey: 'totalEnrollments',
-    size: 150,
+    size: 120,
     Cell: ({ cell }) => {
       const value = cell.getValue<number>()
       return <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
@@ -95,7 +97,7 @@ const courseTeacherDashColumns: MRT_ColumnDef<CourseTeacherDashType>[] = [
   {
     header: 'Accepted',
     accessorKey: 'totalAcceptedEnrollments',
-    size: 150,
+    size: 120,
     Cell: ({ cell }) => {
       const value = cell.getValue<number>()
       return <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
@@ -108,7 +110,7 @@ const courseTeacherDashColumns: MRT_ColumnDef<CourseTeacherDashType>[] = [
   {
     header: 'Pending',
     accessorKey: 'totalPendingEnrollments',
-    size: 150,
+    size: 120,
     Cell: ({ cell }) => {
       const value = cell.getValue<number>()
       return <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
@@ -141,18 +143,18 @@ const courseTeacherDashColumns: MRT_ColumnDef<CourseTeacherDashType>[] = [
 
 ];
 
-const PersonalDetails = ({ label, value, icon }: { label: string, value: string, icon: React.ReactNode }) => {
+export const PersonalDetails = ({ label, value, icon }: { label: string, value: string, icon: React.ReactNode }) => {
   const theme = useTheme()
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', minWidth: 0 }}>
       <Typography
         variant="caption"
         sx={{
-          color: theme.palette.text.secondary,
+          color: theme.palette.text.primary,
           display: 'flex',
           alignItems: 'center',
           gap: 1,
-          fontWeight: 700,
+
           flexWrap: 'wrap'
         }}
       >
@@ -336,13 +338,13 @@ function TeacherDashboard() {
       value: teacherDashData?.mostPopularCourse?.totalEnrollments,
       color: theme.palette.success.light
     },
-    {
-      title: "Least popular course",
-      icon: <TrendingDownOutlined sx={{ color: "error.main" }} />,
-      desc: `${teacherDashData?.mostUnpopularCourse?.title}`,
-      value: teacherDashData?.mostUnpopularCourse?.totalEnrollments,
-      color: theme.palette.error.light
-    },
+    // {
+    //   title: "Least popular course",
+    //   icon: <TrendingDownOutlined sx={{ color: "error.main" }} />,
+    //   desc: `${teacherDashData?.mostUnpopularCourse?.title}`,
+    //   value: teacherDashData?.mostUnpopularCourse?.totalEnrollments,
+    //   color: theme.palette.error.light
+    // },
   ];
 
   return (
@@ -507,7 +509,7 @@ function TeacherDashboard() {
             xs: "1fr",
             sm: "1fr 1fr",
             md: "repeat(3, 1fr)",
-            lg: "repeat(5, 1fr)"
+            lg: "repeat(4, 1fr)"
           },
           gap: { xs: 2, sm: 3 },
           mt: 3

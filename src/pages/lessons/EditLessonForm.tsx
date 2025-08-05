@@ -115,6 +115,7 @@ function EditLessonForm() {
                 display: 'flex',
                 flexDirection: "column",
                 gap: 1,
+                m: 3,
                 width: "100%",
                 alignItems: "center", justifyContent: "center"
             }}
@@ -122,7 +123,7 @@ function EditLessonForm() {
 
 
 
-            <Box sx={{ width: "90%" }} >
+            <Box sx={{ width: "100%" }} >
                 {LessonUpdateIsSuccess && (
                     <Alert severity="success" sx={{ mb: 1 }}>
                         Lesson Updated Successfully...

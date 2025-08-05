@@ -19,18 +19,18 @@ export const darkTheme: ThemeOptions = createTheme({
     mode: "dark",
     primary: {
       main: "#4477CE", //deep teal
-      light: "#e1774b", //coral orange
-      dark: "#04182e",//bright purple 
+      light: "#e4ff6eff", //coral orange
+      dark: "#171a1aff",//bright purple 
       contrastText: "#ffffff"
-    },  
+    },
     secondary: {
-      main: "#3D4141", 
-      light: "#090a0d", 
+      main: "#3D4141",
+      light: "#090a0d",
       dark: "#ff2929",
       contrastText: "#FAFAFA"
     },
-    grey:{
-      "100":"#0c1217"
+    grey: {
+      "100": "#0c1217"
     },
     error: {
       main: "#FF3D57",
@@ -45,18 +45,18 @@ export const darkTheme: ThemeOptions = createTheme({
       contrastText: "#ffffff"
     },
     text: {
-      primary: "#ffffff",
+      primary: "#edeaeaff",
       secondary: "rgba(255, 255, 255, 0.7)",
       disabled: "rgba(255, 255, 255, 0.5)"
     },
     background: {
       default: "#000000", //very dark gray
-      paper: "#222A32", //slightly lighter gary
-    
+      paper: "#1d2323ff", //slightly lighter gary
+
     }
   },
   typography: sharedTypography,
-    components: {
+  components: {
     MuiCssBaseline: {
       styleOverrides: {
         body: {
@@ -117,7 +117,7 @@ export const lightTheme: ThemeOptions = createTheme({
     background: {
       default: "#fffdf0",
       paper: "#ffffff",
-      
+
     }
   },
   typography: sharedTypography

@@ -88,8 +88,8 @@ function EditLabForm() {
 
 
     return (
-        <Box sx={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <Box sx={{ width: "85%" }}>
+        <Box sx={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", m: 3 }}>
+            <Box sx={{ width: "100%" }}>
                 <form onSubmit={handleSubmit(handleLabCreation)}>
                     <HorizontalMultiStepFormWrapper state={multiStepState} actions={multiStepActions} stepTitles={steps.map(step => {
                         return {

@@ -18,17 +18,11 @@ interface MiniPieChartProps {
   height?: number;
 }
 
-const COLORS = [
-    '#10B981',
-  '#3B82F6',
-  '#8B5CF6',
-  '#EF4444',
-  '#F59E0B',
-  
-];
+const COLORS = ['#10B981', '#3B82F6', '#8B5CF6', '#EF4444', '#F59E0B'];
 
 const RADIAN = Math.PI / 180;
 
+// Only show label if count > 0
 const renderMiniLabel = ({
   cx,
   cy,
@@ -38,6 +32,8 @@ const renderMiniLabel = ({
   value,
   payload,
 }: any) => {
+  if (value === 0) return null;
+
   const radius = innerRadius + (outerRadius - innerRadius) * 0.55;
   const x = cx + radius * Math.cos(-midAngle * RADIAN);
   const y = cy + radius * Math.sin(-midAngle * RADIAN);
@@ -70,15 +66,18 @@ const MiniPieChart: React.FC<MiniPieChartProps> = ({ data, height = 180 }) => {
             nameKey="name"
             cx="50%"
             cy="50%"
+            innerRadius="50%" // Donut effect
             outerRadius="90%"
             labelLine={false}
             label={renderMiniLabel}
             isAnimationActive={true}
           >
-            {data.map((_, index) => (
+            {data.map((entry, index) => (
               <Cell
                 key={`cell-${index}`}
                 fill={COLORS[index % COLORS.length]}
+                stroke={theme.palette.divider} // Border color
+                strokeWidth={1}
               />
             ))}
           </Pie>

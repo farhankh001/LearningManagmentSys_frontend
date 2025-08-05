@@ -1,10 +1,16 @@
-import {  Typography, Paper, useTheme } from '@mui/material';
+import { Typography, Paper, useTheme, Box, alpha } from '@mui/material';
 import { useGetActiveStudyTimeQuery } from '../../../app/api/studentDashApis';
+import { Bolt } from '@mui/icons-material';
 
+export const formatTimeGlobel = (secs: number) => {
+  const h = Math.floor(secs / 3600).toString().padStart(2, '0');
+  const m = Math.floor((secs % 3600) / 60).toString().padStart(2, '0');
+  const s = (secs % 60).toString().padStart(2, '0');
+  return `${h}:${m}:${s}`;
+};
+export default function ActiveTimeClock({ courseId }: any) {
 
-export default function ActiveTimeClock() {
- 
-    const {data:activeStudyTime}=useGetActiveStudyTimeQuery()
+  const { data: activeStudyTime } = useGetActiveStudyTimeQuery({ courseId })
 
   const formatTime = (secs: number) => {
     const h = Math.floor(secs / 3600).toString().padStart(2, '0');
@@ -12,21 +18,10 @@ export default function ActiveTimeClock() {
     const s = (secs % 60).toString().padStart(2, '0');
     return `${h}:${m}:${s}`;
   };
-  const theme=useTheme()
+  const theme = useTheme()
   return (
-    <Paper
-      elevation={3}
-      sx={{
-        px: 3,
-        py: 1,
-        borderRadius: 2,
-        display: 'inline-block',
-        bgcolor: 'Background.default',
-        color: 'green',
-        border:"1px solid",
-        borderColor:"divider"
-      }}
-    >
+    <Box sx={{ background: alpha(theme.palette.primary.dark, 0.75), border: "1px solid", borderColor: theme.palette.divider, borderRadius: 3, p: 2.5, display: "flex", flexDirection: "column", alignItems: 'center', gap: 1.2, width: "100%" }}>
+      <Bolt />
       <Typography
         variant="h5"
         component="div"
@@ -34,12 +29,13 @@ export default function ActiveTimeClock() {
           fontFamily: 'monospace',
           fontWeight: 'bold',
           letterSpacing: '0.1rem',
-          textAlign:"center",
-          color:theme.palette.warning.light
+          textAlign: "center",
+          color: theme.palette.text.primary, fontSize: "1.5rem"
         }}
       >
-        {formatTime(activeStudyTime?.studyTime?activeStudyTime.studyTime:0)}
+        {formatTime(activeStudyTime?.studyTime ? activeStudyTime.studyTime : 0)}
       </Typography>
-    </Paper>
+      <Typography variant='body2' fontWeight={550} sx={{ color: theme.palette.text.secondary }} >Active Study Clock</Typography>
+    </Box>
   );
 }

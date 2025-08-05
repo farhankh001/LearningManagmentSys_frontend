@@ -29,7 +29,7 @@ interface MCQSInputFieldProps<T> {
 }
 
 function MCQSInputField<T extends FieldValues>({
-  
+
   name,
   question,
   isRequired
@@ -44,9 +44,9 @@ function MCQSInputField<T extends FieldValues>({
       rules={{ required: isRequired ? 'This field is required' : false }}
       render={({ field, fieldState }) => (
         <FormControl component="fieldset" error={!!fieldState.error}>
-          <Typography variant='body1' sx={{m:1, fontSize:"1.1rem"}}>{question.question}</Typography>
+          <Typography variant='body1' sx={{ m: 1, fontSize: "1.1rem" }}>{question.question}</Typography>
           <RadioGroup
-            sx={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:2}}
+            sx={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 2 }}
             value={field.value ?? -1} // Ensure -1 as default
             onChange={(e) => field.onChange(parseInt(e.target.value))}
           >
@@ -57,12 +57,13 @@ function MCQSInputField<T extends FieldValues>({
                 control={<Radio checked={field.value === index} />} // Add explicit checked prop
                 label={option}
                 sx={{
-                  border:"2px solid",
-                  borderColor:theme.palette.divider,
-                  margin:1,
-                  padding:1,
-                  width:"100%",
-                  borderRadius:4
+                  border: "2px solid",
+                  borderColor: theme.palette.divider,
+                  margin: 1,
+                  padding: 1,
+                  width: "100%",
+                  borderRadius: 4,
+                  background: theme.palette.background.paper
                 }}
               />
             ))}

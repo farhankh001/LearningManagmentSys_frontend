@@ -31,13 +31,13 @@ function LessonSettings() {
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            mb: 5,
+            mb: 5, mx: 1, my: 3,
             px: { xs: 1, sm: 2 }
         }}>
 
             <Box sx={{
                 width: "100%",
-                maxWidth: { xs: "100%", sm: "95%", md: "90%", lg: "1200px" }
+                mx: 5
             }}>
 
                 {/* Profile and Header Section */}
@@ -57,7 +57,7 @@ function LessonSettings() {
                         display: "flex",
                         flexDirection: "column",
                         gap: 2,
-                        background: alpha(theme.palette.primary.dark, 0.55),
+                        background: alpha(theme.palette.primary.dark, 0.7),
                         border: "1px solid",
                         borderColor: theme.palette.divider,
                         p: { xs: 2, sm: 3 },
@@ -133,7 +133,7 @@ function LessonSettings() {
                         display: "flex",
                         flexDirection: "column",
                         gap: 2,
-                        background: alpha(theme.palette.primary.dark, 0.6),
+                        background: alpha(theme.palette.primary.dark, 0.7),
                         border: "1px solid",
                         borderColor: theme.palette.divider,
                         p: { xs: 2, sm: 3 },
@@ -338,7 +338,7 @@ function LessonSettings() {
             {/* Info Message */}
             <Box sx={{
                 width: "100%",
-                maxWidth: { xs: "100%", sm: "95%", md: "90%", lg: "1200px" },
+                maxWidth: { xs: "100%", sm: "95%", md: "90%", lg: "1300px" }, mx: 5
 
             }}>
                 {!lessonData?.hasLab && !lessonData?.hasAssignment && (
@@ -378,7 +378,7 @@ function LessonSettings() {
                             display: "flex",
                             flexDirection: "column",
                             gap: 1.5,
-                            background: alpha(theme.palette.primary.dark, 0.55),
+                            background: alpha(theme.palette.primary.dark, 0.7),
                             p: { xs: 2, sm: 3 },
                             border: "1px solid",
                             borderColor: theme.palette.divider,
@@ -551,7 +551,7 @@ function LessonSettings() {
                             display: "flex",
                             flexDirection: "column",
                             gap: 1.5,
-                            background: alpha(theme.palette.primary.dark, 0.55),
+                            background: alpha(theme.palette.primary.dark, 0.7),
                             p: { xs: 2, sm: 3 },
                             border: "1px solid",
                             borderColor: theme.palette.divider,
@@ -695,10 +695,10 @@ function LessonSettings() {
             {/* Lesson Content Section */}
             <Box sx={{
                 width: "100%",
-                maxWidth: { xs: "100%", sm: "95%", md: "90%", lg: "1200px" },
+                maxWidth: { xs: "100%", sm: "95%", md: "90%", lg: "1300px" }, mx: 5,
                 px: { xs: 1, sm: 2 },
                 mt: 3,
-                background: alpha(theme.palette.primary.dark, 0.55),
+                background: alpha(theme.palette.primary.dark, 0.7),
                 border: "1px solid",
                 borderColor: theme.palette.divider,
                 p: { xs: 2, sm: 3, md: 4 },

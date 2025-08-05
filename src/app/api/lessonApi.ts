@@ -1,5 +1,46 @@
 import { SubmitMCQByStudentType } from "../../types/quiz-mcqs-types";
 import baseApi from "./baseApi";
+export type GetLabForStudentResponse = {
+    lessonId: string;
+    courseId: string;
+    isActive: boolean;
+    title?: string;
+    description?: string;
+    timeLimit?: number;
+    activationStatus: 'Active' | 'Inactive' | string;
+    hasChallenges?: boolean;
+    labTotalScore?: number;
+    totalChallenges?: number;
+    attemptedChallenges?: number;
+    progressPercentage?: number;
+    challenges?: {
+        id: string;
+        challenge_text: string;
+        description: string;
+        answer_string_type: string;
+        max_score: number;
+        sample_input: string | null;
+        auto_evaluate: boolean;
+        createdAt: string;
+        updatedAt: string;
+        attempted: boolean;
+        submission: {
+            id: string;
+            submitted_text: string | null;
+            submitted_code: string | null;
+            submitted_flag: string | null;
+            obtained_marks: number | null;
+            similarity_score: number | null;
+            manually_reviewed: boolean;
+            uploaded_solution_url: string | null;
+            grade: string | null;
+            createdAt: string;
+            updatedAt: string;
+        } | null;
+    }[];
+};
+
+
 
 interface GetQuizForStudentReturn {
     title: string,
@@ -8,20 +49,47 @@ interface GetQuizForStudentReturn {
     timeLimit: number,
     activationStatus: string,
     passingScore: number,
-    totalScore: number
+    totalScore: number,
+    courseId: string
 
 }
 export interface MCQQuizResults {
-    totalQuestions: number;
-    correctAnswers: number;
-    incorrectAnswers: number;
-    percentage: number;
-    detailedResults: QuestionResult[];
-}
+    summary: {
+        name: "Total Questions" | "Correct" | "Incorrect";
+        count: number;
+    }[];
+    percentage: number; // e.g., 87.5
+    detailedResults: {
+        questionText: string;
+        selectedAnswer: string | null;
+        correctAnswer: string;
+        isCorrect: boolean;
+        explanation: string;
+    }[];
+    totalQuestions: number; correctCount: number; courseTitle: string;
+    courseSubTitle: string
+};
 
-export type MCQEvaluationResult = {
-    results: MCQQuizResults;
-    title: string;
+type MCQQuizEvaluationResponse = {
+    title: string; // Lesson title
+    hasAttempted: boolean; // Always true in this case
+    results: {
+        summary: {
+            name: "Total Questions" | "Correct" | "Incorrect";
+            count: number;
+        }[];
+        percentage: number; // e.g., 87.5
+        detailedResults: {
+            questionText: string;
+            selectedAnswer: string | null;
+            correctAnswer: string;
+            isCorrect: boolean;
+            explanation: string;
+        }[];
+        totalQuestions: number; correctCount: number;
+        courseTitle: string;
+        courseSubTitle: string
+    };
 };
 
 export interface SubmitQuizByStudentType {
@@ -44,6 +112,7 @@ export interface SubmitQuizMCQType {
 export interface SubmitQuizMCQReturn {
     id: string,
     title: string,
+    courseId: string,
     questions: {
         id: string,
         question_text: string,
@@ -71,9 +140,6 @@ export interface MCQQuestionResult {
     explanation: string;
     isCorrect: boolean;
 }
-
-
-
 
 
 
@@ -209,17 +275,17 @@ const lessonApi = baseApi.injectEndpoints({
             }),
             invalidatesTags: ["Courses"]
         }),
-        getQuizForStudent: builder.query<GetQuizForStudentReturn, { lessonId: string | undefined }>({
+        getLabForStudent: builder.query<GetLabForStudentResponse, { lessonId: string | undefined }>({
             query: ({ lessonId }) => ({
-                url: "get-quiz-for-student",
+                url: "get-lab-for-student",
                 method: "GET",
                 params: { lessonId }
             })
         }),
-        submitQuizByStudent: builder.mutation<any, SubmitQuizByStudentType>({
+        submitLabByStudent: builder.mutation<any, SubmitQuizByStudentType>({
             query: (data) => ({
                 method: "POST",
-                url: "/submit-quiz-by-student",
+                url: "/submit-lab-by-student",
                 body: data
             })
         }),
@@ -258,7 +324,7 @@ const lessonApi = baseApi.injectEndpoints({
                 body: data
             }), invalidatesTags: ["Enrollment"]
         }),
-        resultsMcqForStudent: builder.query<MCQEvaluationResult, any>({
+        resultsMcqForStudent: builder.query<MCQQuizEvaluationResponse, any>({
             query: ({ submissionId }) => ({
                 url: "evaluate_mcq_results_by_std",
                 method: "GET",
@@ -306,5 +372,5 @@ const lessonApi = baseApi.injectEndpoints({
 })
 
 
-export const { useGetAssignmentForStudentQuery, useCreateNewLessonWithQuizAndAssignmentMutation, useGetQuizForStudentQuery, useSubmitQuizByStudentMutation, useSubmitAssignmentByStudentMutation, useCreateMCQsQuizMutation, useGetMCQsQuizForStudentQuery, useAttemptedMCQByStudentSubmitMutation, useResultsMcqForStudentQuery, useMcqAttemptStatusCheckQuery, useGetLessonByIdQuery, useCreateNewAssignmentMutation, useGetLessonForEditQuery, useUpdateLessonMutation } = lessonApi
+export const { useGetAssignmentForStudentQuery, useCreateNewLessonWithQuizAndAssignmentMutation, useGetLabForStudentQuery, useSubmitLabByStudentMutation, useSubmitAssignmentByStudentMutation, useCreateMCQsQuizMutation, useGetMCQsQuizForStudentQuery, useAttemptedMCQByStudentSubmitMutation, useResultsMcqForStudentQuery, useMcqAttemptStatusCheckQuery, useGetLessonByIdQuery, useCreateNewAssignmentMutation, useGetLessonForEditQuery, useUpdateLessonMutation } = lessonApi
 

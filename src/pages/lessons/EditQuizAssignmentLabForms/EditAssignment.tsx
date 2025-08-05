@@ -115,13 +115,13 @@ function EditAssignment() {
                 flexDirection: "column",
                 gap: 1,
                 width: "100%",
-                alignItems: "center", justifyContent: "center"
+                alignItems: "center", justifyContent: "center", m: 3
             }}
         >
 
 
 
-            <Box sx={{ width: "90%" }} >
+            <Box sx={{ width: "100%" }} >
                 {assignmentCreationIsSuccess && (
                     <Alert severity="success" sx={{ mb: 1 }}>
                         Assignment Created Successfully...

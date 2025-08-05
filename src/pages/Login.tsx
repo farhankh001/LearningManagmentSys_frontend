@@ -11,20 +11,20 @@ import { useNavigate, Link } from "react-router-dom";
 function Login() {
   const { handleSubmit } = useFormContext<LoginType>();
   const [loginUser, { isLoading, isError, error }] = useLoginUserMutation();
-  
+
   const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<LoginType> = async (data: LoginType) => {
     try {
       const response = await loginUser(data).unwrap();
-      if(response.user.role==="Student" ){
-          navigate("/student-dash")
-      }else if(response.user.role==="Teacher"){
-          navigate("/teacher-dash")
-      }else if(response.user.role==="Admin"){
-          navigate("/admin-dash")
+      if (response.user.role === "Student") {
+        navigate("/student-dash")
+      } else if (response.user.role === "Teacher") {
+        navigate("/teacher-dash")
+      } else if (response.user.role === "Admin") {
+        navigate("/admin-dash")
       }
-      
+
     } catch (err) {
       console.error("Login failed:", err);
     }
@@ -38,12 +38,12 @@ function Login() {
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: 'background.default',
-        padding: { xs: 2, sm: 4, md: 6 },
+        padding: { xs: 2, sm: 4, md: 6 }, width: "40%"
       }}
     >
       <Box
         sx={{
-          width: { xs: '95%', sm: '70%', md: '40%', lg: '35%' },
+          width: "100%",
           backgroundColor: 'background.paper',
           borderRadius: 2,
           boxShadow: 1,
@@ -51,10 +51,10 @@ function Login() {
         }}
       >
         {isError && error && 'data' in error &&
-                  <Alert severity="error" sx={{ mb: 2 }}>
-                    {(error.data as any).error}  
-                  </Alert>
-                }
+          <Alert severity="error" sx={{ mb: 2 }}>
+            {(error.data as any).error}
+          </Alert>
+        }
 
         <Typography
           variant="h5"
@@ -96,15 +96,15 @@ function Login() {
               {isLoading ? 'Signing in...' : 'Sign In'}
             </LoadingButton>
 
-            <Typography 
-              variant="body2" 
-              sx={{ 
+            <Typography
+              variant="body2"
+              sx={{
                 textAlign: 'center',
                 color: 'text.secondary'
               }}
             >
               Don't have an account?{' '}
-              <Link 
+              <Link
                 to="/register"
                 style={{
                   color: 'inherit',

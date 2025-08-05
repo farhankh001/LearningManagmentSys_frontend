@@ -1,9 +1,9 @@
 import { ThemeProvider } from "@mui/material/styles";
 import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
-import { lightTheme ,darkTheme} from "./Theme";
+import { lightTheme, darkTheme } from "./Theme";
 import NavBar from "./NavBar";
-import { CssBaseline } from "@mui/material";
+import { Box, CssBaseline } from "@mui/material";
 import { Toaster } from 'react-hot-toast';
 import { useDispatch } from "react-redux";
 
@@ -17,11 +17,11 @@ import AuthInitializer from "../../AuthInitializer";
 
 
 const Layout = () => {
-  const[darkMode,setDarkMode]=useState(true)
+  const [darkMode, setDarkMode] = useState(true)
   const { data: categoriesData, isSuccess: categorySuccess } = useGetAllCategoriesQuery();
   const { data: coursesData, isSuccess: courseSuccess } = useGetAllCoursesQuery({});
-  
-  const dispatch=useDispatch();
+
+  const dispatch = useDispatch();
 
 
   useEffect(() => {
@@ -41,19 +41,22 @@ const Layout = () => {
 
   return (
     <>
-      <ThemeProvider theme={darkMode?darkTheme:lightTheme}>
-      <CssBaseline/>
-      <AuthInitializer/>
-        <NavBar darkMode={darkMode} setDarkMode={setDarkMode}/>
-         <Toaster position="top-right" reverseOrder={false} />
+      <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
+        <CssBaseline />
+        <AuthInitializer />
+        <Toaster position="top-right" reverseOrder={false} />
 
-         <IdleTimerProvider
-          timeout={1000 * 60 * 10} // 10 minutes, irrelevant for now
-          crossTab
-         >
-             <Outlet/>
-         </IdleTimerProvider>
-       
+        <Box sx={{ width: "100%", display: "flex", alignItems: "center", justifyContent: 'center' }}>
+          <NavBar darkMode={darkMode} setDarkMode={setDarkMode} />
+
+          <IdleTimerProvider
+            timeout={1000 * 60 * 10} // 10 minutes, irrelevant for now
+            crossTab
+          >
+            <Outlet />
+          </IdleTimerProvider>
+        </Box>
+
       </ThemeProvider>
     </>
   )

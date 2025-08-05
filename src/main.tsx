@@ -21,7 +21,7 @@ import ProtectedRoute from './ProtectedRoutes.tsx'
 import EditExistingCourseProvider from './components/Forms/FormProviders/EditExistingCourseProvider.tsx'
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
-import AttemptQuiz from './pages/lessons/quizAndAssignment/AttemptQuiz.tsx'
+
 import AttemptAssignment from './pages/lessons/quizAndAssignment/AttemptAssignment.tsx'
 import Unauthorized from './Unauthorize.tsx'
 import Logout from './pages/Logout.tsx'
@@ -45,6 +45,9 @@ import EditAssignmentProvider from './components/Forms/FormProviders/EditForms/E
 import ViewAllLabChallenges from './pages/Labs/ViewAllLabChallenges.tsx'
 import EditLabChallengeFormProvider from './components/Forms/FormProviders/EditForms/EditLabChallengeFormProvider.tsx'
 import EditLessonFormProvider from './components/Forms/FormProviders/EditForms/EditLessonFormProvider.tsx'
+import ChallengeSubmissionFormProvider from './components/Forms/FormProviders/ChallengeSubmissionFormProvider.tsx'
+import LabChallengesForStudents from './pages/lessons/quizAndAssignment/LabChallengesForStudent.tsx'
+import DetailedLabResults from './pages/lessons/quizAndAssignment/DetailedLabResults.tsx'
 
 
 // Types
@@ -109,15 +112,16 @@ const router = createBrowserRouter(
         <Route path="/student-dash" element={<StudentDashboard />} />
         <Route path="/display-all-courses" element={<DisplayAllCourses />} />
         <Route path="/get-single-course-by-enrolled-student/:courseId" element={<EnrolledCourseInfo />} />
-        <Route path="/attempt-quiz/:lessonId" element={<AttemptQuiz />} />
+        <Route path="/attempt-challenge/:challengeId" element={<ChallengeSubmissionFormProvider />} />
         <Route path="/attempt-assignment/:lessonId" element={<AttemptAssignment />} />
-        <Route path="/logout" element={<Logout />} />
+        <Route path="/view-lab-challenges-student/:lessonId" element={<LabChallengesForStudents />} />
         <Route path="/attempt-MCQS-quiz/:lessonId" element={<SubmitMCQQuizStudentFormProvider />} />
         <Route path="/view-mcq-results-std/:submissionId" element={<MCQResults />} />
         <Route path="/enrolled-course-more-info/:courseId" element={<EnrolledCourseMoreInfo />} />
         <Route path="/all-enrolled-courses-settings" element={<StudentAllEnrolledCourses />} />
         <Route path="/all-pending-courses-settings" element={<StudentPendingEnrollments />} />
         <Route path="/enroll-in-a-course" element={<StudentEnrollCourse />} />
+        <Route path="/detailed-lab-result/:challengeId" element={<DetailedLabResults />} />
       </Route>
       <Route element={<ProtectedRoute allowedRoles={["Admin"]} />}>
         <Route path="/admin-dash" element={<AdminDashboard />} />

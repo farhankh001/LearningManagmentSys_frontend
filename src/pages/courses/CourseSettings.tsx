@@ -25,12 +25,12 @@ const coourseSettings: MRT_ColumnDef<LessonWithFlags>[] = [
   {
     header: 'Lesson title',
     accessorKey: 'title',
-    size: 290,
+    size: 250,
   },
   {
     header: 'Has Mcq Quiz',
     accessorKey: 'has_mcq_quiz',
-    size: 160,
+    size: 150,
     Cell: ({ cell }) => {
       const value = cell.getValue<boolean>()
       return <Chip
@@ -139,12 +139,12 @@ const enrolledStdTeacherDashColumns: MRT_ColumnDef<EnrolledStudent>[] = [
   {
     header: 'Std Name',
     accessorKey: 'name',
-    size: 200,
+    size: 180,
   },
   {
     header: 'Std Email',
     accessorKey: 'email',
-    size: 200,
+    size: 180,
   },
   {
     header: 'Enrollment Status',
@@ -269,7 +269,7 @@ function CourseSettings() {
     {
       header: 'Std Email',
       accessorKey: 'email',
-      size: 210
+      size: 190
     },
 
 
@@ -353,7 +353,7 @@ function CourseSettings() {
     }}>
       {/* Header Section */}
       <Box sx={{
-        width: { xs: "100%", sm: "95%", md: "90%", lg: "80%" },
+        width: "100%",
         display: "flex",
         flexDirection: { xs: "column", md: "row" },
         alignItems: { xs: "center", md: "flex-start" },
@@ -455,12 +455,12 @@ function CourseSettings() {
           </Box>
         </Box>
       </Box>
-      <Box sx={{ height: "330px", width: "1200px", border: "1px solid", borderColor: theme.palette.divider, p: 2, borderRadius: 4, mt: 3, background: alpha(theme.palette.background.paper, 0.4), }}>
+      <Box sx={{ height: "330px", width: "100%", border: "1px solid", borderColor: theme.palette.divider, p: 2, borderRadius: 4, mt: 3, background: alpha(theme.palette.background.paper, 0.4), }}>
         <EnrollmentTrendHeatmap courseData={courseDataForTeacher} />
       </Box>
       {/* Lesson Details Table */}
       <Box sx={{
-        width: { xs: "100%", sm: "95%", md: "90%", lg: "80%" },
+        width: '100%',
         mt: { xs: 2, sm: 3 },
         mb: 3,
         display: "flex",
@@ -494,7 +494,7 @@ function CourseSettings() {
       <Box sx={{
         mt: { xs: 2, sm: 3 },
         mb: { xs: 5, sm: 7 },
-        width: { xs: "100%", sm: "95%", md: "90%", lg: "80%" }
+        width: "100%"
       }}>
         {/* Pending Enrollments */}
         <ReusableTable<EnrolledStudent>

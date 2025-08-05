@@ -1,20 +1,22 @@
-import  { FC } from 'react'
+import { FC } from 'react'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import Typography from '@mui/material/Typography'
 import FooterSocialLinks from './footer-social-links'
 import FooterNavigation from './footer-navigation'
+import { useTheme } from '@emotion/react'
 
 
 const Footer: FC = () => {
+  const theme = useTheme()
   return (
     <Box
       component="footer"
       sx={{
-        backgroundColor: 'background.paper',
+        backgroundColor: "background.default",
         py: { xs: 6, md: 10 },
         color: 'primary.contrastText',
-        width:"100%"
+        width: "100%"
       }}
     >
       <Container>

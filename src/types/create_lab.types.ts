@@ -4,18 +4,18 @@ export const CreateLabFormSchema = z.object({
   title: z.string().min(1, "Lab title is required"),
   description: z.string().min(1, "Lab description is required"),
   timelimit: z.string()
-      .refine(
-        (val) => !isNaN(Number(val)),
-        "Time limit must be a valid number (in minutes)"
-      )
-      .refine(
-        (val) => Number(val) > 0,
-        "Time limit must be greater than 0"
-      )
-      .refine(
-        (val) => Number(Number(val).toFixed(1)) === Number(val),
-        "Time limit can only have up to 1 decimal place"
-      ),
+    .refine(
+      (val) => !isNaN(Number(val)),
+      "Time limit must be a valid number (in minutes)"
+    )
+    .refine(
+      (val) => Number(val) > 0,
+      "Time limit must be greater than 0"
+    )
+    .refine(
+      (val) => Number(Number(val).toFixed(1)) === Number(val),
+      "Time limit can only have up to 1 decimal place"
+    ),
   activationStatus: z.enum(["Active", "Inactive"]),
 });
 
@@ -33,25 +33,25 @@ export const CreateLabChallengeFormSchema = z.object({
   description: z.string().min(1, "Challenge description is required"),
   answer_string_type: z.enum(["Code", "Text", "Flag"]),
   max_score: z.string()
-      .refine(
-        (val) => !isNaN(Number(val)),
-        "Total score must be a valid number"
-      )
-      .refine(
-        (val) => Number(val) >= 0,
-        "Total score cannot be negative"
-      )
-      .refine(
-        (val) => Number(val) <= 999999.99,
-        "Total score cannot exceed 999,999.99"
-      )
-      .refine(
-        (val) => Number(Number(val).toFixed(2)) === Number(val),
-        "Total score can only have up to 2 decimal places"
-      ),
+    .refine(
+      (val) => !isNaN(Number(val)),
+      "Total score must be a valid number"
+    )
+    .refine(
+      (val) => Number(val) >= 0,
+      "Total score cannot be negative"
+    )
+    .refine(
+      (val) => Number(val) <= 999999.99,
+      "Total score cannot exceed 999,999.99"
+    )
+    .refine(
+      (val) => Number(Number(val).toFixed(2)) === Number(val),
+      "Total score can only have up to 2 decimal places"
+    ),
   correct_solution: z.string().min(1, "Expected solution is required"),
   sample_input: z.string().optional(),
-  
+
 });
 
 export type CreateLabChallengeFormType = z.infer<typeof CreateLabChallengeFormSchema>;
@@ -63,7 +63,7 @@ export const CreateLabChallengeFormDefaultValues: CreateLabChallengeFormType = {
   max_score: "",
   correct_solution: "",
   sample_input: "",
-  
+
 };
 export const CreateLabWithChallengesSchema = z.object({
   lab: CreateLabFormSchema,
@@ -83,7 +83,18 @@ export const CreateLabWithChallengesFormDefaultValues: CreateLabWithChallengesFo
       answer_string_type: "Code",
       max_score: "",
       correct_solution: "",
-      sample_input: "", 
+      sample_input: "",
     },
   ],
 };
+
+
+export const submitChallengeSchema = z.object({
+  challengeAnswer: z.string().min(1, { message: "Attempt challenge before submitting" })
+})
+
+export type submitChallengeType = z.infer<typeof submitChallengeSchema>
+
+export const submitChallengeDefaultValues: submitChallengeType = {
+  challengeAnswer: ""
+}

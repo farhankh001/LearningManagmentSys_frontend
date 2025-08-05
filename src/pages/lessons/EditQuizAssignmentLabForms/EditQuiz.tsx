@@ -91,9 +91,9 @@ function MCQQuizEditForm() {
         return <Box sx={{ width: "100%", height: "70vh", alignItems: "center", justifyContent: "center" }}><CircularProgress /></Box>;
     }
     return (
-        <Box sx={{ width: "100%", display: "flex", flexDirection: "column", gap: 2, alignItems: "center", justifyContent: "center", mb: 5 }}>
+        <Box sx={{ width: "100%", display: "flex", flexDirection: "column", gap: 2, alignItems: "center", justifyContent: "center", m: 4 }}>
 
-            <Box sx={{ width: "80%", display: "flex", flexDirection: "row", gap: 4 }}>
+            <Box sx={{ width: "100%", display: "flex", flexDirection: "row", gap: 4 }}>
 
 
 

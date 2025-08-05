@@ -1,33 +1,15 @@
-import React from 'react';
 import {
-    alpha,
-    Box,
-    Button,
-    Chip,
-    CircularProgress,
-    Typography,
-    useTheme,
-    Card,
-    CardContent,
-    Divider
+    alpha, Box, Button, Chip, CircularProgress, Typography, useTheme, Card, CardContent
 } from '@mui/material';
 import {
-    CheckCircle,
-    Cancel,
-    AddCircleOutlineTwoTone,
-    AccessTimeFilled,
-    Circle,
-    Edit,
-    Code,
-    TextFields,
-    Flag,
-    Score,
-    SmartToy,
-    PersonOutline,
-    Info
+    CheckCircle, Cancel, AddCircleOutlineTwoTone, AccessTimeFilled, Circle, Edit, Code, TextFields, Flag, Score, SmartToy, PersonOutline, Info, CheckCircleOutline, CancelOutlined,
+    ScheduleOutlined,
+    Bolt
 } from '@mui/icons-material';
 import { Link, useParams } from 'react-router-dom';
-import { useViewAllLabChallengesTeacherQuery } from '../../app/api/labApi';
+import { useActivateLabMutation, useDeActivateLabMutation, useGetLabActivationStatusAndTimeQuery, useViewAllLabChallengesTeacherQuery } from '../../app/api/labApi';
+import toast from 'react-hot-toast';
+import LabTimer from './LabTimer';
 
 
 function ViewAllLabChallenges() {
@@ -35,7 +17,39 @@ function ViewAllLabChallenges() {
     const theme = useTheme();
 
     const { data: challangeData, isError, isLoading, isSuccess, error } = useViewAllLabChallengesTeacherQuery({ labId })
+    const { data: activationData, isFetching: isActivationFetching } = useGetLabActivationStatusAndTimeQuery(
+        { lessonId: challangeData?.data.lessonId }, // OR use labId directly if backend supports it
+        {
+            skip: !challangeData?.data.lessonId, // or !labId if you're using that
+            pollingInterval: 10000, // to auto-update every 10s
+        }
+    );
 
+
+    const [activateLab] = useActivateLabMutation();
+    const [deActivateLab] = useDeActivateLabMutation()
+    const handleActivate = async () => {
+        try {
+            await activateLab({
+                labId: labId,
+
+            }).unwrap();
+            toast.success("Lab activated successfully!");
+        } catch (err) {
+            toast.error("Failed to activate lab");
+        }
+    };
+    const handleDeActivate = async () => {
+        try {
+            await deActivateLab({
+                labId: labId,
+
+            }).unwrap();
+            toast.success("Lab Deactivated successfully!");
+        } catch (err) {
+            toast.error("Failed to deactivate lab");
+        }
+    };
     const getAnswerTypeIcon = (type: string) => {
         switch (type) {
             case 'Code':
@@ -52,11 +66,12 @@ function ViewAllLabChallenges() {
     const getAnswerTypeColor = (type: string) => {
         switch (type) {
             case 'Code':
-                return theme.palette.info.main;
+                return theme.palette.success.light;
             case 'Text':
-                return theme.palette.success.main;
+                return theme.palette.info.main;
+
             case 'Flag':
-                return theme.palette.warning.main;
+                return theme.palette.warning.light;
             default:
                 return theme.palette.text.secondary;
         }
@@ -87,13 +102,15 @@ function ViewAllLabChallenges() {
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            mb: 5,
+            mb: 5, mx: 1, my: 3,
             px: { xs: 1, sm: 2 }
         }}>
             <Box sx={{
                 width: "100%",
-                maxWidth: { xs: "100%", sm: "95%", md: "90%", lg: "1200px" }
+                maxWidth: { xs: "100%", sm: "95%", md: "90%", lg: "1300px" },
+                mx: 5
             }}>
+
                 {/* Header Section */}
                 <Box sx={{
                     width: "100%",
@@ -109,139 +126,51 @@ function ViewAllLabChallenges() {
                         minWidth: { lg: "320px" },
                         display: "flex",
                         flexDirection: "column",
-                        gap: 3,
-                        background: alpha(theme.palette.primary.dark, 0.55),
+                        gap: 2,
+                        background: alpha(theme.palette.primary.dark, 0.7),
                         border: "1px solid",
                         borderColor: theme.palette.divider,
                         p: { xs: 2, sm: 3 },
                         borderRadius: 4,
                         alignItems: "center"
                     }}>
-                        <Typography
-                            variant='h5'
-                            fontWeight={670}
-                            sx={{
-                                textAlign: "center",
-                                fontSize: { xs: "1.3rem", sm: "1.5rem" }
-                            }}
-                        >
-                            Lab Challenges Overview
-                        </Typography>
-
-                        <Box sx={{
-                            display: "flex",
-                            gap: 1,
-                            flexWrap: "wrap",
-                            justifyContent: "center",
-                            alignItems: "center"
-                        }}>
-                            {
-                                lab && lab.createdAt && <Chip
-                                    icon={<AccessTimeFilled sx={{ fontSize: "16px !important" }} />}
-                                    label={`Created ${new Date(lab.createdAt).toLocaleDateString()}`}
-                                    color="secondary"
-                                    size="small"
-                                    sx={{
-                                        px: 0.5,
-                                        minWidth: "auto",
-                                        fontSize: { xs: "0.65rem", sm: "0.75rem" }
-                                    }}
-                                />
-                            }
-                            <Chip
-                                icon={<Score sx={{ fontSize: "16px !important" }} />}
-                                label={`Total Score: ${summary?.totalMaxScore}`}
-                                color="warning"
-                                size="small"
-                                sx={{
-                                    minWidth: "auto",
-                                    fontSize: { xs: "0.65rem", sm: "0.75rem" },
-                                    color: theme.palette.text.primary, fontWeight: 600
-                                }}
-                            />
-                            <Chip
-                                icon={summary?.hasChallenges ? <CheckCircle sx={{ fontSize: "16px !important" }} /> : <Cancel sx={{ fontSize: "16px !important" }} />}
-                                label={`${summary?.totalChallenges} Challenges`}
-                                color={summary?.hasChallenges ? "success" : "error"}
-                                size="small"
-                                sx={{
-                                    minWidth: "auto",
-                                    fontSize: { xs: "0.65rem", sm: "0.75rem" }
-                                }}
-                            />
-                        </Box>
-                    </Box>
-
-                    {/* Lab Info Card */}
-                    <Box sx={{
-                        flex: 1,
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: 2,
-                        background: alpha(theme.palette.primary.dark, 0.6),
-                        border: "1px solid",
-                        borderColor: theme.palette.divider,
-                        p: { xs: 2, sm: 3 },
-                        borderRadius: 4
-                    }}>
                         <Box>
                             <Typography
-                                variant='body2'
+                                variant='h6'
+                                fontWeight={700}
                                 sx={{
-                                    color: theme.palette.warning.light,
+                                    color: theme.palette.text.primary,
                                     display: "flex",
                                     alignItems: "center",
                                     gap: 1,
-                                    fontSize: { xs: "0.75rem", sm: "0.875rem" }
+                                    fontSize: { xs: "0.75rem", sm: "1.2rem" },
+                                    textShadow: `0 0 12px ${theme.palette.primary.main}`,
                                 }}
                             >
                                 <Circle sx={{
-                                    fontSize: 8,
-                                    color: theme.palette.warning.light,
-                                    boxShadow: `0 0 6px 2px ${theme.palette.warning.light}`,
+                                    fontSize: 10,
+                                    color: theme.palette.primary.main,
+                                    boxShadow: `0 0 6px 2px ${theme.palette.primary.main}`,
                                     borderRadius: '50%',
-                                    background: theme.palette.warning.light
+                                    background: theme.palette.primary.main,
+
                                 }} />
-                                <span>Lab Title</span>
-                            </Typography>
-                            <Typography
-                                variant="h6"
-                                fontWeight={600}
-                                sx={{
-                                    fontSize: { xs: '1rem', sm: '1.2rem', md: '1.5rem' },
-                                    textShadow: `0 0 12px ${theme.palette.warning.light}`,
-                                    wordBreak: "break-word"
-                                }}
-                            >
-                                {lab?.title}
-                            </Typography>
-                            <Typography
-                                variant='body2'
-                                sx={{
-                                    color: theme.palette.text.secondary,
-                                    fontSize: { xs: "0.75rem", sm: "0.875rem" },
-                                    mt: 1
-                                }}
-                            >
-                                {lab?.description}
+                                <span>Manage Lab Activation</span>
                             </Typography>
                         </Box>
 
-                        <Box sx={{
-                            display: "flex",
-                            flexWrap: "wrap",
-                            gap: 1.5,
-                            alignItems: "center",
-                            mt: 2
-                        }}>
+                        {/* Conditionally Render Activate/Deactivate */}
+                        {activationData?.data.activationStatus === "Active" ? (
                             <Button
-                                startIcon={<AddCircleOutlineTwoTone sx={{ fontSize: "16px !important" }} />}
+                                onClick={handleDeActivate}
+                                startIcon={<CancelOutlined sx={{ fontSize: "16px !important" }} />}
                                 sx={{
-                                    px: { xs: 1.5, sm: 2 },
+                                    px: { xs: 1.5, sm: 3 },
                                     py: 0.5,
+                                    width: "90%",
                                     fontWeight: 400,
                                     textTransform: 'none',
-                                    background: theme.palette.warning.main,
+                                    background: theme.palette.error.light,
                                     border: '1px solid',
                                     borderRadius: 4,
                                     borderColor: theme.palette.divider,
@@ -250,36 +179,280 @@ function ViewAllLabChallenges() {
                                     minWidth: "auto",
                                     whiteSpace: "nowrap"
                                 }}
-                                component={Link}
-                                to={`/add-lab-challenge/${lab?.id}`}
                                 size="small"
                             >
-                                Add New Challenge
+                                Deactivate Lab
                             </Button>
-
+                        ) : (
                             <Button
-                                startIcon={<Edit sx={{ fontSize: "16px !important" }} />}
+                                onClick={handleActivate}
+                                startIcon={<CheckCircleOutline sx={{ fontSize: "16px !important" }} />}
                                 sx={{
-                                    px: { xs: 1.5, sm: 2 },
+                                    px: { xs: 1.5, sm: 3 },
                                     py: 0.5,
                                     fontWeight: 400,
+                                    width: "90%",
                                     textTransform: 'none',
-                                    background: theme.palette.text.primary,
+                                    background: theme.palette.primary.main,
                                     border: '1px solid',
                                     borderRadius: 4,
                                     borderColor: theme.palette.divider,
-                                    color: theme.palette.background.default,
+                                    color: theme.palette.text.primary,
                                     fontSize: { xs: '0.7rem', sm: '0.8rem' },
                                     minWidth: "auto",
                                     whiteSpace: "nowrap"
                                 }}
-                                component={Link}
-                                to={`/edit-lab/${lab?.id}`}
-                                size="small"
+                                size="large"
                             >
-                                Edit Lab
+                                Activate Lab
                             </Button>
+                        )}
+                        {
+                            activationData?.data.activationStatus === "Active" ? activationData.data.activatedAt && <Box>
+                                <Chip
+                                    icon={<AccessTimeFilled sx={{ fontSize: "16px !important" }} />}
+                                    label={`Activated At ${new Date(activationData.data.activatedAt).toLocaleString('en-US', {
+                                        weekday: undefined,
+                                        year: 'numeric',
+                                        month: 'short', // or 'long' for full month name
+                                        day: 'numeric',
+                                        hour: 'numeric',
+                                        minute: 'numeric',
+                                        hour12: true,
+                                    })
+                                        }`}
+                                    color="success"
+                                    size="small"
+                                    sx={{
+                                        px: 0.5,
+                                        minWidth: "auto",
+                                        fontSize: { xs: "0.65rem", sm: "0.75rem" }
+                                    }}
+                                />
+                            </Box> : activationData?.data.deactivatedAt && <Box>
+                                <Chip
+                                    icon={<AccessTimeFilled sx={{ fontSize: "16px !important" }} />}
+                                    label={`Deactivated At ${new Date(activationData?.data.deactivatedAt).toLocaleString('en-US', {
+                                        weekday: undefined,
+                                        year: 'numeric',
+                                        month: 'short', // or 'long' for full month name
+                                        day: 'numeric',
+                                        hour: 'numeric',
+                                        minute: 'numeric',
+                                        hour12: true,
+                                    })
+                                        }`}
+
+                                    color="error"
+                                    size="small"
+                                    sx={{
+                                        px: 0.5,
+                                        minWidth: "auto",
+                                        fontSize: { xs: "0.65rem", sm: "0.75rem" }
+                                    }}
+                                />
+                            </Box>
+                        }
+                        <Box sx={{
+                            display: "flex",
+                            gap: 1,
+                            flexDirection: { xs: "row", md: "column" },
+                            justifyContent: "center",
+                            alignItems: "center", background: alpha(theme.palette.primary.main, 0.3), p: 1, border: "1px solid", borderRadius: 4, borderColor: theme.palette.divider, width: "90%"
+
+                        }}>
+
+                            <Typography variant='caption' fontWeight={600} sx={{ color: theme.palette.text.secondary, display: "flex", alignItems: 'center', gap: 0.2 }}>
+                                <Bolt sx={{ fontSize: 14 }} />  <span>Lab Activation Time Clock</span></Typography>
+                            {activationData?.data && (
+                                <LabTimer
+                                    activatedAt={activationData.data.activatedAt}
+                                    timeLimitInMinutes={activationData.data.timelimit}
+                                    isActive={activationData.data.activationStatus === "Active"}
+                                />
+                            )}
                         </Box>
+                    </Box>
+
+                    {/* Lab Info Card */}
+                    <Box sx={{
+                        flex: 1,
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 2.5, background: alpha(theme.palette.primary.dark, 0.7),
+                        border: "1px solid",
+                        borderColor: theme.palette.divider,
+                        p: { xs: 2, sm: 3 },
+                        borderRadius: 4
+
+                    }}>
+                        <Box sx={{
+                            display: "flex",
+                            flexDirection: "row",
+                            alignItems: "center", justifyContent: "space-between",
+
+                        }}>
+                            <Box>
+                                <Typography
+                                    variant='h6'
+                                    fontWeight={700}
+                                    sx={{
+                                        color: theme.palette.text.primary,
+                                        display: "flex",
+                                        alignItems: "center",
+                                        gap: 1,
+                                        fontSize: { xs: "0.75rem", sm: "1.2rem" },
+                                        textShadow: `0 0 12px ${theme.palette.warning.light}`,
+                                    }}
+                                >
+                                    <Circle sx={{
+                                        fontSize: 10,
+                                        color: theme.palette.warning.light,
+                                        boxShadow: `0 0 6px 2px ${theme.palette.warning.light}`,
+                                        borderRadius: '50%',
+                                        background: theme.palette.warning.light,
+
+                                    }} />
+                                    <span>Manage Your Lab Settings ---</span>
+                                </Typography>
+                            </Box>
+
+                            <Box sx={{
+                                display: "flex",
+                                flexWrap: "wrap",
+                                gap: 2,
+                                alignItems: "center",
+
+                            }}>
+                                <Button
+                                    startIcon={<Edit sx={{ fontSize: "16px !important" }} />}
+                                    sx={{
+                                        px: { xs: 1.5, sm: 2 },
+                                        py: 0.5,
+                                        fontWeight: 400,
+                                        textTransform: 'none',
+                                        background: theme.palette.text.primary,
+                                        border: '1px solid',
+                                        borderRadius: 4,
+                                        borderColor: theme.palette.divider,
+                                        color: theme.palette.background.default,
+                                        fontSize: { xs: '0.7rem', sm: '0.8rem' },
+                                        minWidth: "auto",
+                                        whiteSpace: "nowrap"
+                                    }}
+                                    component={Link}
+                                    to={`/edit-lab/${lab?.id}`}
+                                    size="small"
+                                >
+                                    Edit Lab
+                                </Button>
+                                <Button
+                                    startIcon={<AddCircleOutlineTwoTone sx={{ fontSize: "16px !important" }} />}
+                                    sx={{
+                                        px: { xs: 1.5, sm: 2 },
+                                        py: 0.5,
+                                        fontWeight: 400,
+                                        textTransform: 'none',
+                                        background: theme.palette.warning.main,
+                                        border: '1px solid',
+                                        borderRadius: 4,
+                                        borderColor: theme.palette.divider,
+                                        color: theme.palette.text.primary,
+                                        fontSize: { xs: '0.7rem', sm: '0.8rem' },
+                                        minWidth: "auto",
+                                        whiteSpace: "nowrap"
+                                    }}
+                                    component={Link}
+                                    to={`/add-lab-challenge/${lab?.id}`}
+                                    size="small"
+                                >
+                                    Add New Challenge
+                                </Button>
+
+                                {/* Edit Lab */}
+
+
+
+                            </Box>
+                        </Box>
+
+                        <Box sx={{
+                            display: "flex", flexDirection: "column", gap: 1.5
+                        }}>
+
+
+                            <Box>
+                                <Typography variant='caption' fontWeight={600} sx={{ color: theme.palette.text.secondary }}>
+                                    LAB TITILE
+                                </Typography>
+                                <Typography
+                                    variant="body1"
+                                    fontWeight={500}
+                                    sx={{
+                                        fontSize: { xs: '1rem', sm: '1.2rem', md: '1.2rem' },
+                                        textShadow: `0 0 12px ${theme.palette.warning.light}`,
+                                        wordBreak: "break-word"
+                                    }}
+                                >
+                                    {lab?.title}
+                                </Typography>
+                            </Box>
+                            <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+                                {
+                                    lab && lab.createdAt && <Chip
+                                        icon={<AccessTimeFilled sx={{ fontSize: "16px !important" }} />}
+                                        label={`Created ${new Date(lab.createdAt).toLocaleDateString()}`}
+                                        color="secondary"
+                                        size="small"
+                                        sx={{
+                                            px: 0.5,
+                                            minWidth: "auto",
+                                            fontSize: { xs: "0.65rem", sm: "0.75rem" }
+                                        }}
+                                    />
+                                }
+                                <Chip
+                                    icon={<Score sx={{ fontSize: "16px !important" }} />}
+                                    label={`Total Score: ${summary?.totalMaxScore}`}
+                                    color="secondary"
+                                    size="small"
+                                    sx={{
+                                        minWidth: "auto",
+                                        fontSize: { xs: "0.65rem", sm: "0.75rem" },
+                                        color: theme.palette.text.primary, fontWeight: 600
+                                    }}
+                                />
+                                <Chip
+                                    icon={summary?.hasChallenges ? <CheckCircle sx={{ fontSize: "16px !important" }} /> : <Cancel sx={{ fontSize: "16px !important" }} />}
+                                    label={`${summary?.totalChallenges} Challenges`}
+                                    color={summary?.hasChallenges ? "success" : "error"}
+                                    size="small"
+                                    sx={{
+                                        minWidth: "auto",
+                                        fontSize: { xs: "0.65rem", sm: "0.75rem" }
+                                    }}
+                                />
+                            </Box>
+                            <Box>
+                                <Typography variant='caption' fontWeight={600} sx={{ color: theme.palette.text.secondary }}>
+                                    LAB DESCRIPTION
+                                </Typography>
+
+                                <Typography
+                                    variant='body2'
+                                    sx={{
+                                        color: theme.palette.text.primary,
+                                        fontSize: { xs: "0.75rem", sm: "0.875rem" },
+                                        mt: 1
+                                    }}
+                                >
+                                    {lab?.description}
+                                </Typography>
+                            </Box>
+                        </Box>
+
+
+
                     </Box>
                 </Box>
 
@@ -321,7 +494,7 @@ function ViewAllLabChallenges() {
                     }}>
                         {challenges?.map((challenge, index) => (
                             <Card key={challenge.id} sx={{
-                                background: alpha(theme.palette.primary.dark, 0.55),
+                                background: alpha(theme.palette.primary.dark, 0.7),
                                 border: "1px solid",
                                 borderColor: theme.palette.divider,
                                 borderRadius: 4,
@@ -352,7 +525,7 @@ function ViewAllLabChallenges() {
                                             <Typography
                                                 variant='caption'
                                                 sx={{
-                                                    color: theme.palette.info.light,
+                                                    color: getAnswerTypeColor(challenge.answer_string_type),
                                                     display: "flex",
                                                     alignItems: "center",
                                                     gap: 1,
@@ -361,10 +534,10 @@ function ViewAllLabChallenges() {
                                             >
                                                 <Circle sx={{
                                                     fontSize: 8,
-                                                    color: theme.palette.info.light,
-                                                    boxShadow: `0 0 6px 2px ${theme.palette.info.light}`,
+                                                    color: getAnswerTypeColor(challenge.answer_string_type),
+                                                    boxShadow: `0 0 6px 2px ${getAnswerTypeColor(challenge.answer_string_type)}`,
                                                     borderRadius: '50%',
-                                                    background: theme.palette.info.light
+                                                    background: getAnswerTypeColor(challenge.answer_string_type)
                                                 }} />
                                                 <span>Challenge - {index + 1}</span>
                                             </Typography>
@@ -396,7 +569,7 @@ function ViewAllLabChallenges() {
                                                 label={`${challenge.answer_string_type}`}
                                                 size="small"
                                                 sx={{
-                                                    backgroundColor: alpha(getAnswerTypeColor(challenge.answer_string_type), 0.2),
+                                                    backgroundColor: alpha(getAnswerTypeColor(challenge.answer_string_type), 0.4),
                                                     color: theme.palette.text.primary, fontWeight: 700,
                                                     border: `1px solid ${theme.palette.divider}`,
                                                     fontSize: { xs: "0.65rem", sm: "0.75rem" },
@@ -410,7 +583,7 @@ function ViewAllLabChallenges() {
                                                 size="small"
 
                                                 sx={{
-                                                    backgroundColor: alpha(getAnswerTypeColor(challenge.answer_string_type), 0.2),
+                                                    backgroundColor: alpha(getAnswerTypeColor(challenge.answer_string_type), 0.4),
                                                     color: theme.palette.text.primary, fontWeight: 700,
                                                     border: `1px solid ${theme.palette.divider}`,
                                                     fontSize: { xs: "0.65rem", sm: "0.75rem" },
@@ -424,7 +597,7 @@ function ViewAllLabChallenges() {
                                                 size="small"
 
                                                 sx={{
-                                                    backgroundColor: alpha(getAnswerTypeColor(challenge.answer_string_type), 0.2),
+                                                    backgroundColor: alpha(getAnswerTypeColor(challenge.answer_string_type), 0.4),
                                                     color: theme.palette.text.primary, fontWeight: 700,
                                                     border: `1px solid ${theme.palette.divider}`,
                                                     fontSize: { xs: "0.65rem", sm: "0.75rem" },
@@ -462,7 +635,7 @@ function ViewAllLabChallenges() {
 
                                         {challenge.sample_input && (
                                             <Box sx={{
-                                                background: alpha(theme.palette.background.paper, 0.1),
+                                                background: alpha(theme.palette.background.paper, 0.2),
                                                 border: "1px solid",
                                                 borderColor: theme.palette.divider,
                                                 borderRadius: 2,
@@ -525,7 +698,8 @@ function ViewAllLabChallenges() {
                                         </Button>
                                     </Box>
 
-                                    {/* Challenge Metadata */}
+
+
 
                                 </CardContent>
                             </Card>
@@ -533,9 +707,8 @@ function ViewAllLabChallenges() {
                     </Box>
                 )}
             </Box>
-        </Box>
+        </Box >
     );
 }
-
 export default ViewAllLabChallenges;
 
